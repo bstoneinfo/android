@@ -13,6 +13,7 @@ import android.util.DisplayMetrics;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.bstoneinfo.lib.ad.BSAnalyses;
 import com.bstoneinfo.lib.common.BSApplication;
 import com.bstoneinfo.lib.common.BSNotificationCenter.BSNotificationEvent;
 
@@ -62,6 +63,7 @@ public abstract class BSActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initDisplayMetrics();
+        BSAnalyses.getInstance().init(this);
         mainView = new FrameLayout(this);
         setContentView(mainView);
     }
@@ -76,6 +78,18 @@ public abstract class BSActivity extends Activity {
     protected void onStart() {
         super.onStart();
         BSApplication.defaultNotificationCenter.notifyOnUIThread(BSNotificationEvent.APP_ENTER_FOREGROUND);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        BSAnalyses.getInstance().resume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        BSAnalyses.getInstance().pause();
     }
 
     @Override

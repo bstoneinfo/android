@@ -29,6 +29,7 @@ public class BSPagerBarViewController extends BSViewController {
         getChildViewControllers().addAll(childViewControllers);
         this.titles = titles;
         tabPagers = (ViewPager) getRootView().findViewById(R.id.bs_tab_pagers);
+        tabPagers.setOffscreenPageLimit(2);
         pagerSlidingTabStrip = (BSPagerSlidingTabView) getRootView().findViewById(R.id.bs_pagerSlidingTabStrip);
         pagerSlidingTabStrip.setOnPageChangeListener(new OnPageChangeListener() {
             @Override

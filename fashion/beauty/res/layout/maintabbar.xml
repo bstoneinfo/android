@@ -8,6 +8,7 @@
     android:gravity="center_vertical"
     android:orientation="horizontal" >
 
+    <!--
     <RadioButton
         style="@style/tab_font"
         android:layout_width="match_parent"
@@ -62,7 +63,6 @@
         android:text="@string/tab_favorite"
         android:textColor="@color/tab_indicator_text" />
 
-    <!--
          <RadioButton
         style="@style/tab_font"
         android:layout_width="match_parent"
@@ -81,6 +81,5 @@
         android:text="@string/tab_settings"
         android:textColor="@color/tab_indicator_text" />
     -->
-
 
 </RadioGroup>

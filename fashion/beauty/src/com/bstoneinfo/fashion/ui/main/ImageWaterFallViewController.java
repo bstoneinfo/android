@@ -44,6 +44,8 @@ public abstract class ImageWaterFallViewController extends BSWaterFallViewContro
 
     abstract protected void loadMore();
 
+    abstract protected void recordFlurry(String event);
+
     public ArrayList<CategoryItemData> getDataList() {
         return itemDataList;
     }
@@ -68,10 +70,11 @@ public abstract class ImageWaterFallViewController extends BSWaterFallViewContro
             public void onClick(View v) {
                 setPullupState(PullUpState.LOADING);
                 loadMore();
+                recordFlurry("WaterFall_LoadMore");
             }
         };
-        loadmoreView.findViewById(R.id.loadmore_button).setOnClickListener(loadmoreClickListener);
-        loadmoreView.findViewById(R.id.loadmore_refresh).setOnClickListener(loadmoreClickListener);
+        loadmoreView.findViewById(R.id.loadmore_normal).setOnClickListener(loadmoreClickListener);
+        loadmoreView.findViewById(R.id.loadmore_failed).setOnClickListener(loadmoreClickListener);
 
         BSApplication.defaultNotificationCenter.addObserver(this, dataEventName, new Observer() {
             @SuppressWarnings("unchecked")
@@ -105,6 +108,7 @@ public abstract class ImageWaterFallViewController extends BSWaterFallViewContro
         footerView.addView(adBaidu.getAdView(), 0);
 
         loadMore();
+        recordFlurry("WaterFall_Init");
         setPullupState(PullUpState.LOADING);
         getScrollView().setOnScrollChangedListener(new OnScrollChangedListener() {
             @Override
@@ -192,9 +196,16 @@ public abstract class ImageWaterFallViewController extends BSWaterFallViewContro
                         @Override
                         protected void loadMore() {
                             ImageWaterFallViewController.this.loadMore();
+                            ImageWaterFallViewController.this.recordFlurry("Browse_LoadMore");
+                        }
+
+                        @Override
+                        protected void recordFlurry(String event) {
+                            ImageWaterFallViewController.this.recordFlurry("Browse_Slide");
                         }
                     };
                     presentModalViewController(photoBrowseViewController, AnimationType.None);
+                    recordFlurry("WaterFall_Click");
                 } else if (status == BSImageLoadStatus.FAILED) {
                     imageView.setUrl(remoteUrl);
                 }

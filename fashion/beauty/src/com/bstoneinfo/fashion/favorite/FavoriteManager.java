@@ -16,7 +16,7 @@ import com.bstoneinfo.lib.common.BSDBHelper.DBQueryListener;
 
 public class FavoriteManager {
 
-    private final static int LOAD_MORE_COUNT = 10;
+    private final static int LOAD_MORE_COUNT = 20;
     private int nextID = 0;
     private final static FavoriteManager instance = new FavoriteManager();
 
@@ -25,6 +25,9 @@ public class FavoriteManager {
     }
 
     public boolean isFavorite(CategoryItemData item) {
+        if (item == null) {
+            return false;
+        }
         if (item.favoriteID > 0) {
             return true;
         } else if (item.favoriteID == 0) {

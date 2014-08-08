@@ -34,14 +34,18 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
         <meta-data
-            android:name="PRODUCT_TAG"
+            android:name="UMENG_APPKEY"
+            android:value="5392c20656240b31ae05908f" >
+        </meta-data>
+        <meta-data
+            android:name="UMENG_CHANNEL"
             android:value="default" />
 
         <activity
             android:name="com.bstoneinfo.fashion.app.MainActivity"
+            android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Activity" 
-            android:label="@string/app_name" >
+            android:theme="@style/Theme.Activity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

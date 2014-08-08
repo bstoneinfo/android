@@ -8,20 +8,25 @@ import com.bstoneinfo.lib.ui.BSViewController;
 
 public abstract class ImageAdWaterFallViewController extends BSViewController {
 
-    private final String dataEventName;
     private final BSAdBannerAdmob admob;
     protected final ImageWaterFallViewController imageWaterFallViewController;
 
     abstract protected void loadMore();
 
+    abstract protected void recordFlurry(String event);
+
     public ImageAdWaterFallViewController(Context context, String dataEventName) {
         super(new LinearLayout(context));
         ((LinearLayout) getRootView()).setOrientation(LinearLayout.VERTICAL);
-        this.dataEventName = dataEventName;
         imageWaterFallViewController = new ImageWaterFallViewController(getContext(), dataEventName) {
             @Override
             protected void loadMore() {
                 ImageAdWaterFallViewController.this.loadMore();
+            }
+
+            @Override
+            protected void recordFlurry(String event) {
+                ImageAdWaterFallViewController.this.recordFlurry(event);
             }
         };
         admob = new BSAdBannerAdmob(getActivity());

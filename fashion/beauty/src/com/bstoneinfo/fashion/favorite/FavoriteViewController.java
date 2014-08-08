@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import com.bstoneinfo.fashion.app.NotificationEvent;
 import com.bstoneinfo.fashion.data.CategoryItemData;
 import com.bstoneinfo.fashion.ui.main.ImageAdWaterFallViewController;
+import com.bstoneinfo.lib.ad.BSAnalyses;
 import com.bstoneinfo.lib.common.BSApplication;
 
 public class FavoriteViewController extends ImageAdWaterFallViewController {
@@ -23,6 +24,11 @@ public class FavoriteViewController extends ImageAdWaterFallViewController {
     @Override
     protected void loadMore() {
         FavoriteManager.getInstance().favoriteMore();
+    }
+
+    @Override
+    protected void recordFlurry(String event) {
+        BSAnalyses.getInstance().event(event, "Favorite");
     }
 
     @Override
@@ -63,4 +69,5 @@ public class FavoriteViewController extends ImageAdWaterFallViewController {
             }
         }
     }
+
 }

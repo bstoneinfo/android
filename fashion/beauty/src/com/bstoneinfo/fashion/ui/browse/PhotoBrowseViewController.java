@@ -84,6 +84,8 @@ public abstract class PhotoBrowseViewController extends BSViewController {
             public void onPageSelected(int page) {
                 if (page >= itemDataList.size()) {
                     loadMore();
+                } else {
+                    recordFlurry("Browse_Slide");
                 }
             }
 
@@ -134,5 +136,7 @@ public abstract class PhotoBrowseViewController extends BSViewController {
     }
 
     abstract protected void loadMore();
+
+    abstract protected void recordFlurry(String event);
 
 }

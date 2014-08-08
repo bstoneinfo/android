@@ -12,6 +12,7 @@ import android.os.Handler;
 
 import com.bstoneinfo.fashion.app.MyUtils;
 import com.bstoneinfo.fashion.app.NotificationEvent;
+import com.bstoneinfo.lib.ad.BSAnalyses;
 import com.bstoneinfo.lib.common.BSApplication;
 import com.bstoneinfo.lib.common.BSLog;
 import com.bstoneinfo.lib.common.BSUtils;
@@ -86,7 +87,7 @@ public class CategoryDataSource {
         }
         isLoadingExplore = true;
         BSLog.d("nextExploreGroup=" + nextExploreGroup);
-        final String relativePath = "/fashion/" + categoryName + "/v2/" + nextExploreGroup + ".json";
+        final String relativePath = "/fashion/" + categoryName + "/info/" + nextExploreGroup + ".json";
         final ArrayList<CategoryItemData> dataList;
         if (nextExploreGroup <= 0) {
             dataList = new ArrayList<CategoryItemData>();
@@ -107,6 +108,7 @@ public class CategoryDataSource {
                 @Override
                 public void finished(JSONObject jsonObject) {
                     BSLog.d(urlString + " success");
+                    BSAnalyses.getInstance().event("ListDownload_" + categoryName, String.valueOf(nextExploreGroup));
                     ArrayList<CategoryItemData> dataList = loadJsonData(jsonObject);
                     if (dataList != null && dataList.size() > 0) {
                         BSUtils.saveStringToFile(jsonObject.toString(), BSUtils.getCachePath(relativePath));
@@ -176,7 +178,7 @@ public class CategoryDataSource {
             relativePath = "";
             dataList = new ArrayList<CategoryItemData>();
         } else {
-            relativePath = "/fashion/" + categoryName + "/v2/" + histroyGroupArray[nextHistroyIndex] + ".json";
+            relativePath = "/fashion/" + categoryName + "/info/" + histroyGroupArray[nextHistroyIndex] + ".json";
             dataList = loadJsonDataFromLocal(relativePath);
         }
         if (dataList != null) {

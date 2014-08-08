@@ -56,6 +56,7 @@ class BSRemoteConfig extends JSONObject {
                 if (mRemoteConfigConnection != null || TextUtils.isEmpty(mRemoteConfigUrl)) {
                     return;
                 }
+                BSLog.d("will download RemoteConfig : " + mRemoteConfigUrl);
                 mRemoteConfigConnection = new BSJsonConnection(mRemoteConfigUrl);
                 mRemoteConfigConnection.start(new BSJsonConnectionListener() {
                     @Override
