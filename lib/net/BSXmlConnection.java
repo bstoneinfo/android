@@ -7,7 +7,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 
-public class BSXmlConnection extends BSHttpUrlConnection {
+public class BSXmlConnection extends BSConnection {
 
     public interface BSXmlConnectionListener {
         void finished(Document xmlDoc);
@@ -20,7 +20,7 @@ public class BSXmlConnection extends BSHttpUrlConnection {
     }
 
     public void start(final BSXmlConnectionListener listener) {
-        start(new BSHttpUrlConnectionListener() {
+        start(new BSConnectionListener() {
 
             @Override
             public void finished(byte[] response) {

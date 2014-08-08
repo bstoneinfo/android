@@ -18,7 +18,7 @@ import com.bstoneinfo.lib.ad.BSAdBannerBaidu;
 import com.bstoneinfo.lib.common.BSApplication;
 import com.bstoneinfo.lib.common.BSImageLoader.BSImageLoadStatus;
 import com.bstoneinfo.lib.common.BSNotificationCenter.BSNotificationEvent;
-import com.bstoneinfo.lib.net.BSHttpUrlConnectionQueue;
+import com.bstoneinfo.lib.net.BSConnectionQueue;
 import com.bstoneinfo.lib.ui.BSActivity;
 import com.bstoneinfo.lib.ui.BSWaterFallViewController;
 import com.bstoneinfo.lib.view.BSImageView;
@@ -32,7 +32,7 @@ public abstract class ImageWaterFallViewController extends BSWaterFallViewContro
     public final static int COLUMN_INTERVAL_DP = 5;
     private final int columnWidth = (BSActivity.getDisplayMetrics().widthPixels - BSActivity.dip2px(COLUMN_INTERVAL_DP) * (COLUMN_COUNT + 1)) / COLUMN_COUNT;
 
-    protected final BSHttpUrlConnectionQueue connectionQueue = new BSHttpUrlConnectionQueue(10);
+    protected final BSConnectionQueue connectionQueue = new BSConnectionQueue(10);
     protected final ArrayList<CategoryItemData> itemDataList = new ArrayList<CategoryItemData>();
     private final ArrayList<BSImageView> imageViewList = new ArrayList<BSImageView>();
     private final String dataEventName;

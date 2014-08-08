@@ -3,7 +3,7 @@ package com.bstoneinfo.lib.net;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class BSJsonConnection extends BSHttpUrlConnection {
+public class BSJsonConnection extends BSConnection {
 
     public interface BSJsonConnectionListener {
         void finished(JSONObject jsonObject);
@@ -16,7 +16,7 @@ public class BSJsonConnection extends BSHttpUrlConnection {
     }
 
     public void start(final BSJsonConnectionListener listener) {
-        start(new BSHttpUrlConnectionListener() {
+        start(new BSConnectionListener() {
 
             @Override
             public void finished(byte[] response) {

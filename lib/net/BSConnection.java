@@ -10,14 +10,14 @@ import java.util.HashMap;
 
 import android.os.Handler;
 
-public class BSHttpUrlConnection {
+public class BSConnection {
 
-    public enum ConnectionMethod {
+    public enum BSConnectionMethod {
         GET,
         POST
     }
 
-    public enum ConnectionStatus {
+    public enum BSConnectionStatus {
         Init,
         Running,
         Finished,
@@ -25,40 +25,40 @@ public class BSHttpUrlConnection {
         Canceled
     }
 
-    public interface BSHttpUrlConnectionListener {
+    public interface BSConnectionListener {
         void finished(byte[] response);
 
         void failed(Exception exception);
     }
 
-    public interface ProgressListener {
+    public interface BSProgressListener {
         void progress(int downloadedBytes, int totalBytes);
     }
 
     protected final String url;
-    private ConnectionStatus connectionStatus = ConnectionStatus.Init;
-    private ConnectionMethod requestMethod = ConnectionMethod.GET;
+    private BSConnectionStatus connectionStatus = BSConnectionStatus.Init;
+    private BSConnectionMethod requestMethod = BSConnectionMethod.GET;
     private final HashMap<String, String> parameters = new HashMap<String, String>();
     private final HashMap<String, String> properties = new HashMap<String, String>();
-    private final ArrayList<BSHttpUrlConnection> equalConnections = new ArrayList<BSHttpUrlConnection>();
-    private BSHttpUrlConnectionQueue connectionQueue;
-    private BSHttpUrlConnectionListener conectionListener;
-    private ProgressListener progressListener;
+    private final ArrayList<BSConnection> equalConnections = new ArrayList<BSConnection>();
+    private BSConnectionQueue connectionQueue;
+    private BSConnectionListener conectionListener;
+    private BSProgressListener progressListener;
     private Handler handler;
 
-    public BSHttpUrlConnection(String url) {
+    public BSConnection(String url) {
         this.url = url;
     }
 
-    protected boolean equals(BSHttpUrlConnection connection) {
+    protected boolean equals(BSConnection connection) {
         return false;
     }
 
-    public ConnectionStatus getConnectionStatus() {
+    public BSConnectionStatus getConnectionStatus() {
         return connectionStatus;
     }
 
-    public void setRequestMethod(ConnectionMethod method) {
+    public void setRequestMethod(BSConnectionMethod method) {
         requestMethod = method;
     }
 
@@ -70,39 +70,39 @@ public class BSHttpUrlConnection {
         properties.put(key, value);
     }
 
-    public void setConnectionQueue(BSHttpUrlConnectionQueue queue) {
+    public void setConnectionQueue(BSConnectionQueue queue) {
         connectionQueue = queue;
     }
 
-    public void setProgressListener(ProgressListener progressListener) {
+    public void setProgressListener(BSProgressListener progressListener) {
         this.progressListener = progressListener;
     }
 
-    public void start(BSHttpUrlConnectionListener listener) {
+    public void start(BSConnectionListener listener) {
         handler = new Handler();
-        if (connectionStatus == ConnectionStatus.Init) {
+        if (connectionStatus == BSConnectionStatus.Init) {
             if (connectionQueue != null) {
                 connectionQueue.add(this, listener);
             } else {
                 start(listener, this);
             }
-            connectionStatus = ConnectionStatus.Running;
+            connectionStatus = BSConnectionStatus.Running;
         }
     }
 
-    void start(final BSHttpUrlConnectionListener listener, BSHttpUrlConnection entityConnection) {
-        if (connectionStatus != ConnectionStatus.Init) {
+    void start(final BSConnectionListener listener, BSConnection entityConnection) {
+        if (connectionStatus != BSConnectionStatus.Init) {
             return;
         }
-        this.conectionListener = new BSHttpUrlConnectionListener() {
+        this.conectionListener = new BSConnectionListener() {
 
             @Override
             public void finished(final byte[] response) {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (connectionStatus == ConnectionStatus.Running) {
-                            connectionStatus = ConnectionStatus.Finished;
+                        if (connectionStatus == BSConnectionStatus.Running) {
+                            connectionStatus = BSConnectionStatus.Finished;
                             listener.finished(response);
                         }
                     }
@@ -114,8 +114,8 @@ public class BSHttpUrlConnection {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (connectionStatus == ConnectionStatus.Running) {
-                            connectionStatus = ConnectionStatus.Failed;
+                        if (connectionStatus == BSConnectionStatus.Running) {
+                            connectionStatus = BSConnectionStatus.Failed;
                             listener.failed(exception);
                         }
                     }
@@ -136,14 +136,14 @@ public class BSHttpUrlConnection {
         }
     }
 
-    private void run(BSHttpUrlConnection equalConnection) {
+    private void run(BSConnection equalConnection) {
         equalConnections.add(equalConnection);
         if (equalConnections.size() == 1) {
             new Thread() {
                 @Override
                 public void run() {
                     String urlString = url;
-                    if (requestMethod == ConnectionMethod.GET && parameters != null) {
+                    if (requestMethod == BSConnectionMethod.GET && parameters != null) {
                         StringBuffer param = new StringBuffer();
                         int i = 0;
                         for (String key : parameters.keySet()) {
@@ -174,7 +174,7 @@ public class BSHttpUrlConnection {
                             }
                         }
 
-                        if (requestMethod == ConnectionMethod.POST && parameters != null) {
+                        if (requestMethod == BSConnectionMethod.POST && parameters != null) {
                             StringBuffer param = new StringBuffer();
                             for (String key : parameters.keySet()) {
                                 param.append("&");
@@ -196,14 +196,14 @@ public class BSHttpUrlConnection {
                         } catch (Exception e) {
                         }
                         int readBytes = 0;
-                        for (BSHttpUrlConnection connection : equalConnections) {
+                        for (BSConnection connection : equalConnections) {
                             connection.notifyProgress(readBytes, totalBytes);
                         }
                         int num = -1; //读入的字节数 
                         while (true) {
                             boolean bAllCanceled = true;
-                            for (BSHttpUrlConnection connection : equalConnections) {
-                                if (connection.connectionStatus == ConnectionStatus.Running) {
+                            for (BSConnection connection : equalConnections) {
+                                if (connection.connectionStatus == BSConnectionStatus.Running) {
                                     bAllCanceled = false;
                                     break;
                                 }
@@ -219,19 +219,19 @@ public class BSHttpUrlConnection {
                             bos.flush();
                             bos.write(buffer, 0, num);
                             readBytes += num;
-                            for (BSHttpUrlConnection connection : equalConnections) {
+                            for (BSConnection connection : equalConnections) {
                                 connection.notifyProgress(readBytes, totalBytes);
                             }
                         }
                         bos.close();
                         bis.close();
-                        for (BSHttpUrlConnection connection : equalConnections) {
+                        for (BSConnection connection : equalConnections) {
                             if (connection.conectionListener != null) {
                                 connection.conectionListener.finished(os.toByteArray());
                             }
                         }
                     } catch (final Exception e) {
-                        for (BSHttpUrlConnection connection : equalConnections) {
+                        for (BSConnection connection : equalConnections) {
                             if (connection.conectionListener != null) {
                                 connection.conectionListener.failed(e);
                             }
@@ -243,7 +243,7 @@ public class BSHttpUrlConnection {
                     }
 
                     if (connectionQueue != null) {
-                        connectionQueue.runNext(BSHttpUrlConnection.this);
+                        connectionQueue.runNext(BSConnection.this);
                     }
                 }
             }.start();
@@ -251,8 +251,8 @@ public class BSHttpUrlConnection {
     }
 
     public void cancel() {
-        if (connectionStatus == ConnectionStatus.Running) {
-            connectionStatus = ConnectionStatus.Canceled;
+        if (connectionStatus == BSConnectionStatus.Running) {
+            connectionStatus = BSConnectionStatus.Canceled;
         }
     }
 }

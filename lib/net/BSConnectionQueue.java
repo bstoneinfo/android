@@ -2,30 +2,30 @@ package com.bstoneinfo.lib.net;
 
 import java.util.LinkedList;
 
-import com.bstoneinfo.lib.net.BSHttpUrlConnection.BSHttpUrlConnectionListener;
+import com.bstoneinfo.lib.net.BSConnection.BSConnectionListener;
 
-public class BSHttpUrlConnectionQueue {
+public class BSConnectionQueue {
 
-    private final LinkedList<BSHttpUrlConnection> runningConnections = new LinkedList<BSHttpUrlConnection>();
-    private final LinkedList<BSHttpUrlConnection> waitingConnections = new LinkedList<BSHttpUrlConnection>();
-    private final LinkedList<BSHttpUrlConnectionListener> waitingListeners = new LinkedList<BSHttpUrlConnectionListener>();
+    private final LinkedList<BSConnection> runningConnections = new LinkedList<BSConnection>();
+    private final LinkedList<BSConnection> waitingConnections = new LinkedList<BSConnection>();
+    private final LinkedList<BSConnectionListener> waitingListeners = new LinkedList<BSConnectionListener>();
     private final int queueSize;
 
-    public BSHttpUrlConnectionQueue(int size) {
+    public BSConnectionQueue(int size) {
         queueSize = size;
     }
 
     public void clear() {
-        for (BSHttpUrlConnection connection : runningConnections) {
+        for (BSConnection connection : runningConnections) {
             connection.cancel();
         }
         runningConnections.clear();
         waitingConnections.clear();
     }
 
-    void add(BSHttpUrlConnection connection, BSHttpUrlConnectionListener listener) {
+    void add(BSConnection connection, BSConnectionListener listener) {
         synchronized (runningConnections) {
-            for (BSHttpUrlConnection runningConnection : runningConnections) {
+            for (BSConnection runningConnection : runningConnections) {
                 if (runningConnection.equals(connection)) {
                     connection.start(listener, runningConnection);
                     return;
@@ -40,12 +40,12 @@ public class BSHttpUrlConnectionQueue {
         }
     }
 
-    private void start(final BSHttpUrlConnection connection, final BSHttpUrlConnectionListener listener) {
+    private void start(final BSConnection connection, final BSConnectionListener listener) {
         runningConnections.add(connection);
         connection.start(listener);
     }
 
-    void runNext(BSHttpUrlConnection justFinished) {
+    void runNext(BSConnection justFinished) {
         synchronized (runningConnections) {
             runningConnections.remove(justFinished);
             if (!waitingConnections.isEmpty()) {

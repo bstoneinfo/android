@@ -16,7 +16,7 @@ import com.bstoneinfo.fashion.data.CategoryItemData;
 import com.bstoneinfo.fashion.favorite.FavoriteManager;
 import com.bstoneinfo.lib.common.BSApplication;
 import com.bstoneinfo.lib.common.BSImageLoader.BSImageLoadStatus;
-import com.bstoneinfo.lib.common.BSImageLoader.StatusChangedListener;
+import com.bstoneinfo.lib.common.BSImageLoader.BSStatusChangedListener;
 import com.bstoneinfo.lib.common.BSLog;
 import com.bstoneinfo.lib.view.BSImageView;
 import com.bstoneinfo.lib.widget.BSViewCell;
@@ -61,7 +61,7 @@ public class PhotoBrowseViewCell extends BSViewCell {
             } else {
                 refreshView.setVisibility(View.GONE);
                 imageView.setVisibility(View.VISIBLE);
-                imageView.setStatusChangedListener(new StatusChangedListener() {
+                imageView.setStatusChangedListener(new BSStatusChangedListener() {
                     @Override
                     public void statusChanged(BSImageLoadStatus status) {
                         BSLog.e("position=" + position + " status=" + status);
@@ -71,7 +71,7 @@ public class PhotoBrowseViewCell extends BSViewCell {
                         if (status == BSImageLoadStatus.LOADED || status == BSImageLoadStatus.FAILED) {
                             progressBar.setVisibility(View.GONE);
                             if (status == BSImageLoadStatus.FAILED) {
-                                imageView.setStatusChangedListener(new StatusChangedListener() {
+                                imageView.setStatusChangedListener(new BSStatusChangedListener() {
                                     @Override
                                     public void statusChanged(BSImageLoadStatus status) {
                                         BSLog.d("position=" + position + " status=" + status);
