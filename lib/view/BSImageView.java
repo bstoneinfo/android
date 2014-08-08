@@ -10,6 +10,7 @@ import com.bstoneinfo.lib.common.BSImageLoader;
 import com.bstoneinfo.lib.common.BSImageLoader.BSImageLoadStatus;
 import com.bstoneinfo.lib.common.BSImageLoader.BSImageLoaderListener;
 import com.bstoneinfo.lib.common.BSImageLoader.BSStatusChangedListener;
+import com.bstoneinfo.lib.common.BSUtils;
 import com.bstoneinfo.lib.net.BSConnection.BSProgressListener;
 import com.bstoneinfo.lib.net.BSConnectionQueue;
 
@@ -68,7 +69,7 @@ public class BSImageView extends ImageView {
 
     public void setUrl(String url) {
         if (bVisible) {
-            String localPath = BSImageLoader.getDiskPath(url);
+            String localPath = BSUtils.getDiskPath(url);
             Bitmap bitmap = BSImageLoader.getBitampFromMemoryCache(localPath);
             if (bitmap != null) {
                 if (imageLoader != null) {

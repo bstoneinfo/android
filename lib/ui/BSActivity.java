@@ -1,6 +1,10 @@
 package com.bstoneinfo.lib.ui;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
+
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -8,7 +12,11 @@ import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -16,6 +24,9 @@ import android.widget.FrameLayout;
 import com.bstoneinfo.lib.ad.BSAnalyses;
 import com.bstoneinfo.lib.common.BSApplication;
 import com.bstoneinfo.lib.common.BSNotificationCenter.BSNotificationEvent;
+import com.bstoneinfo.lib.common.BSUtils;
+
+import custom.R;
 
 public abstract class BSActivity extends Activity {
 
@@ -66,6 +77,15 @@ public abstract class BSActivity extends Activity {
         BSAnalyses.getInstance().init(this);
         mainView = new FrameLayout(this);
         setContentView(mainView);
+
+        BSApplication.defaultNotificationCenter.addObserver(this, BSNotificationEvent.REMOTE_CONFIG_DID_CHANGE, new Observer() {
+            @Override
+            public void update(Observable observable, Object data) {
+                checkUpgrade();
+            }
+        });
+
+        checkUpgrade();
     }
 
     @Override
@@ -103,7 +123,10 @@ public abstract class BSActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        mainViewController.destroy();
+        if (mainViewController != null) {
+            mainViewController.destroy();
+        }
+        BSApplication.defaultNotificationCenter.removeObservers(this);
         super.onDestroy();
     }
 
@@ -114,7 +137,7 @@ public abstract class BSActivity extends Activity {
             if (!presentViewController.back()) {
                 presentViewController.dismiss();
             }
-        } else if (!mainViewController.back()) {
+        } else if (mainViewController == null || !mainViewController.back()) {
             super.onBackPressed();
         }
     }
@@ -175,7 +198,7 @@ public abstract class BSActivity extends Activity {
         });
 
         AlertDialog alert = builder.create();
-        if (title != null) {
+        if (!TextUtils.isEmpty(title)) {
             alert.setTitle(title);
         }
         alert.setCancelable(false);
@@ -187,17 +210,17 @@ public abstract class BSActivity extends Activity {
 
     public AlertDialog confirm(int titleResId, int alertTextResId, int btnTxtResId1, int btnTxtResId2, final Runnable btnCallback1, final Runnable btnCallback2,
             final OnCancelListener onCancelListener) {
-        return confirm(titleResId, getString(alertTextResId), btnTxtResId1, btnTxtResId2, btnCallback1, btnCallback2, onCancelListener);
+        return confirm(getString(titleResId), getString(alertTextResId), btnTxtResId1, btnTxtResId2, btnCallback1, btnCallback2, onCancelListener);
     }
 
-    public AlertDialog confirm(final int titleResId, String alertText, int btnTxtResId1, int btnTxtResId2, final Runnable btnCallback1, final Runnable btnCallback2,
+    public AlertDialog confirm(String title, String text, int btnTxtResId1, int btnTxtResId2, final Runnable btnCallback1, final Runnable btnCallback2,
             final OnCancelListener onCancelListener) {
 
         AlertDialog.Builder builder = new Builder(this);
-        if (titleResId != 0) {
-            builder.setTitle(titleResId);
+        if (!TextUtils.isEmpty(title)) {
+            builder.setTitle(title);
         }
-        builder.setMessage(alertText);
+        builder.setMessage(text);
 
         builder.setPositiveButton(btnTxtResId1, new DialogInterface.OnClickListener() {
             @Override
@@ -236,4 +259,65 @@ public abstract class BSActivity extends Activity {
         alert.show();
         return alert;
     }
+
+    private void checkUpgrade() {
+        JSONObject configJSON = BSApplication.getApplication().getRemoteConfig();
+        JSONObject upgradeJsonObject = configJSON.optJSONObject("Upgrade");
+        if (upgradeJsonObject == null) {
+            return;
+        }
+        int newVersionCode = upgradeJsonObject.optInt("versionCode");
+        PackageInfo pi;
+        try {
+            pi = BSApplication.getApplication().getPackageManager().getPackageInfo(getPackageName(), 0);
+            if (pi.versionCode >= newVersionCode) {
+                return;
+            }
+        } catch (NameNotFoundException e) {
+            return;
+        }
+        final String url = upgradeJsonObject.optString("url");
+        if (TextUtils.isEmpty(url)) {
+            return;
+        }
+
+        final SharedPreferences preferences = getSharedPreferences(getPackageName(), 0);
+        long lastUpgradeCheckTime = preferences.getLong("LastUpgradeCheckTime", 0);
+        if (System.currentTimeMillis() - lastUpgradeCheckTime < 3600 * 1000 * 4) {
+            return;
+        }
+
+        String alert = upgradeJsonObject.optString("ForceAlert");
+        if (!TextUtils.isEmpty(alert)) {
+            alert(getString(R.string.app_name), alert, getString(R.string.ok), new Runnable() {
+                @Override
+                public void run() {
+                    BSUtils.downloadApk(url, true);
+                }
+            });
+            BSUtils.downloadApk(url, false);
+            return;
+        }
+
+        alert = upgradeJsonObject.optString("alert" + pi.versionCode);
+        if (TextUtils.isEmpty(alert)) {
+            alert = upgradeJsonObject.optString("alert");
+        }
+        if (TextUtils.isEmpty(alert)) {
+            return;
+        }
+        alert = alert.replace("[CurrentVersion]", pi.versionName);
+        confirm(getString(R.string.app_name), alert, R.string.cancel, R.string.ok, new Runnable() {
+            @Override
+            public void run() {
+                preferences.edit().putLong("LastUpgradeCheckTime", System.currentTimeMillis()).commit();
+            }
+        }, new Runnable() {
+            @Override
+            public void run() {
+                BSUtils.downloadApk(url, true);
+            }
+        }, null);
+    }
+
 }

@@ -14,6 +14,7 @@ import com.bstoneinfo.fashion.app.MyUtils;
 import com.bstoneinfo.fashion.app.NotificationEvent;
 import com.bstoneinfo.fashion.data.CategoryItemData;
 import com.bstoneinfo.fashion.favorite.FavoriteManager;
+import com.bstoneinfo.lib.ad.BSAnalyses;
 import com.bstoneinfo.lib.common.BSApplication;
 import com.bstoneinfo.lib.common.BSImageLoader.BSImageLoadStatus;
 import com.bstoneinfo.lib.common.BSImageLoader.BSStatusChangedListener;
@@ -106,9 +107,10 @@ public class PhotoBrowseViewCell extends BSViewCell {
                     public void onClick(View v) {
                         if (FavoriteManager.getInstance().isFavorite(itemData)) {
                             FavoriteManager.getInstance().favoriteRemove(itemData);
+                            BSAnalyses.getInstance().event("Favorite", "remove");
                         } else {
                             FavoriteManager.getInstance().favoriteAdd(itemData);
-
+                            BSAnalyses.getInstance().event("Favorite", "add");
                         }
                     }
                 });

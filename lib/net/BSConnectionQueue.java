@@ -32,7 +32,8 @@ public class BSConnectionQueue {
                 }
             }
             if (runningConnections.size() < queueSize) {
-                start(connection, listener);
+                runningConnections.add(connection);
+                connection.start(listener, connection);
             } else {
                 waitingConnections.add(connection);
                 waitingListeners.add(listener);
@@ -40,17 +41,12 @@ public class BSConnectionQueue {
         }
     }
 
-    private void start(final BSConnection connection, final BSConnectionListener listener) {
-        runningConnections.add(connection);
-        connection.start(listener);
-    }
-
     void runNext(BSConnection justFinished) {
         synchronized (runningConnections) {
             runningConnections.remove(justFinished);
-            if (!waitingConnections.isEmpty()) {
-                start(waitingConnections.removeFirst(), waitingListeners.removeFirst());
-            }
+        }
+        if (!waitingConnections.isEmpty()) {
+            add(waitingConnections.removeFirst(), waitingListeners.removeFirst());
         }
     }
 

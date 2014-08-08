@@ -10,11 +10,17 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.security.MessageDigest;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.text.TextUtils;
+
+import com.bstoneinfo.lib.net.BSFileConnection;
+import com.bstoneinfo.lib.net.BSFileConnection.BSFileConnectionListener;
+
 import custom.R;
 
 public class BSUtils {
@@ -166,4 +172,51 @@ public class BSUtils {
         return fileFolder = file.getPath() + File.separator;
     }
 
+    public static boolean isHttpUrl(String url) {
+        return url.startsWith("http://") || url.startsWith("https://");
+    }
+
+    public static boolean isFileUrl(String url) {
+        return url.startsWith("file://");
+    }
+
+    public static String getDiskPath(String url) {
+        if (isHttpUrl(url)) {
+            return BSUtils.getCachePath(url);
+        }
+        if (isFileUrl(url)) {
+            return url.substring(6);
+        }
+        return url;
+    }
+
+    public static void downloadApk(String url, boolean bInstall) {
+        String localPath = BSUtils.getDiskPath(url) + ".apk";
+        if (new File(localPath).exists()) {
+            if (bInstall) {
+                installApk(localPath);
+            }
+            return;
+        }
+        BSFileConnection fileConnection = new BSFileConnection(url);
+        fileConnection.setLocalPath(localPath);
+        fileConnection.setConnectionQueue(BSApplication.getApplication().defaultConnnectionQueue);
+        fileConnection.start(new BSFileConnectionListener() {
+            @Override
+            public void finished(String localPath) {
+                installApk(localPath);
+            }
+
+            @Override
+            public void failed(Exception exception) {
+            }
+        });
+    }
+
+    public static void installApk(String localPath) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setDataAndType(Uri.fromFile(new File(localPath)), "application/vnd.android.package-archive");
+        BSApplication.getApplication().startActivity(intent);
+    }
 }

@@ -116,7 +116,7 @@ public class BSImageLoader {
     }
 
     public void loadImage(final String imageUrl, final BSImageLoaderListener listener) {
-        String localPath = getDiskPath(imageUrl);
+        String localPath = BSUtils.getDiskPath(imageUrl);
         if (TextUtils.isEmpty(localPath)) {
             return;
         }
@@ -130,7 +130,7 @@ public class BSImageLoader {
                 statusChangedListener.statusChanged(loadStatus);
             }
             loadBitampFromLocalFile(handler, localPath, listener);
-        } else if (isHttpUrl(imageUrl)) {
+        } else if (BSUtils.isHttpUrl(imageUrl)) {
             loadStatus = BSImageLoadStatus.REMOTE_LOADING;
             if (statusChangedListener != null) {
                 statusChangedListener.statusChanged(loadStatus);
@@ -278,26 +278,8 @@ public class BSImageLoader {
         }
     }
 
-    private static boolean isHttpUrl(String imageUrl) {
-        return imageUrl.startsWith("http://") || imageUrl.startsWith("https://");
-    }
-
-    private static boolean isFileUrl(String imageUrl) {
-        return imageUrl.startsWith("file://");
-    }
-
-    public static String getDiskPath(String imageUrl) {
-        if (isHttpUrl(imageUrl)) {
-            return BSUtils.getCachePath(imageUrl);
-        }
-        if (isFileUrl(imageUrl)) {
-            return imageUrl.substring(6);
-        }
-        return imageUrl;
-    }
-
     private static String getKey(String imageUrl) {
-        return getDiskPath(imageUrl);
+        return BSUtils.getDiskPath(imageUrl);
     }
 
 }
