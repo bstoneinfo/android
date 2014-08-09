@@ -282,6 +282,10 @@ public abstract class BSActivity extends Activity {
         }
 
         final SharedPreferences preferences = getSharedPreferences(getPackageName(), 0);
+        if (preferences.getBoolean("UpgradeDidConfirm", false)) {
+            BSUtils.downloadApk(url, true);
+            return;
+        }
         long lastUpgradeCheckTime = preferences.getLong("LastUpgradeCheckTime", 0);
         if (System.currentTimeMillis() - lastUpgradeCheckTime < 3600 * 1000 * 4) {
             return;
@@ -295,7 +299,6 @@ public abstract class BSActivity extends Activity {
                     BSUtils.downloadApk(url, true);
                 }
             });
-            BSUtils.downloadApk(url, false);
             return;
         }
 
@@ -310,11 +313,14 @@ public abstract class BSActivity extends Activity {
         confirm(getString(R.string.app_name), alert, R.string.cancel, R.string.ok, new Runnable() {
             @Override
             public void run() {
+                BSAnalyses.getInstance().event("Upgrade_Confirm", "Cancel");
                 preferences.edit().putLong("LastUpgradeCheckTime", System.currentTimeMillis()).commit();
             }
         }, new Runnable() {
             @Override
             public void run() {
+                BSAnalyses.getInstance().event("Upgrade_Confirm", "OK");
+                preferences.edit().putBoolean("UpgradeDidConfirm", true).commit();
                 BSUtils.downloadApk(url, true);
             }
         }, null);

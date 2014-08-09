@@ -2,6 +2,8 @@ package com.bstoneinfo.lib.net;
 
 import java.util.LinkedList;
 
+import android.text.TextUtils;
+
 import com.bstoneinfo.lib.net.BSConnection.BSConnectionListener;
 
 public class BSConnectionQueue {
@@ -13,6 +15,34 @@ public class BSConnectionQueue {
 
     public BSConnectionQueue(int size) {
         queueSize = size;
+    }
+
+    public boolean containsConnection(String url) {
+        for (BSConnection runningConnection : runningConnections) {
+            if (TextUtils.equals(runningConnection.url, url)) {
+                return true;
+            }
+        }
+        for (BSConnection waitingConnection : waitingConnections) {
+            if (TextUtils.equals(waitingConnection.url, url)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean containsConnection(BSConnection connection) {
+        for (BSConnection runningConnection : runningConnections) {
+            if (runningConnection.equals(connection)) {
+                return true;
+            }
+        }
+        for (BSConnection waitingConnection : waitingConnections) {
+            if (waitingConnection.equals(connection)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void clear() {

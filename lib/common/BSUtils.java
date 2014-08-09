@@ -18,6 +18,7 @@ import android.os.Looper;
 import android.os.SystemClock;
 import android.text.TextUtils;
 
+import com.bstoneinfo.lib.ad.BSAnalyses;
 import com.bstoneinfo.lib.net.BSFileConnection;
 import com.bstoneinfo.lib.net.BSFileConnection.BSFileConnectionListener;
 
@@ -190,9 +191,10 @@ public class BSUtils {
         return url;
     }
 
-    public static void downloadApk(String url, boolean bInstall) {
+    public static void downloadApk(String url, final boolean bInstall) {
         String localPath = BSUtils.getDiskPath(url) + ".apk";
         if (new File(localPath).exists()) {
+            BSAnalyses.getInstance().event("Upgrade_Download", "Exist");
             if (bInstall) {
                 installApk(localPath);
             }
@@ -201,14 +203,21 @@ public class BSUtils {
         BSFileConnection fileConnection = new BSFileConnection(url);
         fileConnection.setLocalPath(localPath);
         fileConnection.setConnectionQueue(BSApplication.getApplication().defaultConnnectionQueue);
+        if (BSApplication.getApplication().defaultConnnectionQueue.containsConnection(url)) {
+            return;
+        }
         fileConnection.start(new BSFileConnectionListener() {
             @Override
             public void finished(String localPath) {
-                installApk(localPath);
+                if (bInstall) {
+                    installApk(localPath);
+                }
+                BSAnalyses.getInstance().event("Upgrade_Download", "Success");
             }
 
             @Override
             public void failed(Exception exception) {
+                BSAnalyses.getInstance().event("Upgrade_Download", "Fail");
             }
         });
     }
