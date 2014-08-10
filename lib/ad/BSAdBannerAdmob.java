@@ -22,7 +22,7 @@ public class BSAdBannerAdmob extends BSAdObject {
 
             @Override
             public void onReceiveAd(com.google.ads.Ad arg0) {
-                BSLog.d("Admob - onReceiveAd");
+                BSAnalyses.getInstance().event("AdBanner_Result", "Admob_Received");
                 adReceived();
             }
 
@@ -38,8 +38,8 @@ public class BSAdBannerAdmob extends BSAdObject {
 
             @Override
             public void onFailedToReceiveAd(com.google.ads.Ad arg0, com.google.ads.AdRequest.ErrorCode arg1) {
-                BSLog.d("Admob - onFailedToReceiveAd");
                 adFailed();
+                BSAnalyses.getInstance().event("AdBanner_Result", "Admob_Failed");
             }
 
             @Override
@@ -47,6 +47,7 @@ public class BSAdBannerAdmob extends BSAdObject {
                 BSLog.d("Admob - onDismissScreen");
             }
         });
+        BSAnalyses.getInstance().event("AdBanner_Request", "Admob");
     }
 
     @Override
