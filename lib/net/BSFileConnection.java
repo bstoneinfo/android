@@ -8,9 +8,9 @@ import android.text.TextUtils;
 
 import com.bstoneinfo.lib.common.BSUtils;
 
-public class BSImageConnection extends BSHttpUrlConnection {
+public class BSFileConnection extends BSConnection {
 
-    public interface BSImageConnectionListener {
+    public interface BSFileConnectionListener {
         void finished(String localPath);
 
         void failed(Exception exception);
@@ -18,7 +18,7 @@ public class BSImageConnection extends BSHttpUrlConnection {
 
     private String localPath;
 
-    public BSImageConnection(String url) {
+    public BSFileConnection(String url) {
         super(url);
         localPath = BSUtils.getCachePath(url);
     }
@@ -28,20 +28,20 @@ public class BSImageConnection extends BSHttpUrlConnection {
     }
 
     @Override
-    protected boolean equals(BSHttpUrlConnection connection) {
+    protected boolean equals(BSConnection connection) {
         return TextUtils.equals(url, connection.url);
     }
 
-    public void start(final BSImageConnectionListener listener) {
-        start(new BSHttpUrlConnectionListener() {
+    public void start(final BSFileConnectionListener listener) {
+        start(new BSConnectionListener() {
 
             @Override
             public void finished(byte[] response) {
                 String localPath;
-                if (TextUtils.isEmpty(BSImageConnection.this.localPath)) {
+                if (TextUtils.isEmpty(BSFileConnection.this.localPath)) {
                     localPath = BSUtils.getCachePath(url);
                 } else {
-                    localPath = BSImageConnection.this.localPath;
+                    localPath = BSFileConnection.this.localPath;
                 }
                 FileOutputStream fOut = null;
                 try {

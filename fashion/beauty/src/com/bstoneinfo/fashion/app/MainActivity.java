@@ -104,7 +104,7 @@ public class MainActivity extends BSActivity {
     }
 
     protected boolean back() {
-        confirm(R.string.confirm_exit_title, R.string.confirm_exit_text, R.string.ok, R.string.cancel, new Runnable() {
+        confirm(R.string.app_name, R.string.confirm_exit, R.string.ok, R.string.cancel, new Runnable() {
             @Override
             public void run() {
                 finish();

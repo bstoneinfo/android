@@ -9,11 +9,13 @@ import android.app.Application;
 import android.content.SharedPreferences;
 
 import com.bstoneinfo.lib.common.BSNotificationCenter.BSNotificationEvent;
+import com.bstoneinfo.lib.net.BSConnectionQueue;
 
 public class BSApplication extends Application {
 
     private static BSApplication instance;
     public static final BSNotificationCenter defaultNotificationCenter = new BSNotificationCenter();
+    public static final BSConnectionQueue defaultConnnectionQueue = new BSConnectionQueue(10);
     public static final BSLooperThread fileThread = new BSLooperThread("FileThread");
     public static final BSLooperThread databaseThread = new BSLooperThread("DatabaseThread");
     private BSRemoteConfig mRemoteConfig;

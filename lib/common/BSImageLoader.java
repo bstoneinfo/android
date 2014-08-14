@@ -15,11 +15,11 @@ import android.support.v4.util.LruCache;
 import android.text.TextUtils;
 
 import com.bstoneinfo.lib.common.BSNotificationCenter.BSNotificationEvent;
-import com.bstoneinfo.lib.net.BSHttpUrlConnection;
-import com.bstoneinfo.lib.net.BSHttpUrlConnection.ProgressListener;
-import com.bstoneinfo.lib.net.BSHttpUrlConnectionQueue;
-import com.bstoneinfo.lib.net.BSImageConnection;
-import com.bstoneinfo.lib.net.BSImageConnection.BSImageConnectionListener;
+import com.bstoneinfo.lib.net.BSConnection;
+import com.bstoneinfo.lib.net.BSConnection.BSProgressListener;
+import com.bstoneinfo.lib.net.BSConnectionQueue;
+import com.bstoneinfo.lib.net.BSFileConnection;
+import com.bstoneinfo.lib.net.BSFileConnection.BSFileConnectionListener;
 
 public class BSImageLoader {
 
@@ -38,14 +38,14 @@ public class BSImageLoader {
         public void failed(Throwable throwable);
     }
 
-    public interface StatusChangedListener {
+    public interface BSStatusChangedListener {
         void statusChanged(BSImageLoadStatus status);
     }
 
     private static final LruCache<String, Bitmap> imageCache;
     private static final BSLooperThread loadThread;
-    private StatusChangedListener statusChangedListener;
-    private ProgressListener progressListener;
+    private BSStatusChangedListener statusChangedListener;
+    private BSProgressListener progressListener;
     private BSImageLoadStatus loadStatus = BSImageLoadStatus.INIT;
 
     //    public static char[] tmpMemory;
@@ -89,13 +89,13 @@ public class BSImageLoader {
         }
     }
 
-    private final ArrayList<BSHttpUrlConnection> connections = new ArrayList<BSHttpUrlConnection>();
-    private BSHttpUrlConnectionQueue connectionQueue;
+    private final ArrayList<BSConnection> connections = new ArrayList<BSConnection>();
+    private BSConnectionQueue connectionQueue;
 
     public BSImageLoader() {
     }
 
-    public void setConnectionQueue(BSHttpUrlConnectionQueue queue) {
+    public void setConnectionQueue(BSConnectionQueue queue) {
         connectionQueue = queue;
     }
 
@@ -107,16 +107,16 @@ public class BSImageLoader {
         return loadStatus == BSImageLoadStatus.LOCAL_LOADING || loadStatus == BSImageLoadStatus.REMOTE_LOADING;
     }
 
-    public void setStatusChangedListener(StatusChangedListener statusChangedListener) {
+    public void setStatusChangedListener(BSStatusChangedListener statusChangedListener) {
         this.statusChangedListener = statusChangedListener;
     }
 
-    public void setProgressListener(ProgressListener progressListener) {
+    public void setProgressListener(BSProgressListener progressListener) {
         this.progressListener = progressListener;
     }
 
     public void loadImage(final String imageUrl, final BSImageLoaderListener listener) {
-        String localPath = getDiskPath(imageUrl);
+        String localPath = BSUtils.getDiskPath(imageUrl);
         if (TextUtils.isEmpty(localPath)) {
             return;
         }
@@ -130,7 +130,7 @@ public class BSImageLoader {
                 statusChangedListener.statusChanged(loadStatus);
             }
             loadBitampFromLocalFile(handler, localPath, listener);
-        } else if (isHttpUrl(imageUrl)) {
+        } else if (BSUtils.isHttpUrl(imageUrl)) {
             loadStatus = BSImageLoadStatus.REMOTE_LOADING;
             if (statusChangedListener != null) {
                 statusChangedListener.statusChanged(loadStatus);
@@ -138,9 +138,9 @@ public class BSImageLoader {
             loadThread.run(new Runnable() {
                 @Override
                 public void run() {
-                    BSImageConnection connection = new BSImageConnection(imageUrl);
+                    BSFileConnection connection = new BSFileConnection(imageUrl);
                     connection.setConnectionQueue(connectionQueue);
-                    connection.start(new BSImageConnectionListener() {
+                    connection.start(new BSFileConnectionListener() {
                         @Override
                         public void finished(String localPath) {
                             loadBitampFromLocalFile(handler, localPath, listener);
@@ -159,7 +159,7 @@ public class BSImageLoader {
     }
 
     public void cancel() {
-        for (BSHttpUrlConnection connection : connections) {
+        for (BSConnection connection : connections) {
             connection.cancel();
         }
         connections.clear();
@@ -278,26 +278,8 @@ public class BSImageLoader {
         }
     }
 
-    private static boolean isHttpUrl(String imageUrl) {
-        return imageUrl.startsWith("http://") || imageUrl.startsWith("https://");
-    }
-
-    private static boolean isFileUrl(String imageUrl) {
-        return imageUrl.startsWith("file://");
-    }
-
-    public static String getDiskPath(String imageUrl) {
-        if (isHttpUrl(imageUrl)) {
-            return BSUtils.getCachePath(imageUrl);
-        }
-        if (isFileUrl(imageUrl)) {
-            return imageUrl.substring(6);
-        }
-        return imageUrl;
-    }
-
     private static String getKey(String imageUrl) {
-        return getDiskPath(imageUrl);
+        return BSUtils.getDiskPath(imageUrl);
     }
 
 }
