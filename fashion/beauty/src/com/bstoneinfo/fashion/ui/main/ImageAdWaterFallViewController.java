@@ -3,12 +3,13 @@ package com.bstoneinfo.fashion.ui.main;
 import android.content.Context;
 import android.widget.LinearLayout;
 
-import com.bstoneinfo.lib.ad.BSAdBannerAdmob;
+import com.bstoneinfo.lib.ad.BSAdBannerAdChina;
+import com.bstoneinfo.lib.ad.BSAdObject;
 import com.bstoneinfo.lib.ui.BSViewController;
 
 public abstract class ImageAdWaterFallViewController extends BSViewController {
 
-    private final BSAdBannerAdmob admob;
+    private final BSAdObject admob;
     protected final ImageWaterFallViewController imageWaterFallViewController;
 
     abstract protected void loadMore();
@@ -29,7 +30,7 @@ public abstract class ImageAdWaterFallViewController extends BSViewController {
                 ImageAdWaterFallViewController.this.recordFlurry(event);
             }
         };
-        admob = new BSAdBannerAdmob(getActivity());
+        admob = new BSAdBannerAdChina(getActivity(), "AppKey_AdChina_Banner2");
     }
 
     @Override

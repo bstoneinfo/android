@@ -13,7 +13,7 @@ public class BSAdFSAdChina extends BSAdObject {
     }
 
     @Override
-    void start() {
+    public void start() {
         BSLog.d("Adchina - start");
         final AdFullScreen adFullScreen = new AdFullScreen(activity, appKey);
         adFullScreen.setAdFsListener(new AdFsListener() {

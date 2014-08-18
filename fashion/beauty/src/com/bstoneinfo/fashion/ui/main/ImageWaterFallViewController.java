@@ -54,7 +54,7 @@ public abstract class ImageWaterFallViewController extends BSWaterFallViewContro
         super(context, COLUMN_COUNT, BSActivity.dip2px(COLUMN_INTERVAL_DP));
         this.dataEventName = dataEventName;
 
-        adchina = new BSAdBannerAdChina(getActivity());
+        adchina = new BSAdBannerAdChina(getActivity(), "AppKey_AdChina_Banner2");
         adBaidu = new BSAdBannerBaidu(getActivity());
 
         footerView = new LinearLayout(getContext());

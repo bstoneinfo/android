@@ -8,8 +8,8 @@ import com.adchina.android.ads.api.AdView;
 
 public class BSAdBannerAdChina extends BSAdObject {
 
-    public BSAdBannerAdChina(Activity activity) {
-        super(activity, "AppKey_AdChina_Banner");
+    public BSAdBannerAdChina(Activity activity, String key) {
+        super(activity, key);
     }
 
     @Override

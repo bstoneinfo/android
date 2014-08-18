@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.bstoneinfo.lib.common.BSApplication;
 
-abstract class BSAdObject {
+public abstract class BSAdObject {
 
     protected final Activity activity;
     protected final String appKey;
@@ -24,7 +24,7 @@ abstract class BSAdObject {
         }
     }
 
-    abstract void start();
+    public abstract void start();
 
     public void destroy() {
     }
