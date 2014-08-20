@@ -40,7 +40,7 @@ public abstract class ImageWaterFallViewController extends BSWaterFallViewContro
 
     private final BSAdBannerAdChina adchina;
     private final BSAdBannerBaidu adBaidu;
-    private final LinearLayout footerView;
+    public final LinearLayout footerView;
 
     abstract protected void loadMore();
 

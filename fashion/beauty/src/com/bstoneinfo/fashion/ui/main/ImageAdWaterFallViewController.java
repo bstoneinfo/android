@@ -8,6 +8,7 @@ import com.bstoneinfo.lib.ui.BSViewController;
 
 public abstract class ImageAdWaterFallViewController extends BSViewController {
 
+    private final LinearLayout waterfallLinearLayout;
     private final BSAdBannerAdmob admob;
     protected final ImageWaterFallViewController imageWaterFallViewController;
 
@@ -16,8 +17,10 @@ public abstract class ImageAdWaterFallViewController extends BSViewController {
     abstract protected void recordFlurry(String event);
 
     public ImageAdWaterFallViewController(Context context, String dataEventName) {
-        super(new LinearLayout(context));
-        ((LinearLayout) getRootView()).setOrientation(LinearLayout.VERTICAL);
+        super(context);
+        waterfallLinearLayout = new LinearLayout(context);
+        waterfallLinearLayout.setOrientation(LinearLayout.VERTICAL);
+        getRootView().addView(waterfallLinearLayout);
         imageWaterFallViewController = new ImageWaterFallViewController(getContext(), dataEventName) {
             @Override
             protected void loadMore() {
@@ -35,13 +38,13 @@ public abstract class ImageAdWaterFallViewController extends BSViewController {
     @Override
     protected void viewDidLoad() {
         super.viewDidLoad();
-        addChildViewController(imageWaterFallViewController);
+        addChildViewController(imageWaterFallViewController, waterfallLinearLayout);
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) imageWaterFallViewController.getRootView().getLayoutParams();
         params.weight = 1;
         params.height = 0;
         imageWaterFallViewController.getRootView().setLayoutParams(params);
         admob.start();
-        getRootView().addView(admob.getAdView());
+        waterfallLinearLayout.addView(admob.getAdView());
     }
 
     @Override

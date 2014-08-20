@@ -117,7 +117,9 @@ public class BSWaterFallViewController extends BSViewController {
     public int getChildViewCount() {
         int count = 0;
         for (int i = 0; i < columnCount; i++) {
-            count += columnLayoutArray[i].getChildCount();
+            if (columnLayoutArray[i] != null) {
+                count += columnLayoutArray[i].getChildCount();
+            }
         }
         return count;
     }
