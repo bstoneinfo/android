@@ -1,11 +1,7 @@
 package com.bstoneinfo.lib.ad;
 
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.view.View;
-
-import com.bstoneinfo.lib.common.BSApplication;
 
 abstract class BSAdObject {
 
@@ -16,12 +12,7 @@ abstract class BSAdObject {
 
     BSAdObject(Activity activity, String appKeyTag) {
         this.activity = activity;
-        JSONObject jsonAd = BSApplication.getApplication().getRemoteConfig().optJSONObject("Ad");
-        if (jsonAd != null) {
-            this.appKey = jsonAd.optString(appKeyTag);
-        } else {
-            this.appKey = "";
-        }
+        appKey = BSAdUtils.getAdKey(appKeyTag);
     }
 
     abstract void start();

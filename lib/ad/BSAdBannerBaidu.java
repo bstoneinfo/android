@@ -11,7 +11,7 @@ import com.bstoneinfo.lib.common.BSLog;
 public class BSAdBannerBaidu extends BSAdObject {
 
     public BSAdBannerBaidu(Activity activity) {
-        super(activity, "AppKey_Baidu");
+        super(activity, "Baidu");
     }
 
     @Override

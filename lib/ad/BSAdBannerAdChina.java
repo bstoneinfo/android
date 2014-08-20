@@ -9,7 +9,7 @@ import com.adchina.android.ads.api.AdView;
 public class BSAdBannerAdChina extends BSAdObject {
 
     public BSAdBannerAdChina(Activity activity) {
-        super(activity, "AppKey_AdChina_Banner");
+        super(activity, "AdChina_Banner");
     }
 
     @Override
@@ -34,12 +34,12 @@ public class BSAdBannerAdChina extends BSAdObject {
             @Override
             public void onFailedToReceiveAd(AdView arg0) {
                 adFailed();
-                BSAnalyses.getInstance().event("AdBanner_Result", "AdChina_Click");
+                BSAnalyses.getInstance().event("AdBanner_Result", "AdChina_Failed");
             }
 
             @Override
             public void onClickBanner(AdView arg0) {
-                BSAnalyses.getInstance().event("AdBanner_Result", "AdChina_Failed");
+                BSAnalyses.getInstance().event("AdBanner_Result", "AdChina_Click");
             }
         });
         ((AdView) adView).start();

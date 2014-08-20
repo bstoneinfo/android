@@ -8,7 +8,7 @@ import com.google.ads.AdView;
 public class BSAdBannerAdmob extends BSAdObject {
 
     public BSAdBannerAdmob(Activity activity) {
-        super(activity, "AppKey_Admob");
+        super(activity, "Admob");
     }
 
     @Override
