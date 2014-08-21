@@ -13,8 +13,7 @@ import android.widget.LinearLayout;
 import com.bstoneinfo.fashion.app.MyUtils;
 import com.bstoneinfo.fashion.data.CategoryItemData;
 import com.bstoneinfo.fashion.ui.browse.PhotoBrowseViewController;
-import com.bstoneinfo.lib.ad.BSAdBannerAdChina;
-import com.bstoneinfo.lib.ad.BSAdBannerBaidu;
+import com.bstoneinfo.lib.ad.BSAdBannerViewController;
 import com.bstoneinfo.lib.common.BSApplication;
 import com.bstoneinfo.lib.common.BSImageLoader.BSImageLoadStatus;
 import com.bstoneinfo.lib.common.BSNotificationCenter.BSNotificationEvent;
@@ -38,8 +37,7 @@ public abstract class ImageWaterFallViewController extends BSWaterFallViewContro
     private final String dataEventName;
     private boolean memoryWaringReceived = false;
 
-    private final BSAdBannerAdChina adchina;
-    private final BSAdBannerBaidu adBaidu;
+    private final BSAdBannerViewController adBanner;
     public final LinearLayout footerView;
 
     abstract protected void loadMore();
@@ -53,18 +51,16 @@ public abstract class ImageWaterFallViewController extends BSWaterFallViewContro
     public ImageWaterFallViewController(Context context, String dataEventName) {
         super(context, COLUMN_COUNT, BSActivity.dip2px(COLUMN_INTERVAL_DP));
         this.dataEventName = dataEventName;
-
-        adchina = new BSAdBannerAdChina(getActivity());
-        adBaidu = new BSAdBannerBaidu(getActivity());
+        adBanner = new BSAdBannerViewController(getActivity(), "Footer");
+        adBanner.setVerticalShow(true);
 
         footerView = new LinearLayout(getContext());
         footerView.setOrientation(LinearLayout.VERTICAL);
-
-        View loadmoreView = LayoutInflater.from(context).inflate(R.layout.loadmore, null);
-        footerView.addView(loadmoreView);
-
+        View loadmoreView = LayoutInflater.from(getContext()).inflate(R.layout.loadmore, null);
         setFooterView(footerView, loadmoreView.findViewById(R.id.loadmore_normal), loadmoreView.findViewById(R.id.loadmore_loading),
                 loadmoreView.findViewById(R.id.loadmore_failed), null);
+        addChildViewController(adBanner, footerView);
+        footerView.addView(loadmoreView);
         View.OnClickListener loadmoreClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,11 +97,6 @@ public abstract class ImageWaterFallViewController extends BSWaterFallViewContro
     @Override
     protected void viewDidLoad() {
         super.viewDidLoad();
-
-        adchina.start();
-        adBaidu.start();
-        footerView.addView(adchina.getAdView(), 0);
-        footerView.addView(adBaidu.getAdView(), 0);
 
         loadMore();
         recordFlurry("WaterFall_Init");
@@ -213,10 +204,4 @@ public abstract class ImageWaterFallViewController extends BSWaterFallViewContro
         });
     }
 
-    @Override
-    protected void destroy() {
-        adchina.destroy();
-        adBaidu.destroy();
-        super.destroy();
-    }
 }

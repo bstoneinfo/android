@@ -1,6 +1,12 @@
 {
   "Ad": {
     "Banner": {
+      "Footer": {
+        "AdType": [
+          "admob",
+          "AdChina"
+        ]
+      },
       "PhotoPager": {
         "AdType": [
           "adchina",
