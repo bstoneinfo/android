@@ -27,9 +27,9 @@ public class HistroyWaterFallViewController extends CategoryWaterFallViewControl
             public void update(Observable observable, Object data) {
                 ArrayList<CategoryItemData> dataList = (ArrayList<CategoryItemData>) data;
                 if (dataList != null && dataList.isEmpty() && imageWaterFallViewController.getDataList().isEmpty()) {
-                    getRootView().addView(emptyTip);
+                    imageWaterFallViewController.getRootView().addView(emptyTip);
                 } else {
-                    getRootView().removeView(emptyTip);
+                    imageWaterFallViewController.getRootView().removeView(emptyTip);
                 }
             }
         });
