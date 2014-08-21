@@ -3,13 +3,13 @@ package com.bstoneinfo.fashion.ui.main;
 import android.content.Context;
 import android.widget.LinearLayout;
 
-import com.bstoneinfo.lib.ad.BSAdBannerAdmob;
+import com.bstoneinfo.lib.ad.BSAdBannerViewController;
 import com.bstoneinfo.lib.ui.BSViewController;
 
 public abstract class ImageAdWaterFallViewController extends BSViewController {
 
     private final LinearLayout waterfallLinearLayout;
-    private final BSAdBannerAdmob admob;
+    private final BSAdBannerViewController adBanner;
     protected final ImageWaterFallViewController imageWaterFallViewController;
 
     abstract protected void loadMore();
@@ -32,7 +32,7 @@ public abstract class ImageAdWaterFallViewController extends BSViewController {
                 ImageAdWaterFallViewController.this.recordFlurry(event);
             }
         };
-        admob = new BSAdBannerAdmob(getActivity());
+        adBanner = new BSAdBannerViewController(getActivity(), "Main");
     }
 
     @Override
@@ -43,13 +43,7 @@ public abstract class ImageAdWaterFallViewController extends BSViewController {
         params.weight = 1;
         params.height = 0;
         imageWaterFallViewController.getRootView().setLayoutParams(params);
-        admob.start();
-        waterfallLinearLayout.addView(admob.getAdView());
+        addChildViewController(adBanner, waterfallLinearLayout);
     }
 
-    @Override
-    protected void destroy() {
-        admob.destroy();
-        super.destroy();
-    }
 }
