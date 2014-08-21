@@ -45,9 +45,9 @@ public class FavoriteViewController extends ImageAdWaterFallViewController {
             public void update(Observable observable, Object data) {
                 ArrayList<CategoryItemData> dataList = (ArrayList<CategoryItemData>) data;
                 if (dataList != null && dataList.isEmpty() && imageWaterFallViewController.getDataList().isEmpty()) {
-                    imageWaterFallViewController.footerView.addView(emptyTip, 0);
+                    getRootView().addView(emptyTip);
                 } else {
-                    imageWaterFallViewController.footerView.removeView(emptyTip);
+                    getRootView().removeView(emptyTip);
                 }
             }
         });
@@ -87,9 +87,9 @@ public class FavoriteViewController extends ImageAdWaterFallViewController {
                     dataChanged = true;
                 }
                 if (imageWaterFallViewController.getDataList().isEmpty()) {
-                    imageWaterFallViewController.footerView.addView(emptyTip, 0);
+                    getRootView().addView(emptyTip);
                 } else {
-                    imageWaterFallViewController.footerView.removeView(emptyTip);
+                    getRootView().removeView(emptyTip);
                 }
             }
         });

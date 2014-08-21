@@ -3,7 +3,6 @@
     "Banner": {
       "Footer": {
         "AdType": [
-          "admob",
           "AdChina"
         ]
       },
