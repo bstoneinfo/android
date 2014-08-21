@@ -9,10 +9,11 @@ abstract class BSAdObject {
     protected final String appKey;
     protected View adView;
     private BSAdListener adListener;
+    private boolean adReceived;
 
-    BSAdObject(Activity activity, String appKeyTag) {
+    BSAdObject(Activity activity, String appKey) {
         this.activity = activity;
-        appKey = BSAdUtils.getAdKey(appKeyTag);
+        this.appKey = BSAdUtils.getAdKey(appKey);
     }
 
     abstract void start();
@@ -28,13 +29,19 @@ abstract class BSAdObject {
         this.adListener = listener;
     }
 
+    public boolean isReceived() {
+        return adReceived;
+    }
+
     protected void adReceived() {
+        adReceived = true;
         if (adListener != null) {
             adListener.adReceived();
         }
     }
 
     protected void adFailed() {
+        adReceived = false;
         if (adListener != null) {
             adListener.adFailed();
         }

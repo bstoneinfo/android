@@ -7,6 +7,18 @@
       "RestartInterval": "0",
       "CycleInterval": 5
     },
+    "PhotoPager": {
+      "AdType": [
+        "adchina"
+        "admob"
+      ],
+    },
+    "FrameBanner": {
+      "AdType": [
+        "adchina"
+        "admob"
+      ],
+    },
     "AppKey": {
       "Mobisage": "244648fdc1f14616aa865780c50891f7",
       "Baidu": "bc1ce592",

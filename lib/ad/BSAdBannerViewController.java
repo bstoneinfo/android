@@ -2,7 +2,10 @@ package com.bstoneinfo.lib.ad;
 
 import java.util.ArrayList;
 
+import org.json.JSONArray;
+
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
@@ -12,14 +15,24 @@ import com.bstoneinfo.lib.ui.BSViewController;
 public class BSAdBannerViewController extends BSViewController {
 
     private final ArrayList<BSAdObject> adObjectArray = new ArrayList<BSAdObject>();
-    private int adIndex = 0;
+    private int adIndex = -1;
 
-    public BSAdBannerViewController(Context context) {
+    public BSAdBannerViewController(Context context, String adPositionTag) {
         super(context);
-    }
-
-    public void addAdObject(BSAdObject fsObj) {
-        adObjectArray.add(fsObj);
+        JSONArray adTypes = BSAdUtils.getAdType(adPositionTag);
+        if (adTypes != null) {
+            for (int i = 0; i < adTypes.length(); i++) {
+                BSAdObject fsObj;
+                if (TextUtils.equals(adPositionTag, "admob")) {
+                    fsObj = new BSAdBannerAdmob(getActivity());
+                } else if (TextUtils.equals(adPositionTag, "adchina")) {
+                    fsObj = new BSAdBannerAdChina(getActivity());
+                } else {
+                    continue;
+                }
+                adObjectArray.add(fsObj);
+            }
+        }
     }
 
     @Override
@@ -41,30 +54,28 @@ public class BSAdBannerViewController extends BSViewController {
     }
 
     private void startAd() {
-        if (adIndex < 0 || adIndex >= adObjectArray.size()) {
-            return;
-        }
-        final BSAdObject adObject = adObjectArray.get(adIndex);
-        adObject.setAdListener(new BSAdListener() {
-            @Override
-            public void adReceived() {
-                adObject.getAdView().setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void adFailed() {
-                adIndex++;
-                if (adIndex >= adObjectArray.size()) {
-                    adIndex = 0;
+        for (int i = 0; i < adObjectArray.size(); i++) {
+            final int index = i;
+            final BSAdObject adObject = adObjectArray.get(i);
+            adObject.setAdListener(new BSAdListener() {
+                @Override
+                public void adReceived() {
+                    if (adIndex < 0) {
+                        adIndex = index;
+                        adObject.getAdView().setVisibility(View.VISIBLE);
+                    }
                 }
-                startAd();
+
+                @Override
+                public void adFailed() {
+                }
+            });
+            adObject.start();
+            if (adObject.getAdView().getParent() == null) {
+                getRootView().addView(adObject.getAdView());
             }
-        });
-        adObject.start();
-        if (adObject.getAdView().getParent() == null) {
-            getRootView().addView(adObject.getAdView());
+            adObject.getAdView().setVisibility(View.GONE);
         }
-        adObject.getAdView().setVisibility(View.GONE);
     }
 
 }
