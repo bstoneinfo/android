@@ -9,7 +9,7 @@ import com.adchina.android.ads.api.AdView;
 public class BSAdBannerAdChina extends BSAdObject {
 
     public BSAdBannerAdChina(Activity activity) {
-        super(activity, "AdChina_Banner");
+        super(activity, BSAdUtils.getAdBannerAppKey("AdChina"));
     }
 
     @Override

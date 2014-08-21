@@ -13,7 +13,7 @@ import com.bstoneinfo.fashion.ui.main.CategoryViewController;
 import com.bstoneinfo.fashion.ui.main.ExploreWaterFallViewController;
 import com.bstoneinfo.fashion.ui.main.HistroyWaterFallViewController;
 import com.bstoneinfo.fashion.ui.main.MyPagerBarViewController;
-import com.bstoneinfo.lib.ad.BSAdFullscreen;
+import com.bstoneinfo.lib.ad.BSAdScreen;
 import com.bstoneinfo.lib.ad.BSAnalyses;
 import com.bstoneinfo.lib.ui.BSActivity;
 import com.bstoneinfo.lib.ui.BSTabBarController;
@@ -24,7 +24,7 @@ import custom.R;
 
 public class MainActivity extends BSActivity {
 
-    private BSAdFullscreen adFullscreen;
+    private BSAdScreen adFullscreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +98,7 @@ public class MainActivity extends BSActivity {
 
         setMainViewController(mainViewController);
 
-        adFullscreen = new BSAdFullscreen(this);
+        adFullscreen = new BSAdScreen(this);
         adFullscreen.start();
     }
 

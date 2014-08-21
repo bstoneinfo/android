@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
@@ -17,21 +16,20 @@ public class BSAdBannerViewController extends BSViewController {
     private final ArrayList<BSAdObject> adObjectArray = new ArrayList<BSAdObject>();
     private int adIndex = -1;
 
-    public BSAdBannerViewController(Context context, String adPositionTag) {
+    public BSAdBannerViewController(Context context, String bannerName) {
         super(context);
-        JSONArray adTypes = BSAdUtils.getAdType(adPositionTag);
-        if (adTypes != null) {
-            for (int i = 0; i < adTypes.length(); i++) {
-                BSAdObject fsObj;
-                if (TextUtils.equals(adPositionTag, "admob")) {
-                    fsObj = new BSAdBannerAdmob(getActivity());
-                } else if (TextUtils.equals(adPositionTag, "adchina")) {
-                    fsObj = new BSAdBannerAdChina(getActivity());
-                } else {
-                    continue;
-                }
-                adObjectArray.add(fsObj);
+        JSONArray adTypes = BSAdUtils.getAdBannerType(bannerName);
+        for (int i = 0; i < adTypes.length(); i++) {
+            String type = adTypes.optString(i);
+            BSAdObject fsObj;
+            if ("Admob".equalsIgnoreCase(type)) {
+                fsObj = new BSAdBannerAdmob(getActivity());
+            } else if ("AdChina".equalsIgnoreCase(type)) {
+                fsObj = new BSAdBannerAdChina(getActivity());
+            } else {
+                continue;
             }
+            adObjectArray.add(fsObj);
         }
     }
 
@@ -68,6 +66,17 @@ public class BSAdBannerViewController extends BSViewController {
 
                 @Override
                 public void adFailed() {
+                    if (adIndex == index) {
+                        adObject.getAdView().setVisibility(View.GONE);
+                        adIndex = -1;
+                        for (int i = 0; i < adObjectArray.size(); i++) {
+                            BSAdObject adObject = adObjectArray.get(i);
+                            if (adObject.isReceived()) {
+                                adIndex = i;
+                                adObject.getAdView().setVisibility(View.VISIBLE);
+                            }
+                        }
+                    }
                 }
             });
             adObject.start();

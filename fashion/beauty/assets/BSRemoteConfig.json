@@ -1,30 +1,34 @@
 {
   "Ad": {
-    "FullScreen": {
+    "Banner": {
+      "PhotoPager": {
+        "AdType": [
+          "adchina",
+          "admob"
+        ]
+      },
+      "Main": {
+        "AdType": [
+          "adchina",
+          "admob"
+        ]
+      },
+      "AppKey": {
+        "Mobisage": "244648fdc1f14616aa865780c50891f7",
+        "Baidu": "bc1ce592",
+        "Admob": "ca-app-pub-3897310542142538/8654485008",
+        "AdChina": "2197607"
+      }
+    },
+    "Screen": {
+      "AppKey": {
+        "AdChina": "81323"
+      },
       "AdType": [
         "adchina"
       ],
-      "RestartInterval": "0",
-      "CycleInterval": 5
-    },
-    "PhotoPager": {
-      "AdType": [
-        "adchina"
-        "admob"
-      ],
-    },
-    "FrameBanner": {
-      "AdType": [
-        "adchina"
-        "admob"
-      ],
-    },
-    "AppKey": {
-      "Mobisage": "244648fdc1f14616aa865780c50891f7",
-      "Baidu": "bc1ce592",
-      "Admob_Banner": "ca-app-pub-3897310542142538/8654485008",
-      "AdChina_Banner": "2197607",
-      "AdChina_FullScreen": "81323"
+      "RestartInterval": 0,
+      "CycleInterval": 8
     }
   },
   "server": [

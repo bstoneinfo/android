@@ -10,23 +10,18 @@ import android.text.TextUtils;
 
 import com.bstoneinfo.lib.common.BSTimer;
 
-public class BSAdFullscreen {
+public class BSAdScreen {
 
     private final ArrayList<BSAdObject> adObjectArray = new ArrayList<BSAdObject>();
     private int adIndex = 0;
     private BSTimer asyncRun;
 
-    public BSAdFullscreen(Activity activity) {
-        JSONObject fsJson = BSAdUtils.getFullScreenConfig();
-        if (fsJson != null) {
-            JSONArray adArray = fsJson.optJSONArray("AdType");
-            if (adArray != null) {
-                for (int i = 0; i < adArray.length(); i++) {
-                    String name = adArray.optString(i);
-                    if (TextUtils.equals(name, "adchina")) {
-                        adObjectArray.add(new BSAdFSAdChina(activity));
-                    }
-                }
+    public BSAdScreen(Activity activity) {
+        JSONArray adArray = BSAdUtils.getAdScreenType();
+        for (int i = 0; i < adArray.length(); i++) {
+            String name = adArray.optString(i);
+            if (TextUtils.equals(name, "adchina")) {
+                adObjectArray.add(new BSAdScreenAdChina(activity));
             }
         }
     }
@@ -37,11 +32,8 @@ public class BSAdFullscreen {
         }
         if (adIndex >= adObjectArray.size()) {//第一轮所有ad都取失败，等待一段时间重新再取
             adIndex = -1;
-            int delaySeconds = 5;
-            JSONObject fsConfig = BSAdUtils.getFullScreenConfig();
-            if (fsConfig != null) {
-                delaySeconds = fsConfig.optInt("CycleInterval", 5);
-            }
+            JSONObject fsConfig = BSAdUtils.getAdScreenConfig();
+            int delaySeconds = fsConfig.optInt("CycleInterval", 8);
             if (delaySeconds > 0) {
                 delayRun(new Runnable() {
                     @Override

@@ -13,7 +13,7 @@ abstract class BSAdObject {
 
     BSAdObject(Activity activity, String appKey) {
         this.activity = activity;
-        this.appKey = BSAdUtils.getAdKey(appKey);
+        this.appKey = appKey;
     }
 
     abstract void start();

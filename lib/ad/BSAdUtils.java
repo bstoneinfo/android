@@ -7,38 +7,53 @@ import com.bstoneinfo.lib.common.BSApplication;
 
 public class BSAdUtils {
 
+    public static JSONObject optJsonObject(JSONObject jsonObject, String name) {
+        JSONObject jo = jsonObject.optJSONObject(name);
+        if (jo == null) {
+            jo = new JSONObject();
+        }
+        return jo;
+    }
+
+    public static JSONArray optJsonArray(JSONObject jsonObject, String name) {
+        JSONArray ja = jsonObject.optJSONArray(name);
+        if (ja == null) {
+            ja = new JSONArray();
+        }
+        return ja;
+    }
+
     public static JSONObject getAdConfig() {
-        return BSApplication.getApplication().getRemoteConfig().optJSONObject("Ad");
+        JSONObject jsonAd = optJsonObject(BSApplication.getApplication().getRemoteConfig(), "Ad");
+        return jsonAd;
     }
 
-    public static String getAdKey(String keyName) {
+    public static JSONObject getAdScreenConfig() {
         JSONObject jsonAd = getAdConfig();
-        if (jsonAd != null) {
-            JSONObject jsonKey = jsonAd.optJSONObject("AppKey");
-            if (jsonKey != null) {
-                return jsonKey.optString(keyName);
-            }
-        }
-        return "";
+        return optJsonObject(jsonAd, "Screen");
     }
 
-    public static JSONObject getFullScreenConfig() {
-        return getPositionConfig("FullScreen");
+    public static String getAdScreenAppKey(String adType) {
+        JSONObject jsonKey = optJsonObject(getAdScreenConfig(), "AppKey");
+        return jsonKey.optString(adType);
     }
 
-    public static JSONObject getPositionConfig(String tag) {
+    public static JSONArray getAdScreenType() {
+        return optJsonArray(getAdScreenConfig(), "AdType");
+    }
+
+    public static JSONObject getAdBannerConfig() {
         JSONObject jsonAd = getAdConfig();
-        if (jsonAd != null) {
-            return jsonAd.optJSONObject(tag);
-        }
-        return null;
+        return optJsonObject(jsonAd, "Banner");
     }
 
-    public static JSONArray getAdType(String tag) {
-        JSONObject fsJson = BSAdUtils.getPositionConfig(tag);
-        if (fsJson != null) {
-            return fsJson.optJSONArray("AdType");
-        }
-        return null;
+    public static String getAdBannerAppKey(String adType) {
+        JSONObject jsonKey = optJsonObject(getAdBannerConfig(), "AppKey");
+        return jsonKey.optString(adType);
+    }
+
+    public static JSONArray getAdBannerType(String bannerName) {
+        JSONObject jsonBanner = optJsonObject(getAdBannerConfig(), bannerName);
+        return optJsonArray(jsonBanner, "AdType");
     }
 }

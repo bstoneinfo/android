@@ -6,10 +6,10 @@ import com.adchina.android.ads.api.AdFsListener;
 import com.adchina.android.ads.api.AdFullScreen;
 import com.bstoneinfo.lib.common.BSLog;
 
-class BSAdFSAdChina extends BSAdObject {
+class BSAdScreenAdChina extends BSAdObject {
 
-    public BSAdFSAdChina(Activity activity) {
-        super(activity, "AdChina_FullScreen");
+    public BSAdScreenAdChina(Activity activity) {
+        super(activity, BSAdUtils.getAdScreenAppKey("AdChina"));
     }
 
     @Override
