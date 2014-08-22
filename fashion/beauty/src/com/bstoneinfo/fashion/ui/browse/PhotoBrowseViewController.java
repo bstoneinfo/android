@@ -12,8 +12,6 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 
 import com.bstoneinfo.fashion.data.CategoryItemData;
-import com.bstoneinfo.lib.ad.BSAdBannerAdChina;
-import com.bstoneinfo.lib.ad.BSAdBannerAdmob;
 import com.bstoneinfo.lib.ad.BSAdBannerViewController;
 import com.bstoneinfo.lib.common.BSApplication;
 import com.bstoneinfo.lib.ui.BSViewController;
@@ -42,9 +40,7 @@ public abstract class PhotoBrowseViewController extends BSViewController {
         bLoadmoreEnded = loadmoreEnded;
         getRootView().setBackgroundColor(Color.BLACK);
         pagerView = new BSPagerView(getContext());
-        adBanner = new BSAdBannerViewController(context);
-        adBanner.addAdObject(new BSAdBannerAdmob(getActivity()));
-        adBanner.addAdObject(new BSAdBannerAdChina(getActivity()));
+        adBanner = new BSAdBannerViewController(getActivity(), "PhotoPager");
     }
 
     @Override

@@ -11,7 +11,7 @@ import com.bstoneinfo.lib.common.BSLog;
 public class BSAdBannerBaidu extends BSAdObject {
 
     public BSAdBannerBaidu(Activity activity) {
-        super(activity, "AppKey_Baidu");
+        super(activity, "Baidu");
     }
 
     @Override
@@ -35,6 +35,7 @@ public class BSAdBannerBaidu extends BSAdObject {
             public void onAdSwitch() {
                 BSLog.d("Baidu - onAdSwitch");
                 adReceived();
+                BSAnalyses.getInstance().event("AdBanner_Result", "Baidu_Received");
             }
 
             @Override
@@ -46,17 +47,20 @@ public class BSAdBannerBaidu extends BSAdObject {
             public void onAdReady(AdView adView) {
                 BSLog.d("Baidu - onAdReady ");
                 adReceived();
+                BSAnalyses.getInstance().event("AdBanner_Result", "Baidu_Received");
             }
 
             @Override
             public void onAdFailed(String reason) {
                 BSLog.d("Baidu - onAdFailed " + reason);
                 adFailed();
+                BSAnalyses.getInstance().event("AdBanner_Result", "Baidu_Failed");
             }
 
             @Override
             public void onAdClick(JSONObject info) {
                 BSLog.d("Baidu - onAdClick " + info.toString());
+                BSAnalyses.getInstance().event("AdBanner_Result", "Baidu_Click");
             }
 
             @Override
@@ -75,6 +79,7 @@ public class BSAdBannerBaidu extends BSAdObject {
             public void onVideoError() {
             }
         });
+        BSAnalyses.getInstance().event("AdBanner_Request", "Baidu");
     }
 
 }

@@ -3,12 +3,15 @@ package com.bstoneinfo.lib.ad;
 import android.app.Activity;
 
 import com.bstoneinfo.lib.common.BSLog;
+import com.bstoneinfo.lib.common.BSTimer;
 import com.google.ads.AdView;
 
 public class BSAdBannerAdmob extends BSAdObject {
 
+    private BSTimer nextLoadTimer;
+
     public BSAdBannerAdmob(Activity activity) {
-        super(activity, "AppKey_Admob");
+        super(activity, BSAdUtils.getAdBannerAppKey("Admob"));
     }
 
     @Override
@@ -22,7 +25,7 @@ public class BSAdBannerAdmob extends BSAdObject {
 
             @Override
             public void onReceiveAd(com.google.ads.Ad arg0) {
-                BSLog.d("Admob - onReceiveAd");
+                BSAnalyses.getInstance().event("AdBanner_Result", "Admob_Received");
                 adReceived();
             }
 
@@ -38,8 +41,17 @@ public class BSAdBannerAdmob extends BSAdObject {
 
             @Override
             public void onFailedToReceiveAd(com.google.ads.Ad arg0, com.google.ads.AdRequest.ErrorCode arg1) {
-                BSLog.d("Admob - onFailedToReceiveAd");
                 adFailed();
+                BSAnalyses.getInstance().event("AdBanner_Result", "Admob_Failed");
+                if (nextLoadTimer != null) {
+                    nextLoadTimer.cancel();
+                }
+                nextLoadTimer = BSTimer.asyncRun(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((AdView) adView).loadAd(new com.google.ads.AdRequest());
+                    }
+                }, 8000);
             }
 
             @Override
@@ -47,10 +59,14 @@ public class BSAdBannerAdmob extends BSAdObject {
                 BSLog.d("Admob - onDismissScreen");
             }
         });
+        BSAnalyses.getInstance().event("AdBanner_Request", "Admob");
     }
 
     @Override
     public void destroy() {
+        if (nextLoadTimer != null) {
+            nextLoadTimer.cancel();
+        }
         if (adView != null) {
             ((AdView) adView).destroy();
         }

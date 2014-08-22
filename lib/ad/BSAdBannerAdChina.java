@@ -5,12 +5,11 @@ import android.app.Activity;
 import com.adchina.android.ads.AdManager;
 import com.adchina.android.ads.api.AdBannerListener;
 import com.adchina.android.ads.api.AdView;
-import com.bstoneinfo.lib.common.BSLog;
 
 public class BSAdBannerAdChina extends BSAdObject {
 
     public BSAdBannerAdChina(Activity activity) {
-        super(activity, "AppKey_AdChina_Banner");
+        super(activity, BSAdUtils.getAdBannerAppKey("AdChina"));
     }
 
     @Override
@@ -28,22 +27,23 @@ public class BSAdBannerAdChina extends BSAdObject {
         ((AdView) adView).setAdBannerListener(new AdBannerListener() {
             @Override
             public void onReceiveAd(AdView arg0) {
-                BSLog.d("Adchina - onReceiveAd");
                 adReceived();
+                BSAnalyses.getInstance().event("AdBanner_Result", "AdChina_Received");
             }
 
             @Override
             public void onFailedToReceiveAd(AdView arg0) {
-                BSLog.d("Adchina - onFailedToReceiveAd");
                 adFailed();
+                BSAnalyses.getInstance().event("AdBanner_Result", "AdChina_Failed");
             }
 
             @Override
             public void onClickBanner(AdView arg0) {
-                BSLog.d("Adchina - onClickBanner");
+                BSAnalyses.getInstance().event("AdBanner_Result", "AdChina_Click");
             }
         });
         ((AdView) adView).start();
+        BSAnalyses.getInstance().event("AdBanner_Request", "AdChina");
     }
 
 }

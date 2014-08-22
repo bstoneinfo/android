@@ -19,6 +19,7 @@ public class BSWaterFallViewController extends BSViewController {
 
     private final int columnCount;
     private final int columnInterval;
+    private final BSScrollView scrollView;
     protected final LinearLayout mainLayout;//scrollView下的主布局，包括body和footer
     private final LinearLayout bodyLayout;
     private final LinearLayout[] columnLayoutArray;
@@ -27,7 +28,9 @@ public class BSWaterFallViewController extends BSViewController {
     private PullUpState pullUpState;
 
     public BSWaterFallViewController(Context context, int columnCount, int columnInterval) {
-        super(new BSScrollView(context));
+        super(context);
+        scrollView = new BSScrollView(context);
+        getRootView().addView(scrollView);
         if (columnCount < 2) {
             columnCount = 2;
         } else if (columnCount > 9) {
@@ -41,14 +44,14 @@ public class BSWaterFallViewController extends BSViewController {
         mainLayout = new LinearLayout(context);
         mainLayout.setOrientation(LinearLayout.VERTICAL);
         mainLayout.setPadding(0, columnInterval, 0, 0);
-        getRootView().addView(mainLayout, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        scrollView.addView(mainLayout, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         bodyLayout = new LinearLayout(context);
         bodyLayout.setOrientation(LinearLayout.HORIZONTAL);
     }
 
     public BSScrollView getScrollView() {
-        return (BSScrollView) getRootView();
+        return scrollView;
     }
 
     public void setPullupState(PullUpState state) {
@@ -117,7 +120,9 @@ public class BSWaterFallViewController extends BSViewController {
     public int getChildViewCount() {
         int count = 0;
         for (int i = 0; i < columnCount; i++) {
-            count += columnLayoutArray[i].getChildCount();
+            if (columnLayoutArray[i] != null) {
+                count += columnLayoutArray[i].getChildCount();
+            }
         }
         return count;
     }
