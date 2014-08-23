@@ -27,8 +27,8 @@ import custom.R;
 public class PhotoBrowseViewCell extends BSViewCell {
 
     private BSImageView imageView;
-    private ProgressBar progressBar;
-    ImageView refreshView;
+    private ProgressBar progressBar, bottomProgressBar;
+    ImageView refreshView, bottomRefreshView;
     private ImageView favoriteView;
     private CategoryItemData itemData;
 
@@ -37,6 +37,8 @@ public class PhotoBrowseViewCell extends BSViewCell {
         imageView = (BSImageView) getRootView().findViewById(R.id.imageView);
         refreshView = (ImageView) getRootView().findViewById(R.id.refresh);
         progressBar = (ProgressBar) getRootView().findViewById(R.id.progressBar);
+        bottomRefreshView = (ImageView) getRootView().findViewById(R.id.bottomRefresh);
+        bottomProgressBar = (ProgressBar) getRootView().findViewById(R.id.bottomProgressBar);
         favoriteView = (ImageView) getRootView().findViewById(R.id.favorite);
         BSApplication.defaultNotificationCenter.addObserver(this, NotificationEvent.CATEGORY_ITEM_DATA_FINISHED, new Observer() {
             @Override
@@ -65,37 +67,53 @@ public class PhotoBrowseViewCell extends BSViewCell {
                 imageView.setStatusChangedListener(new BSStatusChangedListener() {
                     @Override
                     public void statusChanged(BSImageLoadStatus status) {
-                        BSLog.e("position=" + position + " status=" + status);
+                        BSLog.e("position=" + position + " thumb status=" + status);
                         if (status == BSImageLoadStatus.REMOTE_LOADING) {
                             progressBar.setVisibility(View.VISIBLE);
-                        }
-                        if (status == BSImageLoadStatus.LOADED || status == BSImageLoadStatus.FAILED) {
-                            progressBar.setVisibility(View.GONE);
-                            if (status == BSImageLoadStatus.FAILED) {
-                                imageView.setStatusChangedListener(new BSStatusChangedListener() {
-                                    @Override
-                                    public void statusChanged(BSImageLoadStatus status) {
-                                        BSLog.d("position=" + position + " status=" + status);
-                                        if (status == BSImageLoadStatus.REMOTE_LOADING) {
-                                            progressBar.setVisibility(View.VISIBLE);
-                                        } else if (status == BSImageLoadStatus.LOADED) {
-                                            progressBar.setVisibility(View.GONE);
-                                        } else if (status == BSImageLoadStatus.FAILED) {
-                                            progressBar.setVisibility(View.GONE);
-                                            refreshView.setVisibility(View.VISIBLE);
-                                            refreshView.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    refreshView.setVisibility(View.GONE);
-                                                    loadStandardPhoto(itemData);
-                                                }
-                                            });
-                                        }
+                        } else if (status == BSImageLoadStatus.FAILED) {
+                            imageView.setStatusChangedListener(new BSStatusChangedListener() {
+                                @Override
+                                public void statusChanged(BSImageLoadStatus status) {
+                                    BSLog.d("position=" + position + " standard status=" + status);
+                                    if (status == BSImageLoadStatus.LOADED) {
+                                        progressBar.setVisibility(View.GONE);
+                                    } else if (status == BSImageLoadStatus.FAILED) {
+                                        progressBar.setVisibility(View.GONE);
+                                        refreshView.setVisibility(View.VISIBLE);
+                                        refreshView.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                refreshView.setVisibility(View.GONE);
+                                                loadStandardPhoto(itemData);
+                                            }
+                                        });
                                     }
-                                });
-                            } else {
-                                imageView.setStatusChangedListener(null);
-                            }
+                                }
+                            });
+                            loadStandardPhoto(itemData);
+                        } else if (status == BSImageLoadStatus.LOADED) {
+                            progressBar.setVisibility(View.GONE);
+                            imageView.setStatusChangedListener(new BSStatusChangedListener() {
+                                @Override
+                                public void statusChanged(BSImageLoadStatus status) {
+                                    BSLog.d("position=" + position + " standard status=" + status);
+                                    if (status == BSImageLoadStatus.REMOTE_LOADING) {
+                                        bottomProgressBar.setVisibility(View.VISIBLE);
+                                    } else if (status == BSImageLoadStatus.LOADED) {
+                                        bottomProgressBar.setVisibility(View.GONE);
+                                    } else if (status == BSImageLoadStatus.FAILED) {
+                                        bottomProgressBar.setVisibility(View.GONE);
+                                        bottomRefreshView.setVisibility(View.VISIBLE);
+                                        bottomRefreshView.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                bottomRefreshView.setVisibility(View.GONE);
+                                                loadStandardPhoto(itemData);
+                                            }
+                                        });
+                                    }
+                                }
+                            });
                             loadStandardPhoto(itemData);
                         }
                     }
