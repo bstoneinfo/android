@@ -28,18 +28,18 @@ public class BSAdBannerAdChina extends BSAdObject {
             @Override
             public void onReceiveAd(AdView arg0) {
                 adReceived();
-                BSAnalyses.getInstance().event("AdBanner_Result", "AdChina_Received");
+                BSAnalyses.getInstance().event("AdBanner_Received", "AdChina");
             }
 
             @Override
             public void onFailedToReceiveAd(AdView arg0) {
                 adFailed();
-                BSAnalyses.getInstance().event("AdBanner_Result", "AdChina_Failed");
+                BSAnalyses.getInstance().event("AdBanner_Failed", "AdChina");
             }
 
             @Override
             public void onClickBanner(AdView arg0) {
-                BSAnalyses.getInstance().event("AdBanner_Result", "AdChina_Click");
+                BSAnalyses.getInstance().event("AdBanner_Click", "AdChina");
             }
         });
         ((AdView) adView).start();

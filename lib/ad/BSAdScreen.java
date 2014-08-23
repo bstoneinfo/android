@@ -6,7 +6,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.text.TextUtils;
 
 import com.bstoneinfo.lib.common.BSTimer;
 
@@ -20,7 +19,9 @@ public class BSAdScreen {
         JSONArray adArray = BSAdUtils.getAdScreenType();
         for (int i = 0; i < adArray.length(); i++) {
             String name = adArray.optString(i);
-            if (TextUtils.equals(name, "adchina")) {
+            if ("Admob".equalsIgnoreCase(name)) {
+                adObjectArray.add(new BSAdScreenAdmob(activity));
+            } else if ("AdChina".equalsIgnoreCase(name)) {
                 adObjectArray.add(new BSAdScreenAdChina(activity));
             }
         }

@@ -35,7 +35,7 @@ public class BSAdBannerBaidu extends BSAdObject {
             public void onAdSwitch() {
                 BSLog.d("Baidu - onAdSwitch");
                 adReceived();
-                BSAnalyses.getInstance().event("AdBanner_Result", "Baidu_Received");
+                BSAnalyses.getInstance().event("AdBanner_Received", "Baidu");
             }
 
             @Override
@@ -47,20 +47,20 @@ public class BSAdBannerBaidu extends BSAdObject {
             public void onAdReady(AdView adView) {
                 BSLog.d("Baidu - onAdReady ");
                 adReceived();
-                BSAnalyses.getInstance().event("AdBanner_Result", "Baidu_Received");
+                BSAnalyses.getInstance().event("AdBanner_Received", "Baidu");
             }
 
             @Override
             public void onAdFailed(String reason) {
                 BSLog.d("Baidu - onAdFailed " + reason);
                 adFailed();
-                BSAnalyses.getInstance().event("AdBanner_Result", "Baidu_Failed");
+                BSAnalyses.getInstance().event("AdBanner_Failed", "Baidu");
             }
 
             @Override
             public void onAdClick(JSONObject info) {
                 BSLog.d("Baidu - onAdClick " + info.toString());
-                BSAnalyses.getInstance().event("AdBanner_Result", "Baidu_Click");
+                BSAnalyses.getInstance().event("AdBanner_Click", "Baidu");
             }
 
             @Override

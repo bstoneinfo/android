@@ -27,10 +27,12 @@
     },
     "Screen": {
       "AppKey": {
+        "Admob": "ca-app-pub-3897310542142538/4838109406",
         "AdChina": "81323"
       },
       "AdType": [
-        "adchina"
+        "adchina",
+        "Admob"
       ],
       "RestartInterval": 0,
       "CycleInterval": 8
