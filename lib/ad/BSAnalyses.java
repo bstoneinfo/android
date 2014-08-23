@@ -1,11 +1,15 @@
 package com.bstoneinfo.lib.ad;
 
 import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.bstoneinfo.lib.common.BSApplication;
 import com.bstoneinfo.lib.common.BSLog;
+import com.bstoneinfo.lib.common.BSNotificationCenter.BSNotificationEvent;
 import com.bstoneinfo.lib.common.BSUtils;
 import com.umeng.analytics.MobclickAgent;
 
@@ -19,6 +23,20 @@ public class BSAnalyses {
     }
 
     private BSAnalyses() {
+        BSApplication.defaultNotificationCenter.addObserver(this, BSNotificationEvent.ACTIVITY_RESUME, new Observer() {
+            @Override
+            public void update(Observable observable, Object data) {
+                MobclickAgent.onResume(context);
+                //        StatService.onResume(context);
+            }
+        });
+        BSApplication.defaultNotificationCenter.addObserver(this, BSNotificationEvent.ACTIVITY_PAUSE, new Observer() {
+            @Override
+            public void update(Observable observable, Object data) {
+                MobclickAgent.onPause(context);
+                //        StatService.onPause(context);
+            }
+        });
     }
 
     public void init(Context context) {
@@ -27,16 +45,6 @@ public class BSAnalyses {
         if (BSUtils.isDebug()) {
             MobclickAgent.setDebugMode(true);
         }
-    }
-
-    public void resume() {
-        MobclickAgent.onResume(context);
-        //        StatService.onResume(context);
-    }
-
-    public void pause() {
-        MobclickAgent.onPause(context);
-        //        StatService.onPause(context);
     }
 
     public void event(String eventId) {
