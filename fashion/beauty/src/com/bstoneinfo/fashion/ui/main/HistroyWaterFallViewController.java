@@ -18,7 +18,7 @@ import custom.R;
 public class HistroyWaterFallViewController extends CategoryWaterFallViewController {
 
     public HistroyWaterFallViewController(Context context, String categoryName) {
-        super(context, categoryName, NotificationEvent.CATEGORY_HISTORY_FINISHED_ + categoryName);
+        super(context, categoryName, NotificationEvent.CATEGORY_HISTORY_FINISHED_ + categoryName, "HistroyMain", "HistroyFooter");
 
         final View emptyTip = LayoutInflater.from(getContext()).inflate(R.layout.empty_tips, null);
         BSApplication.defaultNotificationCenter.addObserver(this, NotificationEvent.CATEGORY_HISTORY_FINISHED_ + categoryName, new Observer() {

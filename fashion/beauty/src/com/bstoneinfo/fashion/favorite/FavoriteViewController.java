@@ -28,7 +28,7 @@ public class FavoriteViewController extends ImageAdWaterFallViewController {
     final View emptyTip;
 
     public FavoriteViewController(Context context) {
-        super(context, NotificationEvent.FAVORITE_QUERYLIST_FINISHED);
+        super(context, NotificationEvent.FAVORITE_QUERYLIST_FINISHED, "FavoriteMain", "FavoriteFooter");
         emptyTip = LayoutInflater.from(getContext()).inflate(R.layout.empty_tips, null);
         TextView textView = (TextView) emptyTip.findViewById(R.id.textView);
 

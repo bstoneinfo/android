@@ -9,8 +9,8 @@ public abstract class CategoryWaterFallViewController extends ImageAdWaterFallVi
 
     protected final String categoryName;
 
-    public CategoryWaterFallViewController(Context context, String category, final String dataEventName) {
-        super(context, dataEventName);
+    public CategoryWaterFallViewController(Context context, String category, final String dataEventName, String mainAdBannerName, String footerAdBannerName) {
+        super(context, dataEventName, mainAdBannerName, footerAdBannerName);
         this.categoryName = category;
     }
 

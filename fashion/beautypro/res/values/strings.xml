@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">East Beauty</string>
+    <string name="app_name">美蜜儿美女图库</string>
+    <string name="ok">好的</string>
+    <string name="cancel">取消</string>
+    <string name="confirm_exit">确认退出“美蜜儿美女图库”吗?</string>
     <string name="tab_explore">发现</string>
     <string name="tab_history">足迹</string>
     <string name="tab_favorite">收藏</string>
@@ -9,5 +12,7 @@
     <string name="loadmore">加载更多</string>
     <string name="tab_51">清纯</string>
     <string name="tab_52">女神</string>
-    
+    <string name="histroy_empty_tip">您还没有历史足迹哟！\n\n再次启动时，您本次浏览的图片将会显示在这里哦！</string>
+    <string name="favorite_empty_tip">您还没有收藏图片哟！\n\n浏览大图时，点击{heart}就把您喜欢的图片收藏在这里哦！</string>
+
 </resources>

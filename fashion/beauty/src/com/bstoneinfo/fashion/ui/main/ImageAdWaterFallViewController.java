@@ -16,12 +16,12 @@ public abstract class ImageAdWaterFallViewController extends BSViewController {
 
     abstract protected void recordFlurry(String event);
 
-    public ImageAdWaterFallViewController(Context context, String dataEventName) {
+    public ImageAdWaterFallViewController(Context context, String dataEventName, String mainAdBannerName, String footerAdBannerName) {
         super(context);
         waterfallLinearLayout = new LinearLayout(context);
         waterfallLinearLayout.setOrientation(LinearLayout.VERTICAL);
         getRootView().addView(waterfallLinearLayout);
-        imageWaterFallViewController = new ImageWaterFallViewController(getContext(), dataEventName) {
+        imageWaterFallViewController = new ImageWaterFallViewController(getContext(), dataEventName, footerAdBannerName) {
             @Override
             protected void loadMore() {
                 ImageAdWaterFallViewController.this.loadMore();
@@ -32,7 +32,7 @@ public abstract class ImageAdWaterFallViewController extends BSViewController {
                 ImageAdWaterFallViewController.this.recordFlurry(event);
             }
         };
-        adBanner = new BSAdBannerViewController(getActivity(), "Main");
+        adBanner = new BSAdBannerViewController(getActivity(), mainAdBannerName);
     }
 
     @Override
