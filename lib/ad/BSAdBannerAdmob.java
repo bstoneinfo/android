@@ -51,7 +51,7 @@ public class BSAdBannerAdmob extends BSAdObject {
                     public void run() {
                         ((AdView) adView).loadAd(new com.google.ads.AdRequest());
                     }
-                }, 8000);
+                }, 5000);
             }
 
             @Override

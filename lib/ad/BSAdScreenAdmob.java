@@ -1,6 +1,7 @@
 package com.bstoneinfo.lib.ad;
 
 import android.app.Activity;
+import android.content.Intent;
 
 import com.bstoneinfo.lib.common.BSLog;
 import com.bstoneinfo.lib.common.BSTimer;
@@ -43,9 +44,10 @@ class BSAdScreenAdmob extends BSAdObject {
                 stopTimer = BSTimer.asyncRun(new Runnable() {
                     @Override
                     public void run() {
-                        interstitial.stopLoading();
+                        Intent intent = new Intent(activity, activity.getClass());
+                        activity.startActivity(intent);
                     }
-                }, 5);
+                }, BSAdUtils.getScreenAdPresentSecond() * 1000);
             }
 
             @Override

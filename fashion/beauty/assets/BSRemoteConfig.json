@@ -15,7 +15,7 @@
         "adchina",
         "admob"
       ],
-      "RestartInterval": 0,
+      "ScreenAdPresentSecond": 5,
       "CycleInterval": 5
     },
     "Banner": {
