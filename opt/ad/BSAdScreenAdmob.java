@@ -60,7 +60,7 @@ public class BSAdScreenAdmob extends BSAdObject {
 
             @Override
             public void onFailedToReceiveAd(Ad arg0, ErrorCode arg1) {
-                BSLog.d("Admob - fullscreen onFailedToReceiveAd");
+                BSLog.d("Admob - fullscreen onFailedToReceiveAd - " + arg1.toString());
                 adFailed();
                 BSAnalyses.getInstance().event("AdScreen_Failed", "Admob");
             }

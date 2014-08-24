@@ -20,16 +20,16 @@ public class BSAdScreen {
         JSONArray adArray = BSAdUtils.getAdScreenType();
         for (int i = 0; i < adArray.length(); i++) {
             String type = adArray.optString(i);
-            Class<? extends BSAdObject> cls = BSAdUtils.bannerAdClassMap.get(type);
+            Class<? extends BSAdObject> cls = BSAdUtils.screenAdClassMap.get(type);
             if (cls == null) {
-                BSUtils.debugAssert("AdBanner Type '" + type + "'" + " not found.");
+                BSUtils.debugAssert("AdScreen Type '" + type + "'" + " not found.");
                 continue;
             }
             BSAdObject fsObj;
             try {
                 fsObj = cls.getConstructor(Activity.class).newInstance(activity);
             } catch (Exception e) {
-                BSUtils.debugAssert("AdBanner Type '" + type + "'" + " exception: " + e.getMessage());
+                BSUtils.debugAssert("AdScreen Type '" + type + "'" + " exception: " + e.getMessage());
                 continue;
             }
             adObjectArray.add(fsObj);

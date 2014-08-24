@@ -50,7 +50,7 @@ public class MainActivity extends BSActivity {
         //        childViewControllers.add(settingsViewController);
 
         if (Config.isPro) {
-            mainViewController = new BSTabBarController(this, R.layout.maintabbar, childViewControllers, 0) {
+            mainViewController = new BSTabBarController(this, R.layout.maintabbar, childViewControllers, 1) {
                 @Override
                 public boolean back() {
                     if (super.back()) {

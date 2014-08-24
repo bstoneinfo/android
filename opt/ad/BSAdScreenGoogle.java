@@ -1,6 +1,7 @@
 package com.bstoneinfo.opt.ad;
 
 import android.app.Activity;
+import android.content.Intent;
 
 import com.bstoneinfo.lib.ad.BSAdObject;
 import com.bstoneinfo.lib.ad.BSAdUtils;
@@ -39,7 +40,7 @@ public class BSAdScreenGoogle extends BSAdObject {
 
             @Override
             public void onAdFailedToLoad(int errorCode) {
-                BSLog.d("Admob - fullscreen onAdFailedToLoad");
+                BSLog.d("Admob - fullscreen onAdFailedToLoad - errorCode=" + errorCode);
                 adFailed();
                 BSAnalyses.getInstance().event("AdScreen_Failed", "Admob");
             }
@@ -47,13 +48,13 @@ public class BSAdScreenGoogle extends BSAdObject {
             @Override
             public void onAdOpened() {
                 BSLog.d("Admob - fullscreen onAdOpened");
-                //                stopTimer = BSTimer.asyncRun(new Runnable() {
-                //                    @Override
-                //                    public void run() {
-                //                        Intent intent = new Intent(activity, activity.getClass());
-                //                        activity.startActivity(intent);
-                //                    }
-                //                }, BSAdUtils.getScreenAdPresentSecond() * 1000);
+                stopTimer = BSTimer.asyncRun(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(activity, activity.getClass());
+                        activity.startActivity(intent);
+                    }
+                }, BSAdUtils.getScreenAdPresentSecond() * 1000);
             }
 
             @Override
