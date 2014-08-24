@@ -1,9 +1,58 @@
 {
+  "server": [
+    "www.bstoneinfo.com"
+  ],
+  "CategorySize": {
+    "51": 82
+  },
   "Ad": {
+    "Screen": {
+      "AppKey": {
+        "Admob": "ca-app-pub-3897310542142538/4838109406",
+        "AdChina": "81323"
+      },
+      "AdType": [
+        "adchina",
+        "admob"
+      ],
+      "ScreenAdPresentSecond": 5,
+      "CycleInterval": 5
+    },
     "Banner": {
-      "Footer": {
+      "AppKey": {
+        "Mobisage": "244648fdc1f14616aa865780c50891f7",
+        "Baidu": "bc1ce592",
+        "Admob": "ca-app-pub-3897310542142538/8654485008",
+        "AdChina": "2197607"
+      },
+             "ExploreMain": {
         "AdType": [
-          "AdChina"
+          "admob"
+        ]
+      },
+      "ExploreFooter": {
+        "AdType": [
+          "adchina"
+        ]
+      },
+      "HistroyMain": {
+        "AdType": [
+          "adchina"
+        ]
+      },
+      "HistroyFooter": {
+        "AdType": [
+          "admob"
+        ]
+      },
+      "FavoriteMain": {
+        "AdType": [
+          "adchina"
+        ]
+      },
+      "FavoriteFooter": {
+        "AdType": [
+          "admob"
         ]
       },
       "PhotoPager": {
@@ -11,36 +60,7 @@
           "adchina",
           "admob"
         ]
-      },
-      "Main": {
-        "AdType": [
-          "adchina",
-          "admob"
-        ]
-      },
-      "AppKey": {
-        "Mobisage": "244648fdc1f14616aa865780c50891f7",
-        "Baidu": "bc1ce592",
-        "Admob": "ca-app-pub-3897310542142538/8654485008",
-        "AdChina": "2197607"
       }
-    },
-    "Screen": {
-      "AppKey": {
-        "AdChina": "81323"
-      },
-      "AdType": [
-        "adchina"
-      ],
-      "RestartInterval": 0,
-      "CycleInterval": 8
     }
-  },
-  "server": [
-    "www.bstoneinfo.com"
-  ],
-  "CategorySize": {
-    "51": 82,
-    "52": 10
   }
 }

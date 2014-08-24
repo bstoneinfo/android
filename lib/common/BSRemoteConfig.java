@@ -24,6 +24,9 @@ class BSRemoteConfig extends JSONObject {
     BSRemoteConfig() {
         String configString = null;
         final String localPath = BSApplication.getApplication().getFilesDir() + File.separator + "RemoteConfig.json";
+        if (BSApplication.getApplication().getVersionManager().isUpgrade()) {
+            new File(localPath).delete();
+        }
         if (new File(localPath).exists()) {
             configString = BSUtils.readStringFromFile(localPath);
             BSLog.d("load RemoteConfig.json from file: " + configString);

@@ -11,11 +11,14 @@ import java.util.Observer;
 public class BSNotificationCenter {
 
     public static class BSNotificationEvent {
-        public static final String APP_ENTER_FOREGROUND = "com.bstoneinfo.lib.common.BSNotificationCenter.BSNotificationEvent.APP_ENTER_FOREGROUND";
-        public static final String APP_ENTER_BACKGROUND = "com.bstoneinfo.lib.common.BSNotificationCenter.BSNotificationEvent.APP_ENTER_BACKGROUND";
-        public static final String LOW_MEMORY_WARNING = "com.bstoneinfo.lib.common.BSNotificationCenter.BSNotificationEvent.LOW_MEMORY_WARNING";
-        public static final String REMOTE_CONFIG_DID_CHANGE = "com.bstoneinfo.lib.common.BSNotificationCenter.BSNotificationEvent.REMOTE_CONFIG_DID_CHANGE";
-
+        public static final String APP_ENTER_FOREGROUND = "com.bstoneinfo.lib.common.APP_ENTER_FOREGROUND";
+        public static final String APP_ENTER_BACKGROUND = "com.bstoneinfo.lib.common.APP_ENTER_BACKGROUND";
+        public static final String ACTIVITY_START = "com.bstoneinfo.lib.common.ACTIVITY_START";
+        public static final String ACTIVITY_STOP = "com.bstoneinfo.lib.common.ACTIVITY_STOP";
+        public static final String ACTIVITY_RESUME = "com.bstoneinfo.lib.common.ACTIVITY_RESUME";
+        public static final String ACTIVITY_PAUSE = "com.bstoneinfo.lib.common.ACTIVITY_PAUSE";
+        public static final String LOW_MEMORY_WARNING = "com.bstoneinfo.lib.common.LOW_MEMORY_WARNING";
+        public static final String REMOTE_CONFIG_DID_CHANGE = "com.bstoneinfo.lib.common.REMOTE_CONFIG_DID_CHANGE";
     }
 
     private class BSNotificationObservable extends Observable {

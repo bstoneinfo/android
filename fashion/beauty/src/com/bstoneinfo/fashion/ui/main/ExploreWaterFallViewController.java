@@ -8,7 +8,7 @@ import com.bstoneinfo.lib.ad.BSAnalyses;
 public class ExploreWaterFallViewController extends CategoryWaterFallViewController {
 
     public ExploreWaterFallViewController(Context context, String categoryName) {
-        super(context, categoryName, NotificationEvent.CATEGORY_EXPLORE_FINISHED_ + categoryName);
+        super(context, categoryName, NotificationEvent.CATEGORY_EXPLORE_FINISHED_ + categoryName, "ExploreMain", "ExploreFooter");
     }
 
     @Override

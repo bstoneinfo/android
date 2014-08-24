@@ -48,10 +48,10 @@ public abstract class ImageWaterFallViewController extends BSWaterFallViewContro
         return itemDataList;
     }
 
-    public ImageWaterFallViewController(Context context, String dataEventName) {
+    public ImageWaterFallViewController(Context context, String dataEventName, String footerAdBannerName) {
         super(context, COLUMN_COUNT, BSActivity.dip2px(COLUMN_INTERVAL_DP));
         this.dataEventName = dataEventName;
-        adBanner = new BSAdBannerViewController(getActivity(), "Footer");
+        adBanner = new BSAdBannerViewController(getActivity(), footerAdBannerName);
         adBanner.setVerticalShow(true);
 
         footerView = new LinearLayout(getContext());

@@ -28,7 +28,7 @@ class BSAdScreenAdChina extends BSAdObject {
                 BSLog.d("Adchina - onReceiveFullScreenAd");
                 adFullScreen.showFs();
                 adReceived();
-                BSAnalyses.getInstance().event("AdFull_Result", "AdChina_Received");
+                BSAnalyses.getInstance().event("AdScreen_Received", "AdChina");
             }
 
             @Override
@@ -40,7 +40,7 @@ class BSAdScreenAdChina extends BSAdObject {
             public void onFailedToReceiveFullScreenAd() {
                 BSLog.d("Adchina - onFailedToReceiveFullScreenAd");
                 adFailed();
-                BSAnalyses.getInstance().event("AdFull_Result", "AdChina_Failed");
+                BSAnalyses.getInstance().event("AdScreen_Failed", "AdChina");
             }
 
             @Override
@@ -56,11 +56,11 @@ class BSAdScreenAdChina extends BSAdObject {
             @Override
             public void onClickFullScreenAd() {
                 BSLog.d("Adchina - onClickFullScreenAd");
-                BSAnalyses.getInstance().event("AdFull_Result", "AdChina_Click");
+                BSAnalyses.getInstance().event("AdScreen_Click", "AdChina");
             }
         });
         adFullScreen.start();
-        BSAnalyses.getInstance().event("AdFull_Request", "AdChina");
+        BSAnalyses.getInstance().event("AdScreen_Request", "AdChina");
     }
 
 }

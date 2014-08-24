@@ -19,6 +19,7 @@ public class BSApplication extends Application {
     public static final BSLooperThread fileThread = new BSLooperThread("FileThread");
     public static final BSLooperThread databaseThread = new BSLooperThread("DatabaseThread");
     private BSRemoteConfig mRemoteConfig;
+    private BSVersionManager mVersionManager;
     private boolean bRunningForeground;
 
     public BSApplication() {
@@ -30,8 +31,12 @@ public class BSApplication extends Application {
         return instance;
     }
 
-    public static SharedPreferences getDefaultSharedPreferences() {
-        return instance.getSharedPreferences("default", 0);
+    public SharedPreferences getDefaultSharedPreferences() {
+        return getSharedPreferences(getPackageName(), 0);
+    }
+
+    public BSVersionManager getVersionManager() {
+        return mVersionManager;
     }
 
     public JSONObject getRemoteConfig() {
@@ -64,6 +69,7 @@ public class BSApplication extends Application {
                 bRunningForeground = true;
             }
         });
+        mVersionManager = new BSVersionManager();
         mRemoteConfig = new BSRemoteConfig();
     }
 

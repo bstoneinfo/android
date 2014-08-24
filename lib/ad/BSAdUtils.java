@@ -56,4 +56,8 @@ public class BSAdUtils {
         JSONObject jsonBanner = optJsonObject(getAdBannerConfig(), bannerName);
         return optJsonArray(jsonBanner, "AdType");
     }
+
+    public static int getScreenAdPresentSecond() {
+        return getAdScreenConfig().optInt("ScreenAdPresentSecond", 5);
+    }
 }
