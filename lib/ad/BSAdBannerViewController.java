@@ -4,12 +4,14 @@ import java.util.ArrayList;
 
 import org.json.JSONArray;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.LinearLayout;
 
+import com.bstoneinfo.lib.common.BSUtils;
 import com.bstoneinfo.lib.ui.BSViewController;
 
 public class BSAdBannerViewController extends BSViewController {
@@ -24,12 +26,16 @@ public class BSAdBannerViewController extends BSViewController {
         JSONArray adTypes = BSAdUtils.getAdBannerType(bannerName);
         for (int i = 0; i < adTypes.length(); i++) {
             String type = adTypes.optString(i);
+            Class<? extends BSAdObject> cls = BSAdUtils.bannerAdClassMap.get(type);
+            if (cls == null) {
+                BSUtils.debugAssert("AdBanner Type '" + type + "'" + " not found.");
+                continue;
+            }
             BSAdObject fsObj;
-            if ("Admob".equalsIgnoreCase(type)) {
-                fsObj = new BSAdBannerAdmob(getActivity());
-            } else if ("AdChina".equalsIgnoreCase(type)) {
-                fsObj = new BSAdBannerAdChina(getActivity());
-            } else {
+            try {
+                fsObj = cls.getConstructor(Activity.class).newInstance(getActivity());
+            } catch (Exception e) {
+                BSUtils.debugAssert("AdBanner Type '" + type + "'" + " exception: " + e.getMessage());
                 continue;
             }
             adObjectArray.add(fsObj);

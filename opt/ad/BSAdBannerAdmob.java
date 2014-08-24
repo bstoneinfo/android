@@ -1,7 +1,10 @@
-package com.bstoneinfo.lib.ad;
+package com.bstoneinfo.opt.ad;
 
 import android.app.Activity;
 
+import com.bstoneinfo.lib.ad.BSAdObject;
+import com.bstoneinfo.lib.ad.BSAdUtils;
+import com.bstoneinfo.lib.ad.BSAnalyses;
 import com.bstoneinfo.lib.common.BSLog;
 import com.bstoneinfo.lib.common.BSTimer;
 import com.google.ads.AdView;

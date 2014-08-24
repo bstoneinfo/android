@@ -1,11 +1,16 @@
 package com.bstoneinfo.lib.ad;
 
+import java.util.HashMap;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.bstoneinfo.lib.common.BSApplication;
 
 public class BSAdUtils {
+
+    static final HashMap<String, Class<? extends BSAdObject>> screenAdClassMap = new HashMap<String, Class<? extends BSAdObject>>();
+    static final HashMap<String, Class<? extends BSAdObject>> bannerAdClassMap = new HashMap<String, Class<? extends BSAdObject>>();
 
     public static JSONObject optJsonObject(JSONObject jsonObject, String name) {
         JSONObject jo = jsonObject.optJSONObject(name);
@@ -59,5 +64,13 @@ public class BSAdUtils {
 
     public static int getScreenAdPresentSecond() {
         return getAdScreenConfig().optInt("ScreenAdPresentSecond", 5);
+    }
+
+    public static void registerAdScreen(String adType, Class<? extends BSAdObject> cls) {
+        screenAdClassMap.put(adType.toLowerCase(), cls);
+    }
+
+    public static void registerAdBanner(String adType, Class<? extends BSAdObject> cls) {
+        bannerAdClassMap.put(adType.toLowerCase(), cls);
     }
 }

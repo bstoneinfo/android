@@ -19,7 +19,7 @@ import com.bstoneinfo.lib.ui.BSActivity;
 import com.bstoneinfo.lib.ui.BSTabBarController;
 import com.bstoneinfo.lib.ui.BSViewController;
 
-import custom.Constant;
+import custom.Config;
 import custom.R;
 
 public class MainActivity extends BSActivity {
@@ -33,7 +33,7 @@ public class MainActivity extends BSActivity {
         MainDBHelper.createSingleton(this);
 
         BSViewController mainViewController, viewController1, viewController2;
-        if (Constant.isPro) {
+        if (Config.isPro) {
             viewController1 = new CategoryViewController(this, "51");
             viewController2 = new CategoryViewController(this, "52");
         } else {
@@ -49,7 +49,7 @@ public class MainActivity extends BSActivity {
         childViewControllers.add(favoriteViewController);
         //        childViewControllers.add(settingsViewController);
 
-        if (Constant.isPro) {
+        if (Config.isPro) {
             mainViewController = new BSTabBarController(this, R.layout.maintabbar, childViewControllers, 0) {
                 @Override
                 public boolean back() {

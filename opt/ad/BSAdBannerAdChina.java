@@ -1,10 +1,13 @@
-package com.bstoneinfo.lib.ad;
+package com.bstoneinfo.opt.ad;
 
 import android.app.Activity;
 
 import com.adchina.android.ads.AdManager;
 import com.adchina.android.ads.api.AdBannerListener;
 import com.adchina.android.ads.api.AdView;
+import com.bstoneinfo.lib.ad.BSAdObject;
+import com.bstoneinfo.lib.ad.BSAdUtils;
+import com.bstoneinfo.lib.ad.BSAnalyses;
 
 public class BSAdBannerAdChina extends BSAdObject {
 

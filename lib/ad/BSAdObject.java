@@ -3,7 +3,7 @@ package com.bstoneinfo.lib.ad;
 import android.app.Activity;
 import android.view.View;
 
-abstract class BSAdObject {
+public abstract class BSAdObject {
 
     protected final Activity activity;
     protected final String appKey;
@@ -11,12 +11,12 @@ abstract class BSAdObject {
     private BSAdListener adListener;
     private boolean adReceived;
 
-    BSAdObject(Activity activity, String appKey) {
+    public BSAdObject(Activity activity, String appKey) {
         this.activity = activity;
         this.appKey = appKey;
     }
 
-    abstract void start();
+    public abstract void start();
 
     public void destroy() {
     }

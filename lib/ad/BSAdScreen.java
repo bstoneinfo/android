@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 
 import com.bstoneinfo.lib.common.BSTimer;
+import com.bstoneinfo.lib.common.BSUtils;
 
 public class BSAdScreen {
 
@@ -18,12 +19,20 @@ public class BSAdScreen {
     public BSAdScreen(Activity activity) {
         JSONArray adArray = BSAdUtils.getAdScreenType();
         for (int i = 0; i < adArray.length(); i++) {
-            String name = adArray.optString(i);
-            if ("Admob".equalsIgnoreCase(name)) {
-                adObjectArray.add(new BSAdScreenAdmob(activity));
-            } else if ("AdChina".equalsIgnoreCase(name)) {
-                adObjectArray.add(new BSAdScreenAdChina(activity));
+            String type = adArray.optString(i);
+            Class<? extends BSAdObject> cls = BSAdUtils.bannerAdClassMap.get(type);
+            if (cls == null) {
+                BSUtils.debugAssert("AdBanner Type '" + type + "'" + " not found.");
+                continue;
             }
+            BSAdObject fsObj;
+            try {
+                fsObj = cls.getConstructor(Activity.class).newInstance(activity);
+            } catch (Exception e) {
+                BSUtils.debugAssert("AdBanner Type '" + type + "'" + " exception: " + e.getMessage());
+                continue;
+            }
+            adObjectArray.add(fsObj);
         }
     }
 

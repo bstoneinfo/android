@@ -1,19 +1,22 @@
-package com.bstoneinfo.lib.ad;
+package com.bstoneinfo.opt.ad;
 
 import android.app.Activity;
 
 import com.adchina.android.ads.api.AdFsListener;
 import com.adchina.android.ads.api.AdFullScreen;
+import com.bstoneinfo.lib.ad.BSAdObject;
+import com.bstoneinfo.lib.ad.BSAdUtils;
+import com.bstoneinfo.lib.ad.BSAnalyses;
 import com.bstoneinfo.lib.common.BSLog;
 
-class BSAdScreenAdChina extends BSAdObject {
+public class BSAdScreenAdChina extends BSAdObject {
 
     public BSAdScreenAdChina(Activity activity) {
         super(activity, BSAdUtils.getAdScreenAppKey("AdChina"));
     }
 
     @Override
-    void start() {
+    public void start() {
         BSLog.d("Adchina - fullscreen start");
         final AdFullScreen adFullScreen = new AdFullScreen(activity, appKey);
         adFullScreen.setAdFsListener(new AdFsListener() {
