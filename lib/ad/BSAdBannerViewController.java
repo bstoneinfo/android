@@ -1,6 +1,8 @@
 package com.bstoneinfo.lib.ad;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 import org.json.JSONArray;
 
@@ -11,35 +13,43 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.LinearLayout;
 
+import com.bstoneinfo.lib.common.BSApplication;
+import com.bstoneinfo.lib.common.BSNotificationCenter.BSNotificationEvent;
 import com.bstoneinfo.lib.common.BSUtils;
 import com.bstoneinfo.lib.ui.BSViewController;
 
 public class BSAdBannerViewController extends BSViewController {
 
     private final ArrayList<BSAdObject> adObjectArray = new ArrayList<BSAdObject>();
+    private final String bannerType;
     private int adIndex = -1;
     private boolean bVerticalShow;
 
-    public BSAdBannerViewController(Context context, String bannerName) {
+    public BSAdBannerViewController(Context context, final String bannerType) {
         super(new LinearLayout(context));
         ((LinearLayout) getRootView()).setOrientation(LinearLayout.VERTICAL);
-        JSONArray adTypes = BSAdUtils.getAdBannerType(bannerName);
+        this.bannerType = bannerType;
+        JSONArray adTypes = BSAdUtils.getAdBannerType(bannerType);
         for (int i = 0; i < adTypes.length(); i++) {
-            String type = adTypes.optString(i);
-            Class<? extends BSAdObject> cls = BSAdUtils.bannerAdClassMap.get(type);
-            if (cls == null) {
-                BSUtils.debugAssert("AdBanner Type '" + type + "'" + " not found.");
-                continue;
-            }
-            BSAdObject fsObj;
-            try {
-                fsObj = cls.getConstructor(Activity.class).newInstance(getActivity());
-            } catch (Exception e) {
-                BSUtils.debugAssert("AdBanner Type '" + type + "'" + " exception: " + e.getMessage());
-                continue;
-            }
-            adObjectArray.add(fsObj);
+            String name = adTypes.optString(i);
+            addAdObject(name);
         }
+    }
+
+    private void addAdObject(String name) {
+        Class<? extends BSAdObject> cls = BSAdUtils.bannerAdClassMap.get(name);
+        if (cls == null) {
+            BSUtils.debugAssert("AdBanner '" + name + "'" + " not found.");
+            return;
+        }
+        BSAdObject fsObj;
+        try {
+            fsObj = cls.getConstructor(Activity.class).newInstance(getActivity());
+        } catch (Exception e) {
+            BSUtils.debugAssert("AdBanner '" + name + "'" + " exception: " + e.getMessage());
+            return;
+        }
+        adObjectArray.add(fsObj);
     }
 
     public void setVerticalShow(boolean bVerticalShow) {
@@ -54,6 +64,30 @@ public class BSAdBannerViewController extends BSViewController {
         params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         getRootView().setLayoutParams(params);
         startAd();
+        BSApplication.defaultNotificationCenter.addObserver(this, BSNotificationEvent.REMOTE_CONFIG_DID_CHANGE, new Observer() {
+            @Override
+            public void update(Observable observable, Object data) {
+                if (!adObjectArray.isEmpty()) {
+                    return;
+                }
+                JSONArray adTypes = BSAdUtils.getAdBannerType(bannerType);
+                for (int i = 0; i < adTypes.length(); i++) {
+                    String type = adTypes.optString(i);
+                    Class<? extends BSAdObject> cls = BSAdUtils.bannerAdClassMap.get(type);
+                    boolean bExist = false;
+                    for (BSAdObject adObj : adObjectArray) {
+                        if (adObj.getClass() == cls) {
+                            bExist = true;
+                            break;
+                        }
+                    }
+                    if (!bExist) {
+                        addAdObject(type);
+                    }
+                }
+                startAd();
+            }
+        });
     }
 
     @Override

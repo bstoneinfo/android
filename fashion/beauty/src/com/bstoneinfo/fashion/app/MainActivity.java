@@ -97,9 +97,7 @@ public class MainActivity extends BSActivity {
         }
 
         setMainViewController(mainViewController);
-
         adFullscreen = new BSAdScreen(this);
-        adFullscreen.start();
     }
 
     protected boolean back() {
