@@ -39,7 +39,7 @@
         </meta-data>
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="default" />
+            android:value="MI" />
 
         <activity
             android:name="com.bstoneinfo.fashion.app.MainActivity"

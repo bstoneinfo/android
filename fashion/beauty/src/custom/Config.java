@@ -10,7 +10,7 @@ public class Config {
 
     public static final boolean isPro = false;
 
-    public static final String remoteConfigURL = "http://www.bstoneinfo.com/config/beauty/beauty-2.0.3.json";
+    public static final String remoteConfigURL = "http://www.bstoneinfo.com/config/beauty/beauty-2.0.3-mi.json";
 
     public static void init() {
         BSAdUtils.registerAdBanner("AdChina", BSAdBannerAdChina.class);

@@ -12,8 +12,6 @@
         "AdChina": "81323"
       },
       "AdType": [
-        "adchina",
-        "admob"
       ],
       "ScreenAdPresentSecond": 5,
       "CycleInterval": 5
@@ -32,32 +30,28 @@
       },
       "ExploreFooter": {
         "AdType": [
-          "adchina"
         ]
       },
       "HistroyMain": {
         "AdType": [
-          "adchina"
+          "admob"
         ]
       },
       "HistroyFooter": {
         "AdType": [
-          "admob"
         ]
       },
       "FavoriteMain": {
         "AdType": [
-          "adchina"
+          "admob"
         ]
       },
       "FavoriteFooter": {
         "AdType": [
-          "admob"
         ]
       },
       "PhotoPager": {
         "AdType": [
-          "adchina",
           "admob"
         ]
       }
