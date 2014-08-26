@@ -34,7 +34,6 @@
       },
       "HistroyMain": {
         "AdType": [
-          "admob"
         ]
       },
       "HistroyFooter": {
@@ -43,7 +42,6 @@
       },
       "FavoriteMain": {
         "AdType": [
-          "admob"
         ]
       },
       "FavoriteFooter": {

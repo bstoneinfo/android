@@ -67,4 +67,8 @@
   public protected *;
 }
 
+-keepclasseswithmembers class * extends com.bstoneinfo.lib.ad.BSAdObject{  
+    public <init>(android.app.Activity);  
+} 
+
 -ignorewarning
