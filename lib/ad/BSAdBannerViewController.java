@@ -8,10 +8,12 @@ import org.json.JSONArray;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.bstoneinfo.lib.common.BSApplication;
 import com.bstoneinfo.lib.common.BSNotificationCenter.BSNotificationEvent;
@@ -39,14 +41,20 @@ public class BSAdBannerViewController extends BSViewController {
     private void addAdObject(String name) {
         Class<? extends BSAdObject> cls = BSAdUtils.bannerAdClassMap.get(name);
         if (cls == null) {
-            BSUtils.debugAssert("AdBanner '" + name + "'" + " not found.");
+            String msg = "AdBanner '" + name + "'" + " not found.";
+            Log.e("adBanner", msg);
+            BSUtils.debugAssert(msg);
+            Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
             return;
         }
         BSAdObject fsObj;
         try {
             fsObj = cls.getConstructor(Activity.class).newInstance(getActivity());
         } catch (Exception e) {
-            BSUtils.debugAssert("AdBanner '" + name + "'" + " exception: " + e.getMessage());
+            String msg = "AdBanner '" + name + "'" + " exception: " + e.getMessage() + " " + e.toString();
+            Log.e("adBanner", msg);
+            BSUtils.debugAssert(msg);
+            Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
             return;
         }
         adObjectArray.add(fsObj);
