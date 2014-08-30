@@ -143,10 +143,12 @@ public class BSAdBannerViewController extends BSViewController {
                 }
             });
             adObject.start();
-            if (adObject.getAdView().getParent() == null) {
-                getRootView().addView(adObject.getAdView());
+            if (adObject.getAdView() != null) {
+                if (adObject.getAdView().getParent() == null) {
+                    getRootView().addView(adObject.getAdView());
+                }
+                adObject.getAdView().setVisibility(View.GONE);
             }
-            adObject.getAdView().setVisibility(View.GONE);
         }
     }
 

@@ -63,7 +63,7 @@ public class BSAdUtils {
     }
 
     public static int getScreenAdPresentSecond() {
-        return getAdScreenConfig().optInt("ScreenAdPresentSecond", 5);
+        return getAdScreenConfig().optInt("ScreenAdPresentSecond", 10);
     }
 
     public static void registerAdScreen(String adType, Class<? extends BSAdObject> cls) {

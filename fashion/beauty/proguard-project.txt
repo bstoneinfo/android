@@ -67,6 +67,14 @@
   public protected *;
 }
 
+-keep public class com.google.android.gms.ads.** {
+    public *;
+}
+
+-keep public class com.google.ads.** {
+    public *;
+}
+
 -keepclasseswithmembers class * extends com.bstoneinfo.lib.ad.BSAdObject{  
     public <init>(android.app.Activity);  
 } 

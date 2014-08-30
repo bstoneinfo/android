@@ -59,9 +59,9 @@
 
         <!-- google -->
         <activity
-            android:name="com.google.ads.AdActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenLayout|screenSize|smallestScreenSize" />
-￼
+            android:name="com.google.android.gms.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
+
         <!-- adchina -->
         <activity
             android:name="com.adchina.android.ads.views.AdBrowserView"

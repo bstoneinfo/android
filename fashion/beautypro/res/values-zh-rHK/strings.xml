@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">美女寫真相冊</string>
+    <string name="ok">確定</string>
+    <string name="cancel">取消</string>
+    <string name="confirm_exit">確認退出寫真相冊嗎？</string>
+    <string name="tab_explore">發現</string>
+    <string name="tab_history">足跡</string>
+    <string name="tab_favorite">最愛</string>
+    <string name="tab_settings">設定</string>
+    <string name="loadmore">加載更多</string>
+    <string name="tab_51">清純</string>
+    <string name="tab_52">女神</string>
+    <string name="histroy_empty_tip">您還沒有歷史足跡喲！\n\n再次啟動時，您曾經瀏覽的圖片將會顯示在這裡哦！</string>
+    <string name="favorite_empty_tip">您還沒有收藏圖片喲！ \n\n瀏覽大圖時，點擊{heart}就把您喜歡的圖片收藏在這裡哦！</string>
+
+</resources>

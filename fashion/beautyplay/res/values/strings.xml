@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">东方美女图库</string>
-    <string name="ok">好的</string>
-    <string name="cancel">取消</string>
-    <string name="confirm_exit">确认退出“东方美女图库”吗?</string>
-    <string name="tab_explore">发现</string>
-    <string name="tab_history">足迹</string>
-    <string name="tab_favorite">收藏</string>
-    <string name="tab_settings">设置</string>
-    <string name="loadmore">加载更多</string>
-    <string name="tab_51">清纯</string>
-    <string name="tab_52">女神</string>
-    <string name="histroy_empty_tip">您还没有历史足迹哟！\n\n再次启动时，您本次浏览的图片将会显示在这里哦！</string>
-    <string name="favorite_empty_tip">您还没有收藏图片哟！\n\n浏览大图时，点击{heart}就把您喜欢的图片收藏在这里哦！</string>
+    <string name="app_name">Oriental Beauty Gallery</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm_exit">Are you sure to exit Beauty Gallery?</string>
+    <string name="tab_explore">Explore</string>
+    <string name="tab_history">Histroy</string>
+    <string name="tab_favorite">Favorite</string>
+    <string name="tab_settings">Settings</string>
+    <string name="loadmore">Load More…</string>
+    <string name="tab_51">Pure</string>
+    <string name="tab_52">Flirty</string>
+    <string name="histroy_empty_tip">Oops, You have no historical browse page.\n\nNext time, the pictures you browsed previously will appear here.</string>
+    <string name="favorite_empty_tip">Oops, You have no favorite pictures!\n\nClick{heart} at the bottom of a large picture, and you\'ll view your favorite picture here.</string>
 
 </resources>

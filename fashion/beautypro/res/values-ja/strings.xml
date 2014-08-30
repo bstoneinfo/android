@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">セクシーな女性のフォトアルバム</string>
+    <string name="ok">OK</string>
+    <string name="cancel">キャンセル</string>
+    <string name="confirm_exit">いったん終了してもよろしいです?</string>
+    <string name="tab_explore">ディスカバリー</string>
+    <string name="tab_history">フットプリントをブラウズ</string>
+    <string name="tab_favorite">お気に入り</string>
+    <string name="tab_settings">設定</string>
+    <string name="loadmore">多くの…</string>
+    <string name="tab_51">純粋な女の子</string>
+    <string name="tab_52">セクシーな女神</string>
+    <string name="histroy_empty_tip">あなたがページを既往がない.\n\n次回の実行, 以前に閲覧した写真がここに表示されます.</string>
+    <string name="favorite_empty_tip">おっと！ あなたは、お気に入りの写真を持っていない\n\n 大きい画像の下部にある{heart}をクリックし、 , あなたがここにあなたのお気に入りの写真を表示します.</string>
+</resources>

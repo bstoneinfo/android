@@ -24,6 +24,7 @@ public class BSAdBannerGoogle extends BSAdObject {
         if (adView != null) {
             return;
         }
+
         adView = new AdView(activity);
         ((AdView) adView).setAdUnitId(appKey);
         ((AdView) adView).setAdSize(AdSize.BANNER);
@@ -41,12 +42,12 @@ public class BSAdBannerGoogle extends BSAdObject {
                 if (nextLoadTimer != null) {
                     nextLoadTimer.cancel();
                 }
-                //                nextLoadTimer = BSTimer.asyncRun(new Runnable() {
-                //                    @Override
-                //                    public void run() {
-                //                        ((AdView) adView).loadAd(new AdRequest.Builder().build());
-                //                    }
-                //                }, 5000);
+                nextLoadTimer = BSTimer.asyncRun(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((AdView) adView).loadAd(new AdRequest.Builder().build());
+                    }
+                }, 5000);
             }
 
             @Override
