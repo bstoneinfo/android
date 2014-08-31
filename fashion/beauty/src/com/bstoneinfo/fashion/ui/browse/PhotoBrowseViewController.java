@@ -102,16 +102,18 @@ public abstract class PhotoBrowseViewController extends BSViewController {
                 ArrayList<CategoryItemData> dataList = (ArrayList<CategoryItemData>) data;
                 if (dataList == null) {
                     bLoadmoreFailed = true;
-                    lastCell.refreshView.setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            bLoadmoreFailed = false;
-                            loadMore();
-                            if (lastCell != null) {
-                                lastCell.loadContent(adapter.getData(loadmorePosition));
+                    if (lastCell != null) {
+                        lastCell.refreshView.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                bLoadmoreFailed = false;
+                                loadMore();
+                                if (lastCell != null) {
+                                    lastCell.loadContent(adapter.getData(loadmorePosition));
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 } else {
                     bLoadmoreFailed = false;
                     if (dataList.isEmpty()) {

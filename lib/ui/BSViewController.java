@@ -145,7 +145,7 @@ public class BSViewController {
     protected void destroy() {
         viewStatus = ViewStatus.Released;
         BSApplication.defaultNotificationCenter.removeObservers(this);
-        if (notificationCenter != null) {
+        if (notificationCenter != null && notificationCenter != BSApplication.defaultNotificationCenter) {
             notificationCenter.removeObservers(this);
         }
 
