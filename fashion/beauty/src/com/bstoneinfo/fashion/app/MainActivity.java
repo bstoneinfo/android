@@ -1,6 +1,7 @@
 package com.bstoneinfo.fashion.app;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -50,7 +51,7 @@ public class MainActivity extends BSActivity {
         //        childViewControllers.add(settingsViewController);
 
         if (Config.isPro) {
-            mainViewController = new BSTabBarController(this, R.layout.maintabbar, childViewControllers, 1) {
+            mainViewController = new BSTabBarController(this, R.layout.maintabbar, childViewControllers, 0) {
                 @Override
                 public boolean back() {
                     if (super.back()) {
@@ -98,6 +99,8 @@ public class MainActivity extends BSActivity {
 
         setMainViewController(mainViewController);
         adFullscreen = new BSAdScreen(this);
+
+        BSAnalyses.getInstance().event("language", Locale.getDefault().getLanguage() + "-" + Locale.getDefault().getCountry());
     }
 
     protected boolean back() {

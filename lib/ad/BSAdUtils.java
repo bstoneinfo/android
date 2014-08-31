@@ -83,7 +83,7 @@ public class BSAdUtils {
         if (languageArray.length() > 0) {
             int index = 0;
             while (index < languageArray.length()) {
-                if (TextUtils.equals(Locale.getDefault().getLanguage(), adType)) {
+                if (TextUtils.equals(Locale.getDefault().getLanguage(), languageArray.optString(index))) {
                     break;
                 }
                 index++;

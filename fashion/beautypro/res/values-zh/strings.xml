@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">美眉美女写真图库
-</string>
+    <string name="app_name">美眉美女写真图库</string>
     <string name="ok">好的</string>
     <string name="cancel">取消</string>
     <string name="confirm_exit">确认要退出吗?</string>

@@ -32,6 +32,13 @@
         ]
       },
       "ExploreFooter": {
+        "Filter": {
+          "adchina": {
+            "language": [
+              "zh"
+            ]
+          }
+        },
         "AdType": [
           "adchina"
         ]
@@ -42,6 +49,13 @@
         ]
       },
       "HistroyFooter": {
+        "Filter": {
+          "adchina": {
+            "language": [
+              "zh"
+            ]
+          }
+        },
         "AdType": [
           "adchina"
         ]
@@ -52,6 +66,13 @@
         ]
       },
       "FavoriteFooter": {
+        "Filter": {
+          "adchina": {
+            "language": [
+              "zh"
+            ]
+          }
+        },
         "AdType": [
           "adchina"
         ]
