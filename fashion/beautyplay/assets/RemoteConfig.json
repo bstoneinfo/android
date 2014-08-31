@@ -1,6 +1,15 @@
 {
   "server": [
-    "www.bstoneinfo.com"
+    "b0.bstoneinfo.com",
+    "b1.bstoneinfo.com",
+    "b2.bstoneinfo.com",
+    "b3.bstoneinfo.com",
+    "b4.bstoneinfo.com",
+    "b5.bstoneinfo.com",
+    "b6.bstoneinfo.com",
+    "b7.bstoneinfo.com",
+    "b8.bstoneinfo.com",
+    "b9.bstoneinfo.com"
   ],
   "CategorySize": {
     "51": 82,
