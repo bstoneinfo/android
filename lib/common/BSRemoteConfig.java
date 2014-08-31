@@ -33,7 +33,7 @@ class BSRemoteConfig extends JSONObject {
         } else {
             try {
                 AssetManager assetManager = BSApplication.getApplication().getAssets();
-                InputStream input = assetManager.open("BSRemoteConfig.json");
+                InputStream input = assetManager.open("RemoteConfig.json");
                 if (input != null) {
                     configString = BSUtils.readStringFromInput(input);
                     BSLog.d("load RemoteConfig.json from assets: " + configString);
