@@ -1,11 +1,15 @@
 package com.bstoneinfo.lib.ad;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.text.TextUtils;
+
 import com.bstoneinfo.lib.common.BSApplication;
+import com.bstoneinfo.lib.common.BSLog;
 
 public class BSAdUtils {
 
@@ -60,6 +64,36 @@ public class BSAdUtils {
     public static JSONArray getAdBannerType(String bannerName) {
         JSONObject jsonBanner = optJsonObject(getAdBannerConfig(), bannerName);
         return optJsonArray(jsonBanner, "AdType");
+    }
+
+    public static boolean checkAdScreenFilter(String adType) {
+        JSONObject jsonFilter = optJsonObject(getAdScreenConfig(), "Filter");
+        return checkAdFilter(jsonFilter, "adScreen", adType);
+    }
+
+    public static boolean checkAdBannerFilter(String bannerName, String adType) {
+        JSONObject jsonBanner = optJsonObject(getAdBannerConfig(), bannerName);
+        JSONObject jsonFilter = optJsonObject(jsonBanner, "Filter");
+        return checkAdFilter(jsonFilter, "adBanner", adType);
+    }
+
+    private static boolean checkAdFilter(JSONObject jsonFilter, String unitName, String adType) {
+        JSONObject jsonAd = optJsonObject(jsonFilter, adType);
+        JSONArray languageArray = optJsonArray(jsonAd, "language");
+        if (languageArray.length() > 0) {
+            int index = 0;
+            while (index < languageArray.length()) {
+                if (TextUtils.equals(Locale.getDefault().getLanguage(), adType)) {
+                    break;
+                }
+                index++;
+            }
+            if (index == languageArray.length()) {
+                BSLog.e(unitName, adType + " not in language filter " + languageArray.toString());
+                return false;
+            }
+        }
+        return true;
     }
 
     public static int getScreenAdPresentSecond() {

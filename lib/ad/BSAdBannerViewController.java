@@ -47,6 +47,10 @@ public class BSAdBannerViewController extends BSViewController {
             Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
             return;
         }
+        //检查filter
+        if (!BSAdUtils.checkAdBannerFilter(bannerType, name)) {
+            return;
+        }
         BSAdObject fsObj;
         try {
             fsObj = cls.getConstructor(Activity.class).newInstance(getActivity());

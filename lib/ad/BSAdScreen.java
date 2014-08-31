@@ -59,6 +59,10 @@ public class BSAdScreen {
             Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
             return;
         }
+        //检查filter
+        if (!BSAdUtils.checkAdScreenFilter(type)) {
+            return;
+        }
         BSAdObject fsObj;
         try {
             fsObj = cls.getConstructor(Activity.class).newInstance(activity);
