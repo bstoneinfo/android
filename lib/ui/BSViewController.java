@@ -501,8 +501,8 @@ public class BSViewController {
             BSUtils.debugAssert("Current presentPanel (" + presentingViewController.toString() + ") has not dismissed, can not present new.");
             return;
         }
-        BSViewController presentTo = getActivity().presentViewControllers.isEmpty() ? getActivity().getMainViewController() : getActivity().presentViewControllers
-                .get(getActivity().presentViewControllers.size() - 1);
+        BSViewController presentTo = getActivity().presentFrames.isEmpty() ? getActivity().getMainViewController() : getActivity().presentFrames
+                .get(getActivity().presentFrames.size() - 1);
         presentingViewController = modalViewController;
         presentingViewController.presentAnimationType = animationType;
         presentingViewController.parentViewController = getActivity().getMainViewController();
@@ -561,8 +561,8 @@ public class BSViewController {
             animation.setInterpolator(new AccelerateDecelerateInterpolator());
             animation.setDuration(400);
         }
-        BSViewController panelPresentTo = getActivity().presentViewControllers.size() >= 2 ? getActivity().presentViewControllers
-                .get(getActivity().presentViewControllers.size() - 2) : getActivity().getMainViewController();
+        BSViewController panelPresentTo = getActivity().presentFrames.size() >= 2 ? getActivity().presentFrames
+                .get(getActivity().presentFrames.size() - 2) : getActivity().getMainViewController();
         presentingViewController.hideViewController(panelPresentTo, animation, endCallback);
         if (animation != null) {
             presentingViewController.rootView.startAnimation(animation);

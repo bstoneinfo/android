@@ -140,6 +140,10 @@ public class BSFrame {
         }
     }
 
+    public boolean back() {
+        return false;
+    }
+
     public void destroy() {
         frameStatus = FrameStatus.DISTROY;
         onDestroy();
@@ -172,6 +176,15 @@ public class BSFrame {
 
     public void dismiss() {
         destroy();
+    }
+
+    public void addChild(BSFrame childFrame) {
+        childFrames.add(childFrame);
+        childFrame.load();
+    }
+
+    public void removeChild(BSFrame childFrame) {
+
     }
 
     public void addObserver(String event, Observer observer) {

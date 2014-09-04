@@ -18,23 +18,20 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.bstoneinfo.lib.ad.BSAnalyses;
 import com.bstoneinfo.lib.common.BSApplication;
 import com.bstoneinfo.lib.common.BSObserverCenter.BSObserverEvent;
 import com.bstoneinfo.lib.common.BSUtils;
+import com.bstoneinfo.lib.frame.BSFrame;
 
 import custom.R;
 
 public abstract class BSActivity extends Activity {
 
-    private BSViewController mainViewController;
     private static DisplayMetrics displayMetrics;
     private ArrayList<Dialog> autoDestroyDialogs = new ArrayList<Dialog>();
-    final ArrayList<BSViewController> presentViewControllers = new ArrayList<BSViewController>();
-    ViewGroup mainView;
+    private BSFrame mainFrame;
 
     public static DisplayMetrics getDisplayMetrics() {
         return displayMetrics;
@@ -48,21 +45,11 @@ public abstract class BSActivity extends Activity {
         return (int) (pxValue / displayMetrics.density + 0.5f);
     }
 
-    public BSViewController getMainViewController() {
-        return mainViewController;
-    }
-
-    public void setMainViewController(BSViewController viewController) {
-        mainViewController = viewController;
-        mainView.addView(mainViewController.getRootView());
-        mainViewController.viewDidLoad();
-        mainViewController.viewWillAppear();
-        mainViewController.asyncRun(new Runnable() {
-            @Override
-            public void run() {
-                mainViewController.viewDidAppear();
-            }
-        });
+    public void setMainFrame(BSFrame frame) {
+        mainFrame = frame;
+        setContentView(mainFrame.getRootView());
+        mainFrame.load();
+        mainFrame.show();
     }
 
     private void initDisplayMetrics() {
@@ -75,8 +62,6 @@ public abstract class BSActivity extends Activity {
         super.onCreate(savedInstanceState);
         initDisplayMetrics();
         BSAnalyses.getInstance().init(this);
-        mainView = new FrameLayout(this);
-        setContentView(mainView);
 
         BSApplication.defaultNotificationCenter.addObserver(this, BSObserverEvent.REMOTE_CONFIG_DID_CHANGE, new Observer() {
             @Override
@@ -97,27 +82,25 @@ public abstract class BSActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        BSApplication.defaultNotificationCenter.notifyOnMainThread(BSObserverEvent.ACTIVITY_START);
-        BSApplication.defaultNotificationCenter.notifyOnMainThread(BSObserverEvent.APP_ENTER_FOREGROUND);
+        BSApplication.defaultNotificationCenter.notifyOnMainThread(BSObserverEvent.ACTIVITY_START, this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        BSApplication.defaultNotificationCenter.notifyOnMainThread(BSObserverEvent.ACTIVITY_RESUME);
+        BSApplication.defaultNotificationCenter.notifyOnMainThread(BSObserverEvent.ACTIVITY_RESUME, this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        BSApplication.defaultNotificationCenter.notifyOnMainThread(BSObserverEvent.ACTIVITY_PAUSE);
+        BSApplication.defaultNotificationCenter.notifyOnMainThread(BSObserverEvent.ACTIVITY_PAUSE, this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        BSApplication.defaultNotificationCenter.notifyOnMainThread(BSObserverEvent.APP_ENTER_BACKGROUND);
-        BSApplication.defaultNotificationCenter.notifyOnMainThread(BSObserverEvent.ACTIVITY_STOP);
+        BSApplication.defaultNotificationCenter.notifyOnMainThread(BSObserverEvent.ACTIVITY_STOP, this);
         if (isFinishing()) {// 关闭附属于本Activity的Dialog
             autoDestroyDialogs();
         }
@@ -125,8 +108,8 @@ public abstract class BSActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        if (mainViewController != null) {
-            mainViewController.destroy();
+        if (mainFrame != null) {
+            mainFrame.destroy();
         }
         BSApplication.defaultNotificationCenter.removeObservers(this);
         super.onDestroy();
@@ -134,12 +117,7 @@ public abstract class BSActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        if (!presentViewControllers.isEmpty()) {
-            BSViewController presentViewController = presentViewControllers.get(presentViewControllers.size() - 1);
-            if (!presentViewController.back()) {
-                presentViewController.dismiss();
-            }
-        } else if (mainViewController == null || !mainViewController.back()) {
+        if (mainFrame == null || !mainFrame.back()) {
             super.onBackPressed();
         }
     }
@@ -147,16 +125,6 @@ public abstract class BSActivity extends Activity {
     @Override
     final public void finish() {
         super.finish();
-    }
-
-    void addPresentViewController(BSViewController presentViewController) {
-        mainView.addView(presentViewController.getRootView());
-        presentViewControllers.add(presentViewController);
-    }
-
-    void removePresentViewController(BSViewController presentViewController) {
-        mainView.removeView(presentViewController.getRootView());
-        presentViewControllers.remove(presentViewController);
     }
 
     public void autoDestroyDialogs() {

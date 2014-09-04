@@ -7,10 +7,10 @@ import android.graphics.Typeface;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bstoneinfo.lib.common.BSLog;
 import com.bstoneinfo.lib.view.BSPagerSlidingTabView;
 
 import custom.R;
@@ -29,11 +29,12 @@ public class BSPagerBarViewController extends BSViewController {
         getChildViewControllers().addAll(childViewControllers);
         this.titles = titles;
         tabPagers = (ViewPager) getRootView().findViewById(R.id.bs_tab_pagers);
-        tabPagers.setOffscreenPageLimit(2);
+        tabPagers.setOffscreenPageLimit(1);
         pagerSlidingTabStrip = (BSPagerSlidingTabView) getRootView().findViewById(R.id.bs_pagerSlidingTabStrip);
         pagerSlidingTabStrip.setOnPageChangeListener(new OnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
+                BSLog.d("BSPagerAdapter", "cur=" + tabPagers.getCurrentItem() + " sel=" + position);
                 getChildViewControllers().get(position)
                         .showViewController(currentSelectedPosition >= 0 ? getChildViewControllers().get(currentSelectedPosition) : null, null, null);
                 if (onPageChangeListener != null) {
@@ -113,7 +114,6 @@ public class BSPagerBarViewController extends BSViewController {
 
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
-            Log.d("BSPagerAdapter", "instantiateItem position=" + position);
             BSViewController viewController = getChildViewControllers().get(position);
             View rootView = viewController.getRootView();
             if (rootView.getParent() == null) {

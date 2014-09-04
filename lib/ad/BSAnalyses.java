@@ -16,7 +16,8 @@ import com.umeng.analytics.MobclickAgent;
 public class BSAnalyses {
 
     private static BSAnalyses instance = new BSAnalyses();
-    private Context context;
+
+    //    private Context context;
 
     public static BSAnalyses getInstance() {
         return instance;

@@ -5,24 +5,24 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.widget.LinearLayout;
 
+import com.bstoneinfo.lib.frame.BSFrame;
 import com.bstoneinfo.lib.ui.BSPagerBarViewController;
 import com.bstoneinfo.lib.ui.BSViewController;
 
 import custom.R;
 
-public class CategoryViewController extends BSViewController {
+public class CategoryFrame extends BSFrame {
 
     protected final String categoryName;
 
-    public CategoryViewController(Context context, String categoryName) {
-        super(new LinearLayout(context));
+    public CategoryFrame(Context _context, String _categoryName) {
+        super(new LinearLayout(_context));
         ((LinearLayout) getRootView()).setOrientation(LinearLayout.VERTICAL);
-        this.categoryName = categoryName;
+        categoryName = _categoryName;
     }
 
     @Override
-    protected void viewDidLoad() {
-        super.viewDidLoad();
+    protected void onLoad() {
         ArrayList<String> titles = new ArrayList<String>();
         titles.add(getContext().getString(R.string.tab_explore));
         titles.add(getContext().getString(R.string.tab_history));
