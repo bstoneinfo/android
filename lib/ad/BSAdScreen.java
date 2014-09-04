@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.bstoneinfo.lib.common.BSApplication;
 import com.bstoneinfo.lib.common.BSLog;
-import com.bstoneinfo.lib.common.BSNotificationCenter.BSNotificationEvent;
+import com.bstoneinfo.lib.common.BSObserverCenter.BSObserverEvent;
 import com.bstoneinfo.lib.common.BSTimer;
 import com.bstoneinfo.lib.common.BSUtils;
 
@@ -30,7 +30,7 @@ public class BSAdScreen {
             addAdObject(type, activity);
         }
         start();
-        BSApplication.defaultNotificationCenter.addObserver(this, BSNotificationEvent.REMOTE_CONFIG_DID_CHANGE, new Observer() {
+        BSApplication.defaultNotificationCenter.addObserver(this, BSObserverEvent.REMOTE_CONFIG_DID_CHANGE, new Observer() {
             @Override
             public void update(Observable observable, Object data) {
                 BSLog.d("adScreen", "REMOTE_CONFIG_DID_CHANGE");

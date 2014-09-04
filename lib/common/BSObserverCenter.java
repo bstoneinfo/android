@@ -8,9 +8,9 @@ import java.util.Map.Entry;
 import java.util.Observable;
 import java.util.Observer;
 
-public class BSNotificationCenter {
+public class BSObserverCenter {
 
-    public static class BSNotificationEvent {
+    public static class BSObserverEvent {
         public static final String APP_ENTER_FOREGROUND = "com.bstoneinfo.lib.common.APP_ENTER_FOREGROUND";
         public static final String APP_ENTER_BACKGROUND = "com.bstoneinfo.lib.common.APP_ENTER_BACKGROUND";
         public static final String ACTIVITY_START = "com.bstoneinfo.lib.common.ACTIVITY_START";
@@ -21,7 +21,7 @@ public class BSNotificationCenter {
         public static final String REMOTE_CONFIG_DID_CHANGE = "com.bstoneinfo.lib.common.REMOTE_CONFIG_DID_CHANGE";
     }
 
-    private class BSNotificationObservable extends Observable {
+    private class BSObservable extends Observable {
         @Override
         public void notifyObservers(Object data) {
             setChanged();
@@ -29,7 +29,7 @@ public class BSNotificationCenter {
         }
     }
 
-    private final HashMap<String, BSNotificationObservable> mapEventObservable = new HashMap<String, BSNotificationObservable>();
+    private final HashMap<String, BSObservable> mapEventObservable = new HashMap<String, BSObservable>();
     private final HashMap<Object, ArrayList<Observer>> mapOwnerObservers = new HashMap<Object, ArrayList<Observer>>();
 
     public void addObserver(Object owner, String event, Observer observer) {
@@ -39,11 +39,11 @@ public class BSNotificationCenter {
 
         BSUtils.debugAssert(!(owner instanceof Observer), "owner can't be a Observer instance.");
 
-        BSNotificationObservable observable;
+        BSObservable observable;
         synchronized (mapEventObservable) {
             observable = mapEventObservable.get(event);
             if (observable == null) {
-                observable = new BSNotificationObservable();
+                observable = new BSObservable();
                 mapEventObservable.put(event, observable);
             }
         }
@@ -62,10 +62,10 @@ public class BSNotificationCenter {
 
     public void removeObserver(Observer observer) {
         synchronized (mapEventObservable) {
-            Iterator<HashMap.Entry<String, BSNotificationObservable>> it = mapEventObservable.entrySet().iterator();
+            Iterator<HashMap.Entry<String, BSObservable>> it = mapEventObservable.entrySet().iterator();
             while (it.hasNext()) {
-                Map.Entry<String, BSNotificationObservable> entry = it.next();
-                BSNotificationObservable observable = entry.getValue();
+                Map.Entry<String, BSObservable> entry = it.next();
+                BSObservable observable = entry.getValue();
                 observable.deleteObserver(observer);
                 if (observable.countObservers() == 0) {
                     it.remove();
@@ -88,7 +88,7 @@ public class BSNotificationCenter {
     public void removeObservers(Object owner, String event) {
         BSUtils.debugAssert(!(owner instanceof Observer), "owner can't be a Observer instance.");
         synchronized (mapEventObservable) {
-            BSNotificationObservable eventObservable = mapEventObservable.get(event);
+            BSObservable eventObservable = mapEventObservable.get(event);
             if (eventObservable == null) {
                 return;
             }
@@ -124,10 +124,10 @@ public class BSNotificationCenter {
         }
         if (observersToDelete != null) {
             synchronized (mapEventObservable) {
-                Iterator<Entry<String, BSNotificationObservable>> it = mapEventObservable.entrySet().iterator();
+                Iterator<Entry<String, BSObservable>> it = mapEventObservable.entrySet().iterator();
                 while (it.hasNext()) {
-                    Entry<String, BSNotificationObservable> entry = it.next();
-                    BSNotificationObservable observable = entry.getValue();
+                    Entry<String, BSObservable> entry = it.next();
+                    BSObservable observable = entry.getValue();
                     for (Observer observer : observersToDelete) {
                         observable.deleteObserver(observer);
                     }
@@ -140,13 +140,13 @@ public class BSNotificationCenter {
         }
     }
 
-    public void notifyOnUIThread(String event) {
-        notifyOnUIThread(event, null);
+    public void notifyOnMainThread(String event) {
+        notifyOnMainThread(event, null);
     }
 
-    public void notifyOnUIThread(String event, final Object data) {
+    public void notifyOnMainThread(String event, final Object data) {
         BSLog.d(event + " " + data);
-        final BSNotificationObservable observable;
+        final BSObservable observable;
         synchronized (mapEventObservable) {
             observable = mapEventObservable.get(event);
         }

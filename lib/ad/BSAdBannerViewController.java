@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bstoneinfo.lib.common.BSApplication;
-import com.bstoneinfo.lib.common.BSNotificationCenter.BSNotificationEvent;
+import com.bstoneinfo.lib.common.BSObserverCenter.BSObserverEvent;
 import com.bstoneinfo.lib.common.BSUtils;
 import com.bstoneinfo.lib.ui.BSViewController;
 
@@ -76,7 +76,7 @@ public class BSAdBannerViewController extends BSViewController {
         params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         getRootView().setLayoutParams(params);
         startAd();
-        BSApplication.defaultNotificationCenter.addObserver(this, BSNotificationEvent.REMOTE_CONFIG_DID_CHANGE, new Observer() {
+        BSApplication.defaultNotificationCenter.addObserver(this, BSObserverEvent.REMOTE_CONFIG_DID_CHANGE, new Observer() {
             @Override
             public void update(Observable observable, Object data) {
                 if (!adObjectArray.isEmpty()) {

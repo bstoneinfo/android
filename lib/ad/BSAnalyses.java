@@ -9,7 +9,7 @@ import android.text.TextUtils;
 
 import com.bstoneinfo.lib.common.BSApplication;
 import com.bstoneinfo.lib.common.BSLog;
-import com.bstoneinfo.lib.common.BSNotificationCenter.BSNotificationEvent;
+import com.bstoneinfo.lib.common.BSObserverCenter.BSObserverEvent;
 import com.bstoneinfo.lib.common.BSUtils;
 import com.umeng.analytics.MobclickAgent;
 
@@ -23,14 +23,14 @@ public class BSAnalyses {
     }
 
     private BSAnalyses() {
-        BSApplication.defaultNotificationCenter.addObserver(this, BSNotificationEvent.ACTIVITY_RESUME, new Observer() {
+        BSApplication.defaultNotificationCenter.addObserver(this, BSObserverEvent.ACTIVITY_RESUME, new Observer() {
             @Override
             public void update(Observable observable, Object data) {
                 MobclickAgent.onResume(context);
                 //        StatService.onResume(context);
             }
         });
-        BSApplication.defaultNotificationCenter.addObserver(this, BSNotificationEvent.ACTIVITY_PAUSE, new Observer() {
+        BSApplication.defaultNotificationCenter.addObserver(this, BSObserverEvent.ACTIVITY_PAUSE, new Observer() {
             @Override
             public void update(Observable observable, Object data) {
                 MobclickAgent.onPause(context);

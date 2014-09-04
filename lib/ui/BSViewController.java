@@ -19,7 +19,7 @@ import android.widget.FrameLayout;
 
 import com.bstoneinfo.lib.common.BSAnimation;
 import com.bstoneinfo.lib.common.BSApplication;
-import com.bstoneinfo.lib.common.BSNotificationCenter;
+import com.bstoneinfo.lib.common.BSObserverCenter;
 import com.bstoneinfo.lib.common.BSTimer;
 import com.bstoneinfo.lib.common.BSUtils;
 
@@ -60,7 +60,7 @@ public class BSViewController {
     boolean overTopBar = false;
     private BSViewController presentingViewController, presentedViewController;
     private AnimationType presentAnimationType;
-    private BSNotificationCenter notificationCenter = BSApplication.defaultNotificationCenter;
+    private BSObserverCenter notificationCenter = BSApplication.defaultNotificationCenter;
     private final ArrayList<BSTimer> asyncRunArrayList = new ArrayList<BSTimer>();
     private final ArrayList<BSAnimation> animationList = new ArrayList<BSAnimation>();
 
@@ -569,7 +569,7 @@ public class BSViewController {
         }
     }
 
-    public void setNotificationCenter(BSNotificationCenter notificationCenter) {
+    public void setNotificationCenter(BSObserverCenter notificationCenter) {
         this.notificationCenter = notificationCenter;
     }
 
@@ -599,13 +599,13 @@ public class BSViewController {
 
     public void notifyNotificationCenterOnUIThread(String event) {
         if (notificationCenter != null) {
-            notificationCenter.notifyOnUIThread(event);
+            notificationCenter.notifyOnMainThread(event);
         }
     }
 
     public void notifyNotificationCenterOnUIThread(String event, final Object data) {
         if (notificationCenter != null) {
-            notificationCenter.notifyOnUIThread(event, data);
+            notificationCenter.notifyOnMainThread(event, data);
         }
     }
 

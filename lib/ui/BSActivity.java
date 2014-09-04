@@ -23,7 +23,7 @@ import android.widget.FrameLayout;
 
 import com.bstoneinfo.lib.ad.BSAnalyses;
 import com.bstoneinfo.lib.common.BSApplication;
-import com.bstoneinfo.lib.common.BSNotificationCenter.BSNotificationEvent;
+import com.bstoneinfo.lib.common.BSObserverCenter.BSObserverEvent;
 import com.bstoneinfo.lib.common.BSUtils;
 
 import custom.R;
@@ -78,7 +78,7 @@ public abstract class BSActivity extends Activity {
         mainView = new FrameLayout(this);
         setContentView(mainView);
 
-        BSApplication.defaultNotificationCenter.addObserver(this, BSNotificationEvent.REMOTE_CONFIG_DID_CHANGE, new Observer() {
+        BSApplication.defaultNotificationCenter.addObserver(this, BSObserverEvent.REMOTE_CONFIG_DID_CHANGE, new Observer() {
             @Override
             public void update(Observable observable, Object data) {
                 checkUpgrade();
@@ -97,27 +97,27 @@ public abstract class BSActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        BSApplication.defaultNotificationCenter.notifyOnUIThread(BSNotificationEvent.ACTIVITY_START);
-        BSApplication.defaultNotificationCenter.notifyOnUIThread(BSNotificationEvent.APP_ENTER_FOREGROUND);
+        BSApplication.defaultNotificationCenter.notifyOnMainThread(BSObserverEvent.ACTIVITY_START);
+        BSApplication.defaultNotificationCenter.notifyOnMainThread(BSObserverEvent.APP_ENTER_FOREGROUND);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        BSApplication.defaultNotificationCenter.notifyOnUIThread(BSNotificationEvent.ACTIVITY_RESUME);
+        BSApplication.defaultNotificationCenter.notifyOnMainThread(BSObserverEvent.ACTIVITY_RESUME);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        BSApplication.defaultNotificationCenter.notifyOnUIThread(BSNotificationEvent.ACTIVITY_PAUSE);
+        BSApplication.defaultNotificationCenter.notifyOnMainThread(BSObserverEvent.ACTIVITY_PAUSE);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        BSApplication.defaultNotificationCenter.notifyOnUIThread(BSNotificationEvent.APP_ENTER_BACKGROUND);
-        BSApplication.defaultNotificationCenter.notifyOnUIThread(BSNotificationEvent.ACTIVITY_STOP);
+        BSApplication.defaultNotificationCenter.notifyOnMainThread(BSObserverEvent.APP_ENTER_BACKGROUND);
+        BSApplication.defaultNotificationCenter.notifyOnMainThread(BSObserverEvent.ACTIVITY_STOP);
         if (isFinishing()) {// 关闭附属于本Activity的Dialog
             autoDestroyDialogs();
         }

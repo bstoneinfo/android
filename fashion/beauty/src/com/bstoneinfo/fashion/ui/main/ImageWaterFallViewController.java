@@ -16,7 +16,7 @@ import com.bstoneinfo.fashion.ui.browse.PhotoBrowseViewController;
 import com.bstoneinfo.lib.ad.BSAdBannerViewController;
 import com.bstoneinfo.lib.common.BSApplication;
 import com.bstoneinfo.lib.common.BSImageLoader.BSImageLoadStatus;
-import com.bstoneinfo.lib.common.BSNotificationCenter.BSNotificationEvent;
+import com.bstoneinfo.lib.common.BSObserverCenter.BSObserverEvent;
 import com.bstoneinfo.lib.net.BSConnectionQueue;
 import com.bstoneinfo.lib.ui.BSActivity;
 import com.bstoneinfo.lib.ui.BSWaterFallViewController;
@@ -109,7 +109,7 @@ public abstract class ImageWaterFallViewController extends BSWaterFallViewContro
                 }
             }
         });
-        BSApplication.defaultNotificationCenter.addObserver(this, BSNotificationEvent.LOW_MEMORY_WARNING, new Observer() {
+        BSApplication.defaultNotificationCenter.addObserver(this, BSObserverEvent.LOW_MEMORY_WARNING, new Observer() {
             @Override
             public void update(Observable observable, Object data) {
                 memoryWaringReceived = true;

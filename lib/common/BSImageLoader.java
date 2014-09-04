@@ -14,7 +14,7 @@ import android.os.Looper;
 import android.support.v4.util.LruCache;
 import android.text.TextUtils;
 
-import com.bstoneinfo.lib.common.BSNotificationCenter.BSNotificationEvent;
+import com.bstoneinfo.lib.common.BSObserverCenter.BSObserverEvent;
 import com.bstoneinfo.lib.net.BSConnection;
 import com.bstoneinfo.lib.net.BSConnection.BSProgressListener;
 import com.bstoneinfo.lib.net.BSConnectionQueue;
@@ -211,7 +211,7 @@ public class BSImageLoader {
                                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        BSApplication.defaultNotificationCenter.notifyOnUIThread(BSNotificationEvent.LOW_MEMORY_WARNING);
+                                        BSApplication.defaultNotificationCenter.notifyOnMainThread(BSObserverEvent.LOW_MEMORY_WARNING);
                                         synchronized (lock) {
                                             lock.notify();
                                         }

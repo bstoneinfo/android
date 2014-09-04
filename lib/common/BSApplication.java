@@ -1,20 +1,17 @@
 package com.bstoneinfo.lib.common;
 
-import java.util.Observable;
-import java.util.Observer;
-
 import org.json.JSONObject;
 
 import android.app.Application;
 import android.content.SharedPreferences;
 
-import com.bstoneinfo.lib.common.BSNotificationCenter.BSNotificationEvent;
+import com.bstoneinfo.lib.common.BSObserverCenter.BSObserverEvent;
 import com.bstoneinfo.lib.net.BSConnectionQueue;
 
 public class BSApplication extends Application {
 
     private static BSApplication instance;
-    public static final BSNotificationCenter defaultNotificationCenter = new BSNotificationCenter();
+    public static final BSObserverCenter defaultNotificationCenter = new BSObserverCenter();
     public static final BSConnectionQueue defaultConnnectionQueue = new BSConnectionQueue(10);
     public static final BSLooperThread fileThread = new BSLooperThread("FileThread");
     public static final BSLooperThread databaseThread = new BSLooperThread("DatabaseThread");
@@ -54,21 +51,21 @@ public class BSApplication extends Application {
         return bRunningForeground;
     }
 
+    void checkAppStateEvent() {
+        boolean lastState = bRunningForeground;
+        bRunningForeground = BSUtils.isAppInForeground();
+        if (lastState != bRunningForeground) {
+            if (bRunningForeground) {
+                defaultNotificationCenter.notifyOnMainThread(BSObserverEvent.APP_ENTER_FOREGROUND);
+            } else {
+                defaultNotificationCenter.notifyOnMainThread(BSObserverEvent.APP_ENTER_BACKGROUND);
+            }
+        }
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
-        defaultNotificationCenter.addObserver(this, BSNotificationEvent.APP_ENTER_BACKGROUND, new Observer() {
-            @Override
-            public void update(Observable observable, Object data) {
-                bRunningForeground = false;
-            }
-        });
-        defaultNotificationCenter.addObserver(this, BSNotificationEvent.APP_ENTER_FOREGROUND, new Observer() {
-            @Override
-            public void update(Observable observable, Object data) {
-                bRunningForeground = true;
-            }
-        });
         mVersionManager = new BSVersionManager();
         mRemoteConfig = new BSRemoteConfig();
     }
@@ -76,6 +73,12 @@ public class BSApplication extends Application {
     @Override
     public void onTerminate() {
         super.onTerminate();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        BSApplication.defaultNotificationCenter.notifyOnMainThread(BSObserverEvent.LOW_MEMORY_WARNING);
     }
 
 }

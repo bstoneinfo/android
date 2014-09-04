@@ -126,7 +126,7 @@ public class CategoryDataSource {
     }
 
     private void notifyExploreFinished(ArrayList<CategoryItemData> dataList) {
-        BSApplication.defaultNotificationCenter.notifyOnUIThread(NotificationEvent.CATEGORY_EXPLORE_FINISHED_ + categoryName, dataList);
+        BSApplication.defaultNotificationCenter.notifyOnMainThread(NotificationEvent.CATEGORY_EXPLORE_FINISHED_ + categoryName, dataList);
         isLoadingExplore = false;
         if (dataList == null) {
             return;
@@ -212,14 +212,14 @@ public class CategoryDataSource {
     }
 
     private void notifyHistroyFinished(ArrayList<CategoryItemData> dataList) {
-        BSApplication.defaultNotificationCenter.notifyOnUIThread(NotificationEvent.CATEGORY_HISTORY_FINISHED_ + categoryName, dataList);
+        BSApplication.defaultNotificationCenter.notifyOnMainThread(NotificationEvent.CATEGORY_HISTORY_FINISHED_ + categoryName, dataList);
         isLoadingHistroy = false;
         if (dataList == null || dataList.isEmpty()) {
             return;
         }
         nextHistroyIndex++;
         if (nextHistroyIndex >= histroyGroupArray.length) {
-            BSApplication.defaultNotificationCenter.notifyOnUIThread(NotificationEvent.CATEGORY_HISTORY_FINISHED_ + categoryName, new ArrayList<CategoryItemData>());
+            BSApplication.defaultNotificationCenter.notifyOnMainThread(NotificationEvent.CATEGORY_HISTORY_FINISHED_ + categoryName, new ArrayList<CategoryItemData>());
         }
     }
 

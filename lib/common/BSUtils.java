@@ -9,7 +9,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.security.MessageDigest;
+import java.util.List;
 
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningAppProcessInfo;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
@@ -25,6 +29,21 @@ import com.bstoneinfo.lib.net.BSFileConnection.BSFileConnectionListener;
 import custom.R;
 
 public class BSUtils {
+
+    public static boolean isAppInForeground() {
+        ActivityManager activityManager = (ActivityManager) BSApplication.getApplication().getSystemService(Context.ACTIVITY_SERVICE);
+        String packageName = BSApplication.getApplication().getPackageName();
+        List<RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
+        if (appProcesses == null) {
+            return false;
+        }
+        for (RunningAppProcessInfo appProcess : appProcesses) {
+            if (appProcess.processName.equals(packageName) && appProcess.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public static final void runOnUiThread(Runnable action) {
         if (Thread.currentThread() == Looper.getMainLooper().getThread()) {
