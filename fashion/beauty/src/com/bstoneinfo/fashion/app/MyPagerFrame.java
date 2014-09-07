@@ -1,25 +1,23 @@
-package com.bstoneinfo.fashion.ui.main;
-
-import java.util.ArrayList;
+package com.bstoneinfo.fashion.app;
 
 import android.content.Context;
 import android.graphics.Typeface;
 
-import com.bstoneinfo.lib.ui.BSActivity;
-import com.bstoneinfo.lib.ui.BSPagerBarViewController;
-import com.bstoneinfo.lib.ui.BSViewController;
+import com.bstoneinfo.lib.app.BSActivity;
+import com.bstoneinfo.lib.frame.BSFrame;
+import com.bstoneinfo.lib.frame.BSPagerFrame;
 
 import custom.R;
 
-public class MyPagerBarViewController extends BSPagerBarViewController {
+public class MyPagerFrame extends BSPagerFrame {
 
-    public MyPagerBarViewController(Context context, ArrayList<BSViewController> childViewControllers, ArrayList<String> titles) {
-        super(context, childViewControllers, titles);
+    public MyPagerFrame(Context context, BSFrame childFrames[], String titles[]) {
+        super(context, childFrames, titles, 0);
     }
 
     @Override
-    protected void viewDidLoad() {
-        super.viewDidLoad();
+    protected void onLoad() {
+        super.onLoad();
         setAllCaps(false);
         setShouldExpand(true);
         setIndicatorHeight(BSActivity.dip2px(4));
@@ -27,7 +25,6 @@ public class MyPagerBarViewController extends BSPagerBarViewController {
         setTabBackground(R.drawable.pager_sliding_tab_bg);
         setIndicatorColor(getContext().getResources().getColor(R.color.pager_sliding_tab_indicator_color));
         setTextColor(getContext().getResources().getColor(R.color.pager_sliding_tab_text_color));
-
     }
 
 }

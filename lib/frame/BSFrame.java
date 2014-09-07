@@ -8,11 +8,12 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.bstoneinfo.lib.app.BSActivity;
+import com.bstoneinfo.lib.app.BSApplication;
 import com.bstoneinfo.lib.common.BSAnimation;
-import com.bstoneinfo.lib.common.BSApplication;
 import com.bstoneinfo.lib.common.BSObserverCenter;
 import com.bstoneinfo.lib.common.BSTimer;
-import com.bstoneinfo.lib.ui.BSActivity;
+import com.bstoneinfo.lib.common.BSUtils;
 
 public class BSFrame {
 
@@ -34,15 +35,12 @@ public class BSFrame {
     private final ArrayList<BSTimer> postRunnableList = new ArrayList<BSTimer>();
     private final ArrayList<BSAnimation> animationList = new ArrayList<BSAnimation>();
 
-    public BSFrame(Context context, int layout) {
-        rootView = (ViewGroup) LayoutInflater.from(context).inflate(layout, null);
-        rootView.setClickable(true);
+    public BSFrame(Context context) {
+        this(new FrameLayout(context));
     }
 
-    public BSFrame(ViewGroup parentView, int layout) {
-        LayoutInflater.from(parentView.getContext()).inflate(layout, parentView);
-        rootView = (ViewGroup) parentView.getChildAt(parentView.getChildCount() - 1);
-        rootView.setClickable(true);
+    public BSFrame(Context context, int layout) {
+        this((ViewGroup) LayoutInflater.from(context).inflate(layout, null));
     }
 
     public BSFrame(ViewGroup view) {
@@ -50,8 +48,9 @@ public class BSFrame {
         rootView.setClickable(true);
     }
 
-    public BSFrame(Context context) {
-        rootView = new FrameLayout(context);
+    public BSFrame(ViewGroup parentView, int layout) {
+        LayoutInflater.from(parentView.getContext()).inflate(layout, parentView);
+        rootView = (ViewGroup) parentView.getChildAt(parentView.getChildCount() - 1);
         rootView.setClickable(true);
     }
 
@@ -77,6 +76,10 @@ public class BSFrame {
 
     public ArrayList<BSFrame> getChildFrames() {
         return childFrames;
+    }
+
+    public FrameStatus getFrameStatus() {
+        return frameStatus;
     }
 
     protected void onLoad() {
@@ -112,7 +115,9 @@ public class BSFrame {
                 onShown();
             }
         });
-        showChildFrames();
+        for (BSFrame frame : getActiveChildFrames()) {
+            frame.show();
+        }
     }
 
     public void hide() {
@@ -125,19 +130,13 @@ public class BSFrame {
                 onHidden();
             }
         });
-        showChildFrames();
-    }
-
-    protected void showChildFrames() {
-        for (BSFrame frame : childFrames) {
-            frame.show();
-        }
-    }
-
-    protected void hideChildFrames() {
-        for (BSFrame frame : childFrames) {
+        for (BSFrame frame : getActiveChildFrames()) {
             frame.hide();
         }
+    }
+
+    protected ArrayList<BSFrame> getActiveChildFrames() {
+        return childFrames;
     }
 
     public boolean back() {
@@ -179,12 +178,32 @@ public class BSFrame {
     }
 
     public void addChild(BSFrame childFrame) {
+        addChild(childFrame, rootView);
+    }
+
+    public void addChild(BSFrame childFrame, ViewGroup parentView) {
         childFrames.add(childFrame);
+        childFrame.parentFrame = this;
+        if (childFrame.rootView.getParent() == null) {
+            parentView.addView(childFrame.rootView);
+        }
+        childFrame.observerCenter = observerCenter;
         childFrame.load();
+        if (frameStatus == FrameStatus.SHOWING || frameStatus == FrameStatus.SHOWN) {
+            childFrame.show();
+        } else if (frameStatus == FrameStatus.HIDING || frameStatus == FrameStatus.HIDDEN) {
+            childFrame.hide();
+        }
     }
 
     public void removeChild(BSFrame childFrame) {
-
+        if (childFrame.parentFrame != this) {
+            BSUtils.debugAssert("The subframe [" + childFrame + "] has not added to parent frame [" + this + "]");
+            return;
+        }
+        childFrame.hide();
+        childFrames.remove(childFrame);
+        childFrame.destroy();
     }
 
     public void addObserver(String event, Observer observer) {

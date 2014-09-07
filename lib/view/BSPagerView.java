@@ -9,13 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bstoneinfo.lib.widget.BSCellAdapter;
-import com.bstoneinfo.lib.widget.BSViewCell;
+import com.bstoneinfo.lib.widget.BSCell;
 
 public class BSPagerView extends ViewPager {
 
     private BSCellAdapter cellAdapter;
     private ViewPagerAdapter viewPagerAdapter;
-    private SparseArray<BSViewCell> cellArray = new SparseArray<BSViewCell>();
+    private SparseArray<BSCell> cellArray = new SparseArray<BSCell>();
 
     public BSPagerView(Context context) {
         super(context);
@@ -36,7 +36,7 @@ public class BSPagerView extends ViewPager {
         viewPagerAdapter.notifyDataSetChanged();
     }
 
-    public BSViewCell getCell(int position) {
+    public BSCell getCell(int position) {
         return cellArray.get(position);
     }
 
@@ -54,7 +54,7 @@ public class BSPagerView extends ViewPager {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            BSViewCell cell = cellAdapter.createCell();
+            BSCell cell = cellAdapter.createCell();
             View view = null;
             if (cell != null) {
                 cellArray.put(position, cell);
@@ -69,7 +69,7 @@ public class BSPagerView extends ViewPager {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            BSViewCell cell = cellArray.get(position);
+            BSCell cell = cellArray.get(position);
             if (cell != null) {
                 cell.destory();
                 cellArray.remove(position);

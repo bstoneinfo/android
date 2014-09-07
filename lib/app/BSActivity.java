@@ -1,4 +1,4 @@
-package com.bstoneinfo.lib.ui;
+package com.bstoneinfo.lib.app;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -20,7 +20,6 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
 import com.bstoneinfo.lib.ad.BSAnalyses;
-import com.bstoneinfo.lib.common.BSApplication;
 import com.bstoneinfo.lib.common.BSObserverCenter.BSObserverEvent;
 import com.bstoneinfo.lib.common.BSUtils;
 import com.bstoneinfo.lib.frame.BSFrame;
@@ -45,9 +44,13 @@ public abstract class BSActivity extends Activity {
         return (int) (pxValue / displayMetrics.density + 0.5f);
     }
 
-    public void setMainFrame(BSFrame frame) {
-        mainFrame = frame;
-        setContentView(mainFrame.getRootView());
+    public BSFrame getMainFrame() {
+        return mainFrame;
+    }
+
+    public void setMainFrame(BSFrame _mainFrame) {
+        setContentView(_mainFrame.getRootView());
+        mainFrame = _mainFrame;
         mainFrame.load();
         mainFrame.show();
     }

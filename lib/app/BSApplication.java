@@ -1,12 +1,15 @@
-package com.bstoneinfo.lib.common;
+package com.bstoneinfo.lib.app;
 
 import org.json.JSONObject;
 
 import android.app.Application;
 import android.content.SharedPreferences;
 
+import com.bstoneinfo.lib.common.BSLooperThread;
+import com.bstoneinfo.lib.common.BSObserverCenter;
+import com.bstoneinfo.lib.common.BSUtils;
 import com.bstoneinfo.lib.common.BSObserverCenter.BSObserverEvent;
-import com.bstoneinfo.lib.net.BSConnectionQueue;
+import com.bstoneinfo.lib.connection.BSConnectionQueue;
 
 public class BSApplication extends Application {
 

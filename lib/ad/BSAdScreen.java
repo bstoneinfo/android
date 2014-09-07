@@ -11,7 +11,7 @@ import android.app.Activity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.bstoneinfo.lib.common.BSApplication;
+import com.bstoneinfo.lib.app.BSApplication;
 import com.bstoneinfo.lib.common.BSLog;
 import com.bstoneinfo.lib.common.BSObserverCenter.BSObserverEvent;
 import com.bstoneinfo.lib.common.BSTimer;

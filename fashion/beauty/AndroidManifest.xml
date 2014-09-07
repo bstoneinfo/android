@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.bstoneinfo.beauty"
-    android:versionCode="9"
-    android:versionName="2.0.3" >
+    android:versionCode="10"
+    android:versionName="2.1.0" >
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="18" />
+        android:targetSdkVersion="19" />
 
     <supports-screens
         android:anyDensity="true"

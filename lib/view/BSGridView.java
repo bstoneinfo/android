@@ -12,7 +12,7 @@ import com.bstoneinfo.lib.view.BSListView.PullUpStates;
 import com.bstoneinfo.lib.view.BSListView.PullUpWillLoadListener;
 import com.bstoneinfo.lib.widget.BSBaseAdapter;
 import com.bstoneinfo.lib.widget.BSGridAdapter;
-import com.bstoneinfo.lib.widget.BSViewCell;
+import com.bstoneinfo.lib.widget.BSCell;
 
 public class BSGridView extends ListView {
 
@@ -45,7 +45,7 @@ public class BSGridView extends ListView {
         }
         adapter = new BSGridAdapter(getContext(), dataList, numColumns, itemWidth, itemHeight, horzSpacing, vertSpacing) {
             @Override
-            public BSViewCell createCell() {
+            public BSCell createCell() {
                 return null;//createCellDelegate.createCell();
             }
         };

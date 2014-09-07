@@ -11,9 +11,9 @@ public abstract class BSBaseAdapter extends BaseAdapter {
 
     protected final Context context;
     protected final ArrayList<?> dataList;
-    protected final ArrayList<BSViewCell> cellList = new ArrayList<BSViewCell>();
+    protected final ArrayList<BSCell> cellList = new ArrayList<BSCell>();
 
-    public abstract BSViewCell createCell();
+    public abstract BSCell createCell();
 
     public BSBaseAdapter(Context context, ArrayList<?> dataList) {
         this.context = context;
@@ -28,12 +28,12 @@ public abstract class BSBaseAdapter extends BaseAdapter {
         return dataList;
     }
 
-    public ArrayList<BSViewCell> getCellList() {
+    public ArrayList<BSCell> getCellList() {
         return cellList;
     }
 
-    public BSViewCell getCell(int position) {
-        for (BSViewCell cell : cellList) {
+    public BSCell getCell(int position) {
+        for (BSCell cell : cellList) {
             if (cell.position == position) {
                 return cell;
             }
@@ -58,14 +58,14 @@ public abstract class BSBaseAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final BSViewCell cell;
+        final BSCell cell;
         if (convertView == null) {
             cell = createCell();
             cellList.add(cell);
             convertView = cell.getRootView();
             convertView.setTag(cell);
         } else {
-            cell = (BSViewCell) convertView.getTag();
+            cell = (BSCell) convertView.getTag();
         }
         cell.position = position;
         cell.loadContent(getItem(position));

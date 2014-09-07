@@ -11,13 +11,13 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 
 import com.bstoneinfo.fashion.app.MyUtils;
-import com.bstoneinfo.fashion.app.NotificationEvent;
+import com.bstoneinfo.fashion.app.MyObserverEvent;
 import com.bstoneinfo.lib.ad.BSAnalyses;
-import com.bstoneinfo.lib.common.BSApplication;
+import com.bstoneinfo.lib.app.BSApplication;
 import com.bstoneinfo.lib.common.BSLog;
 import com.bstoneinfo.lib.common.BSUtils;
-import com.bstoneinfo.lib.net.BSJsonConnection;
-import com.bstoneinfo.lib.net.BSJsonConnection.BSJsonConnectionListener;
+import com.bstoneinfo.lib.connection.BSJsonConnection;
+import com.bstoneinfo.lib.connection.BSJsonConnection.BSJsonConnectionListener;
 
 public class CategoryDataSource {
 
@@ -126,7 +126,7 @@ public class CategoryDataSource {
     }
 
     private void notifyExploreFinished(ArrayList<CategoryItemData> dataList) {
-        BSApplication.defaultNotificationCenter.notifyOnMainThread(NotificationEvent.CATEGORY_EXPLORE_FINISHED_ + categoryName, dataList);
+        BSApplication.defaultNotificationCenter.notifyOnMainThread(MyObserverEvent.CATEGORY_EXPLORE_FINISHED_ + categoryName, dataList);
         isLoadingExplore = false;
         if (dataList == null) {
             return;
@@ -212,14 +212,14 @@ public class CategoryDataSource {
     }
 
     private void notifyHistroyFinished(ArrayList<CategoryItemData> dataList) {
-        BSApplication.defaultNotificationCenter.notifyOnMainThread(NotificationEvent.CATEGORY_HISTORY_FINISHED_ + categoryName, dataList);
+        BSApplication.defaultNotificationCenter.notifyOnMainThread(MyObserverEvent.CATEGORY_HISTORY_FINISHED_ + categoryName, dataList);
         isLoadingHistroy = false;
         if (dataList == null || dataList.isEmpty()) {
             return;
         }
         nextHistroyIndex++;
         if (nextHistroyIndex >= histroyGroupArray.length) {
-            BSApplication.defaultNotificationCenter.notifyOnMainThread(NotificationEvent.CATEGORY_HISTORY_FINISHED_ + categoryName, new ArrayList<CategoryItemData>());
+            BSApplication.defaultNotificationCenter.notifyOnMainThread(MyObserverEvent.CATEGORY_HISTORY_FINISHED_ + categoryName, new ArrayList<CategoryItemData>());
         }
     }
 

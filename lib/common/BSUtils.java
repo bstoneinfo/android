@@ -23,8 +23,9 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 
 import com.bstoneinfo.lib.ad.BSAnalyses;
-import com.bstoneinfo.lib.net.BSFileConnection;
-import com.bstoneinfo.lib.net.BSFileConnection.BSFileConnectionListener;
+import com.bstoneinfo.lib.app.BSApplication;
+import com.bstoneinfo.lib.connection.BSFileConnection;
+import com.bstoneinfo.lib.connection.BSFileConnection.BSFileConnectionListener;
 
 import custom.R;
 

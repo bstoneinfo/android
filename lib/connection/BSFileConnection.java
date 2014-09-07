@@ -1,4 +1,4 @@
-package com.bstoneinfo.lib.net;
+package com.bstoneinfo.lib.connection;
 
 import java.io.File;
 import java.io.FileOutputStream;

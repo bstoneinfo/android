@@ -1,4 +1,4 @@
-package com.bstoneinfo.lib.common;
+package com.bstoneinfo.lib.app;
 
 import java.io.File;
 import java.io.InputStream;
@@ -11,9 +11,11 @@ import org.json.JSONObject;
 import android.content.res.AssetManager;
 import android.text.TextUtils;
 
+import com.bstoneinfo.lib.common.BSLog;
+import com.bstoneinfo.lib.common.BSUtils;
 import com.bstoneinfo.lib.common.BSObserverCenter.BSObserverEvent;
-import com.bstoneinfo.lib.net.BSJsonConnection;
-import com.bstoneinfo.lib.net.BSJsonConnection.BSJsonConnectionListener;
+import com.bstoneinfo.lib.connection.BSJsonConnection;
+import com.bstoneinfo.lib.connection.BSJsonConnection.BSJsonConnectionListener;
 
 class BSRemoteConfig extends JSONObject {
 

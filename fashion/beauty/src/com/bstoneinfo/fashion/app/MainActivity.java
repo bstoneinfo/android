@@ -1,6 +1,5 @@
 package com.bstoneinfo.fashion.app;
 
-import java.util.ArrayList;
 import java.util.Locale;
 
 import android.os.Bundle;
@@ -8,16 +7,17 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 
 import com.bstoneinfo.fashion.data.CategoryManager;
 import com.bstoneinfo.fashion.data.MainDBHelper;
+import com.bstoneinfo.fashion.favorite.FavoriteFrame;
 import com.bstoneinfo.fashion.favorite.FavoriteManager;
-import com.bstoneinfo.fashion.favorite.FavoriteViewController;
 import com.bstoneinfo.fashion.ui.main.CategoryFrame;
-import com.bstoneinfo.fashion.ui.main.ExploreWaterFallViewController;
-import com.bstoneinfo.fashion.ui.main.HistroyWaterFallViewController;
+import com.bstoneinfo.fashion.ui.main.ExploreWaterFallFrame;
+import com.bstoneinfo.fashion.ui.main.HistroyWaterFallFrame;
+import com.bstoneinfo.fashion.ui.main.SettingsFrame;
 import com.bstoneinfo.lib.ad.BSAdScreen;
 import com.bstoneinfo.lib.ad.BSAnalyses;
+import com.bstoneinfo.lib.app.BSActivity;
 import com.bstoneinfo.lib.frame.BSFrame;
-import com.bstoneinfo.lib.frame.BSPagerFrame;
-import com.bstoneinfo.lib.ui.BSActivity;
+import com.bstoneinfo.lib.frame.BSLayerFrame;
 
 import custom.Config;
 import custom.R;
@@ -37,43 +37,16 @@ public class MainActivity extends BSActivity {
             frame1 = new CategoryFrame(this, "51");
             frame2 = new CategoryFrame(this, "52");
         } else {
-            frame1 = new ExploreWaterFallViewController(this, "51");
-            frame2 = new HistroyWaterFallViewController(this, "51");
+            frame1 = new ExploreWaterFallFrame(this, "51");
+            frame2 = new HistroyWaterFallFrame(this, "51");
         }
-        FavoriteViewController favoriteViewController = new FavoriteViewController(this);
-        //        SettingsViewController settingsViewController = new SettingsViewController(this);
-
-        ArrayList<BSFrame> childFrames = new ArrayList<BSFrame>();
-        childFrames.add(frame1);
-        childFrames.add(frame2);
-        childFrames.add(favoriteViewController);
-        //        childViewControllers.add(settingsViewController);
+        FavoriteFrame favoriteFrame = new FavoriteFrame(this);
+        SettingsFrame settingsFrame = new SettingsFrame(this);
 
         if (Config.isPro) {
-            //            mainViewController = new BSTabBarController(this, R.layout.maintabbar, childFrames, 0) {
-            //                @Override
-            //                public boolean back() {
-            //                    if (super.back()) {
-            //                        return true;
-            //                    }
-            //                    return MainActivity.this.back();
-            //                };
-            //            };
         } else {
-            ArrayList<String> titles = new ArrayList<String>();
-            titles.add(getString(R.string.tab_explore));
-            titles.add(getString(R.string.tab_history));
-            titles.add(getString(R.string.tab_favorite));
-            titles.add(getString(R.string.tab_settings));
-            BSPagerFrame pagerFrame = new BSPagerFrame(this, childFrames, titles) {
-                @Override
-                public boolean back() {
-                    if (super.back()) {
-                        return true;
-                    }
-                    return MainActivity.this.back();
-                };
-            };
+            String[] titles = new String[] { getString(R.string.tab_explore), getString(R.string.tab_history), getString(R.string.tab_favorite), getString(R.string.tab_settings) };
+            MyPagerFrame pagerFrame = new MyPagerFrame(this, new BSFrame[] { frame1, frame2, favoriteFrame, settingsFrame }, titles);
             pagerFrame.setOnPageChangeListener(new OnPageChangeListener() {
                 @Override
                 public void onPageSelected(int arg0) {
@@ -97,7 +70,18 @@ public class MainActivity extends BSActivity {
 
                 }
             });
-            setMainFrame(pagerFrame);
+
+            BSLayerFrame mainFrame = new BSLayerFrame(pagerFrame) {
+                @Override
+                public boolean back() {
+                    if (super.back()) {
+                        return true;
+                    }
+                    return MainActivity.this.back();
+                };
+
+            };
+            setMainFrame(mainFrame);
         }
 
         adFullscreen = new BSAdScreen(this);

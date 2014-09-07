@@ -11,29 +11,35 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.bstoneinfo.lib.app.BSActivity;
 import com.bstoneinfo.lib.view.BSPagerSlidingTabView;
 
 public class BSPagerFrame extends BSFrame {
 
-    private final ArrayList<String> titles;
+    private final ArrayList<String> titles = new ArrayList<String>();
     private final BSPagerSlidingTabView pagerSlidingTabStrip;
     private final ViewPager viewPager;
     private BSPagerAdapter pagerAdapter;
     private OnPageChangeListener onPageChangeListener;
     private int currentSelectedPosition = -1;
 
-    public BSPagerFrame(Context _context, ArrayList<BSFrame> _childFrames, ArrayList<String> _titles, int _defaultSelected) {
+    public BSPagerFrame(Context _context, BSFrame _childFrames[], String _titles[], int _defaultSelected) {
         super(new LinearLayout(_context));
-        getChildFrames().addAll(_childFrames);
-        titles = _titles;
+        for (BSFrame frame : _childFrames) {
+            getChildFrames().add(frame);
+        }
+        for (String title : _titles) {
+            titles.add(title);
+        }
         currentSelectedPosition = _defaultSelected;
 
         LinearLayout rootView = (LinearLayout) getRootView();
+        rootView.setOrientation(LinearLayout.VERTICAL);
         pagerSlidingTabStrip = new BSPagerSlidingTabView(_context);
+        rootView.addView(pagerSlidingTabStrip, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, BSActivity.dip2px(45)));
         viewPager = new ViewPager(_context);
         viewPager.setOffscreenPageLimit(1);
-        rootView.addView(viewPager);
-        rootView.addView(pagerSlidingTabStrip, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1));
+        rootView.addView(viewPager, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1));
 
         pagerSlidingTabStrip.setOnPageChangeListener(new OnPageChangeListener() {
             @Override
@@ -66,23 +72,19 @@ public class BSPagerFrame extends BSFrame {
 
     @Override
     protected void onLoad() {
+        super.onLoad();
         pagerAdapter = new BSPagerAdapter();
         viewPager.setAdapter(pagerAdapter);
         pagerSlidingTabStrip.setViewPager(viewPager);
     }
 
     @Override
-    protected void showChildFrames() {
+    protected ArrayList<BSFrame> getActiveChildFrames() {
+        ArrayList<BSFrame> frames = new ArrayList<BSFrame>();
         if (currentSelectedPosition >= 0 && currentSelectedPosition < getChildFrames().size()) {
-            getChildFrames().get(currentSelectedPosition).show();
+            frames.add(getChildFrames().get(currentSelectedPosition));
         }
-    }
-
-    @Override
-    protected void hideChildFrames() {
-        if (currentSelectedPosition >= 0 && currentSelectedPosition < getChildFrames().size()) {
-            getChildFrames().get(currentSelectedPosition).hide();
-        }
+        return frames;
     }
 
     public void setAllCaps(boolean textAllCaps) {

@@ -12,20 +12,20 @@ import android.widget.LinearLayout;
 
 import com.bstoneinfo.fashion.app.MyUtils;
 import com.bstoneinfo.fashion.data.CategoryItemData;
-import com.bstoneinfo.fashion.ui.browse.PhotoBrowseViewController;
-import com.bstoneinfo.lib.ad.BSAdBannerViewController;
-import com.bstoneinfo.lib.common.BSApplication;
+import com.bstoneinfo.fashion.ui.browse.PhotoBrowseFrame;
+import com.bstoneinfo.lib.ad.BSAdBanner;
+import com.bstoneinfo.lib.app.BSActivity;
+import com.bstoneinfo.lib.app.BSApplication;
 import com.bstoneinfo.lib.common.BSImageLoader.BSImageLoadStatus;
 import com.bstoneinfo.lib.common.BSObserverCenter.BSObserverEvent;
-import com.bstoneinfo.lib.net.BSConnectionQueue;
-import com.bstoneinfo.lib.ui.BSActivity;
-import com.bstoneinfo.lib.ui.BSWaterFallViewController;
+import com.bstoneinfo.lib.connection.BSConnectionQueue;
+import com.bstoneinfo.lib.frame.BSWaterFallFrame;
 import com.bstoneinfo.lib.view.BSImageView;
 import com.bstoneinfo.lib.view.BSScrollView.OnScrollChangedListener;
 
 import custom.R;
 
-public abstract class ImageWaterFallViewController extends BSWaterFallViewController {
+public abstract class ImageWaterFallFrame extends BSWaterFallFrame {
 
     public final static int COLUMN_COUNT = 3;
     public final static int COLUMN_INTERVAL_DP = 5;
@@ -37,7 +37,7 @@ public abstract class ImageWaterFallViewController extends BSWaterFallViewContro
     private final String dataEventName;
     private boolean memoryWaringReceived = false;
 
-    private final BSAdBannerViewController adBanner;
+    private final BSAdBanner adBanner;
     public final LinearLayout footerView;
 
     abstract protected void loadMore();
@@ -48,10 +48,10 @@ public abstract class ImageWaterFallViewController extends BSWaterFallViewContro
         return itemDataList;
     }
 
-    public ImageWaterFallViewController(Context context, String dataEventName, String footerAdBannerName) {
+    public ImageWaterFallFrame(Context context, String dataEventName, String footerAdBannerName) {
         super(context, COLUMN_COUNT, BSActivity.dip2px(COLUMN_INTERVAL_DP));
         this.dataEventName = dataEventName;
-        adBanner = new BSAdBannerViewController(getActivity(), footerAdBannerName);
+        adBanner = new BSAdBanner(getActivity(), footerAdBannerName);
         adBanner.setVerticalShow(true);
 
         footerView = new LinearLayout(getContext());
@@ -59,7 +59,7 @@ public abstract class ImageWaterFallViewController extends BSWaterFallViewContro
         View loadmoreView = LayoutInflater.from(getContext()).inflate(R.layout.loadmore, null);
         setFooterView(footerView, loadmoreView.findViewById(R.id.loadmore_normal), loadmoreView.findViewById(R.id.loadmore_loading),
                 loadmoreView.findViewById(R.id.loadmore_failed), null);
-        addChildViewController(adBanner, footerView);
+        addChild(adBanner, footerView);
         footerView.addView(loadmoreView);
         View.OnClickListener loadmoreClickListener = new View.OnClickListener() {
             @Override
@@ -71,7 +71,21 @@ public abstract class ImageWaterFallViewController extends BSWaterFallViewContro
         };
         loadmoreView.findViewById(R.id.loadmore_normal).setOnClickListener(loadmoreClickListener);
         loadmoreView.findViewById(R.id.loadmore_failed).setOnClickListener(loadmoreClickListener);
+    }
 
+    @Override
+    protected void onLoad() {
+        super.onLoad();
+        recordFlurry("WaterFall_Init");
+        setPullupState(PullUpState.LOADING);
+        getScrollView().setOnScrollChangedListener(new OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged(int l, int t, int oldl, int oldt) {
+                if (t != oldt) {
+                    checkVisible();
+                }
+            }
+        });
         BSApplication.defaultNotificationCenter.addObserver(this, dataEventName, new Observer() {
             @SuppressWarnings("unchecked")
             @Override
@@ -92,23 +106,6 @@ public abstract class ImageWaterFallViewController extends BSWaterFallViewContro
                 }
             }
         });
-    }
-
-    @Override
-    protected void viewDidLoad() {
-        super.viewDidLoad();
-
-        loadMore();
-        recordFlurry("WaterFall_Init");
-        setPullupState(PullUpState.LOADING);
-        getScrollView().setOnScrollChangedListener(new OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged(int l, int t, int oldl, int oldt) {
-                if (t != oldt) {
-                    checkVisible();
-                }
-            }
-        });
         BSApplication.defaultNotificationCenter.addObserver(this, BSObserverEvent.LOW_MEMORY_WARNING, new Observer() {
             @Override
             public void update(Observable observable, Object data) {
@@ -116,22 +113,23 @@ public abstract class ImageWaterFallViewController extends BSWaterFallViewContro
                 checkVisible();
             }
         });
+        loadMore();
     }
 
     @Override
-    protected void viewWillAppear() {
-        super.viewWillAppear();
+    protected void onShow() {
+        super.onShow();
         checkVisible();
     }
 
     @Override
-    protected void viewWillDisappear() {
-        super.viewWillDisappear();
+    protected void onHide() {
+        super.onHide();
         checkVisible();
     }
 
     private void checkVisible() {
-        if (getViewStatus() == ViewStatus.Appearing || getViewStatus() == ViewStatus.Appeared) {
+        if (getFrameStatus() == FrameStatus.SHOWING || getFrameStatus() == FrameStatus.SHOWN) {
             int y1 = getScrollView().getScrollY();
             int y2 = y1 + getRootView().getHeight();
             for (BSImageView imageView : imageViewList) {
@@ -173,7 +171,7 @@ public abstract class ImageWaterFallViewController extends BSWaterFallViewContro
         int height = columnWidth * itemData.thumbHeight / itemData.thumbWidth;
         imageViewList.add(imageView);
         if (memoryWaringReceived) {
-            setImageViewVisible(imageView, getViewStatus() == ViewStatus.Appearing || getViewStatus() == ViewStatus.Appeared);
+            setImageViewVisible(imageView, getFrameStatus() == FrameStatus.SHOWING || getFrameStatus() == FrameStatus.SHOWN);
         }
         super.addView(imageView, width, height);
         imageView.setUrl(remoteUrl);
@@ -182,20 +180,20 @@ public abstract class ImageWaterFallViewController extends BSWaterFallViewContro
             public void onClick(View v) {
                 BSImageLoadStatus status = imageView.getImageLoadStatus();
                 if (status == BSImageLoadStatus.LOADED) {
-                    PhotoBrowseViewController photoBrowseViewController = new PhotoBrowseViewController(getContext(), itemData.category, itemDataList, dataEventName, position,
+                    PhotoBrowseFrame photoBrowseViewController = new PhotoBrowseFrame(getContext(), itemData.category, itemDataList, dataEventName, position,
                             getPullUpState() == PullUpState.FINISHED) {
                         @Override
                         protected void loadMore() {
-                            ImageWaterFallViewController.this.loadMore();
-                            ImageWaterFallViewController.this.recordFlurry("Browse_LoadMore");
+                            ImageWaterFallFrame.this.loadMore();
+                            ImageWaterFallFrame.this.recordFlurry("Browse_LoadMore");
                         }
 
                         @Override
                         protected void recordFlurry(String event) {
-                            ImageWaterFallViewController.this.recordFlurry("Browse_Slide");
+                            ImageWaterFallFrame.this.recordFlurry("Browse_Slide");
                         }
                     };
-                    presentModalViewController(photoBrowseViewController, AnimationType.None);
+                    getActivity().getMainFrame().addChild(photoBrowseViewController);
                     recordFlurry("WaterFall_Click");
                 } else if (status == BSImageLoadStatus.FAILED) {
                     imageView.setUrl(remoteUrl);

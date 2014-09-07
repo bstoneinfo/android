@@ -14,12 +14,13 @@ import android.os.Looper;
 import android.support.v4.util.LruCache;
 import android.text.TextUtils;
 
+import com.bstoneinfo.lib.app.BSApplication;
 import com.bstoneinfo.lib.common.BSObserverCenter.BSObserverEvent;
-import com.bstoneinfo.lib.net.BSConnection;
-import com.bstoneinfo.lib.net.BSConnection.BSProgressListener;
-import com.bstoneinfo.lib.net.BSConnectionQueue;
-import com.bstoneinfo.lib.net.BSFileConnection;
-import com.bstoneinfo.lib.net.BSFileConnection.BSFileConnectionListener;
+import com.bstoneinfo.lib.connection.BSConnection;
+import com.bstoneinfo.lib.connection.BSConnectionQueue;
+import com.bstoneinfo.lib.connection.BSFileConnection;
+import com.bstoneinfo.lib.connection.BSConnection.BSProgressListener;
+import com.bstoneinfo.lib.connection.BSFileConnection.BSFileConnectionListener;
 
 public class BSImageLoader {
 
