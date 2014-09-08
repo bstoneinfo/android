@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 import android.text.TextUtils;
 
-import com.bstoneinfo.lib.common.BSApplication;
+import com.bstoneinfo.lib.app.BSApplication;
 import com.bstoneinfo.lib.common.BSLog;
 
 public class BSAdUtils {

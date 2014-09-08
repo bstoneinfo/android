@@ -5,12 +5,12 @@ import android.content.Context;
 import com.bstoneinfo.fashion.data.CategoryDataSource;
 import com.bstoneinfo.fashion.data.CategoryManager;
 
-public abstract class CategoryWaterFallViewController extends ImageAdWaterFallViewController {
+public abstract class CategoryWaterFallFrame extends ImageWaterFallFrame {
 
     protected final String categoryName;
 
-    public CategoryWaterFallViewController(Context context, String category, final String dataEventName, String mainAdBannerName, String footerAdBannerName) {
-        super(context, dataEventName, mainAdBannerName, footerAdBannerName);
+    public CategoryWaterFallFrame(Context context, String category, final String dataEventName, String mainAdBannerName) {
+        super(context, dataEventName, mainAdBannerName);
         this.categoryName = category;
     }
 

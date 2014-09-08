@@ -1,6 +1,6 @@
 package com.bstoneinfo.fashion.app;
 
-public class NotificationEvent {
+public class MyObserverEvent {
 
     public static final String CATEGORY_EXPLORE_FINISHED_ = "CATEGORY_EXPLORE_FINISHED_";//成功ArrayList<CategoryItemData> 失败null
     public static final String CATEGORY_HISTORY_FINISHED_ = "CATEGORY_HISTORY_FINISHED_";//成功ArrayList<CategoryItemData> 失败null

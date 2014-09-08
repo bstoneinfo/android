@@ -6,7 +6,7 @@ import org.json.JSONObject;
 import android.text.TextUtils;
 
 import com.bstoneinfo.lib.ad.BSAnalyses;
-import com.bstoneinfo.lib.common.BSApplication;
+import com.bstoneinfo.lib.app.BSApplication;
 
 public class MyUtils {
 

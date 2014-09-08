@@ -3,6 +3,8 @@
  */
 package com.bstoneinfo.lib.common;
 
+import com.bstoneinfo.lib.app.BSApplication;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;

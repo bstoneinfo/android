@@ -11,8 +11,8 @@ import com.bstoneinfo.lib.common.BSImageLoader.BSImageLoadStatus;
 import com.bstoneinfo.lib.common.BSImageLoader.BSImageLoaderListener;
 import com.bstoneinfo.lib.common.BSImageLoader.BSStatusChangedListener;
 import com.bstoneinfo.lib.common.BSUtils;
-import com.bstoneinfo.lib.net.BSConnection.BSProgressListener;
-import com.bstoneinfo.lib.net.BSConnectionQueue;
+import com.bstoneinfo.lib.connection.BSConnectionQueue;
+import com.bstoneinfo.lib.connection.BSConnection.BSProgressListener;
 
 public class BSImageView extends ImageView {
 

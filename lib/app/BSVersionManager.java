@@ -1,4 +1,5 @@
-package com.bstoneinfo.lib.common;
+package com.bstoneinfo.lib.app;
+
 
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;

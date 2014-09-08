@@ -11,20 +11,20 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.bstoneinfo.fashion.app.MyUtils;
-import com.bstoneinfo.fashion.app.NotificationEvent;
+import com.bstoneinfo.fashion.app.MyObserverEvent;
 import com.bstoneinfo.fashion.data.CategoryItemData;
 import com.bstoneinfo.fashion.favorite.FavoriteManager;
 import com.bstoneinfo.lib.ad.BSAnalyses;
-import com.bstoneinfo.lib.common.BSApplication;
+import com.bstoneinfo.lib.app.BSApplication;
 import com.bstoneinfo.lib.common.BSImageLoader.BSImageLoadStatus;
 import com.bstoneinfo.lib.common.BSImageLoader.BSStatusChangedListener;
 import com.bstoneinfo.lib.common.BSLog;
 import com.bstoneinfo.lib.view.BSImageView;
-import com.bstoneinfo.lib.widget.BSViewCell;
+import com.bstoneinfo.lib.widget.BSCell;
 
 import custom.R;
 
-public class PhotoBrowseViewCell extends BSViewCell {
+public class PhotoBrowseCell extends BSCell {
 
     private BSImageView imageView;
     private ProgressBar progressBar, bottomProgressBar;
@@ -32,7 +32,7 @@ public class PhotoBrowseViewCell extends BSViewCell {
     private ImageView favoriteView;
     private CategoryItemData itemData;
 
-    public PhotoBrowseViewCell(Context context) {
+    public PhotoBrowseCell(Context context) {
         super(context, R.layout.photo_browse_cell);
         imageView = (BSImageView) getRootView().findViewById(R.id.imageView);
         refreshView = (ImageView) getRootView().findViewById(R.id.refresh);
@@ -40,7 +40,7 @@ public class PhotoBrowseViewCell extends BSViewCell {
         bottomRefreshView = (ImageView) getRootView().findViewById(R.id.bottomRefresh);
         bottomProgressBar = (ProgressBar) getRootView().findViewById(R.id.bottomProgressBar);
         favoriteView = (ImageView) getRootView().findViewById(R.id.favorite);
-        BSApplication.defaultNotificationCenter.addObserver(this, NotificationEvent.CATEGORY_ITEM_DATA_FINISHED, new Observer() {
+        BSApplication.defaultNotificationCenter.addObserver(this, MyObserverEvent.CATEGORY_ITEM_DATA_FINISHED, new Observer() {
             @Override
             public void update(Observable observable, Object data) {
                 setFavoriteView();

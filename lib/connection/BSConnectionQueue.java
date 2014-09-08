@@ -1,10 +1,10 @@
-package com.bstoneinfo.lib.net;
+package com.bstoneinfo.lib.connection;
 
 import java.util.LinkedList;
 
 import android.text.TextUtils;
 
-import com.bstoneinfo.lib.net.BSConnection.BSConnectionListener;
+import com.bstoneinfo.lib.connection.BSConnection.BSConnectionListener;
 
 public class BSConnectionQueue {
 

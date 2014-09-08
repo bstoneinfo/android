@@ -6,5 +6,5 @@ public interface BSCellAdapter {
 
     public Object getData(int position);
 
-    public BSViewCell createCell();
+    public BSCell createCell();
 }

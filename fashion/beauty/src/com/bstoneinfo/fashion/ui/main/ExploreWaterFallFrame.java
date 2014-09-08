@@ -2,13 +2,13 @@ package com.bstoneinfo.fashion.ui.main;
 
 import android.content.Context;
 
-import com.bstoneinfo.fashion.app.NotificationEvent;
+import com.bstoneinfo.fashion.app.MyObserverEvent;
 import com.bstoneinfo.lib.ad.BSAnalyses;
 
-public class ExploreWaterFallViewController extends CategoryWaterFallViewController {
+public class ExploreWaterFallFrame extends CategoryWaterFallFrame {
 
-    public ExploreWaterFallViewController(Context context, String categoryName) {
-        super(context, categoryName, NotificationEvent.CATEGORY_EXPLORE_FINISHED_ + categoryName, "ExploreMain", "ExploreFooter");
+    public ExploreWaterFallFrame(Context context, String categoryName) {
+        super(context, categoryName, MyObserverEvent.CATEGORY_EXPLORE_FINISHED_ + categoryName, "ExploreMain");
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.bstoneinfo.lib.common;
+package com.bstoneinfo.lib.app;
 
 import java.io.File;
 import java.io.InputStream;
@@ -11,9 +11,11 @@ import org.json.JSONObject;
 import android.content.res.AssetManager;
 import android.text.TextUtils;
 
-import com.bstoneinfo.lib.common.BSNotificationCenter.BSNotificationEvent;
-import com.bstoneinfo.lib.net.BSJsonConnection;
-import com.bstoneinfo.lib.net.BSJsonConnection.BSJsonConnectionListener;
+import com.bstoneinfo.lib.common.BSLog;
+import com.bstoneinfo.lib.common.BSUtils;
+import com.bstoneinfo.lib.common.BSObserverCenter.BSObserverEvent;
+import com.bstoneinfo.lib.connection.BSJsonConnection;
+import com.bstoneinfo.lib.connection.BSJsonConnection.BSJsonConnectionListener;
 
 class BSRemoteConfig extends JSONObject {
 
@@ -52,7 +54,7 @@ class BSRemoteConfig extends JSONObject {
             }
         }
 
-        BSApplication.defaultNotificationCenter.addObserver(this, BSNotificationEvent.APP_ENTER_FOREGROUND, new Observer() {
+        BSApplication.defaultNotificationCenter.addObserver(this, BSObserverEvent.APP_ENTER_FOREGROUND, new Observer() {
 
             @Override
             public void update(Observable observable, Object data) {
@@ -70,7 +72,7 @@ class BSRemoteConfig extends JSONObject {
                         if (!TextUtils.equals(mConfigJSON.toString(), jsonString)) {
                             mConfigJSON = jsonObject;
                             BSUtils.saveStringToFile(jsonString, localPath);
-                            BSApplication.defaultNotificationCenter.notifyOnUIThread(BSNotificationEvent.REMOTE_CONFIG_DID_CHANGE, jsonObject);
+                            BSApplication.defaultNotificationCenter.notifyOnMainThread(BSObserverEvent.REMOTE_CONFIG_DID_CHANGE, jsonObject);
                         }
                     }
 

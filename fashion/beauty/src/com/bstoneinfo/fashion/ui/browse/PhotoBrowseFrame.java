@@ -12,14 +12,14 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 
 import com.bstoneinfo.fashion.data.CategoryItemData;
-import com.bstoneinfo.lib.ad.BSAdBannerViewController;
-import com.bstoneinfo.lib.common.BSApplication;
-import com.bstoneinfo.lib.ui.BSViewController;
+import com.bstoneinfo.lib.ad.BSAdBanner;
+import com.bstoneinfo.lib.app.BSApplication;
+import com.bstoneinfo.lib.frame.BSFrame;
 import com.bstoneinfo.lib.view.BSPagerView;
+import com.bstoneinfo.lib.widget.BSCell;
 import com.bstoneinfo.lib.widget.BSCellAdapter;
-import com.bstoneinfo.lib.widget.BSViewCell;
 
-public abstract class PhotoBrowseViewController extends BSViewController {
+public abstract class PhotoBrowseFrame extends BSFrame {
 
     final private String categoryName;
     final private BSPagerView pagerView;
@@ -28,9 +28,9 @@ public abstract class PhotoBrowseViewController extends BSViewController {
     private int position;
     private boolean bLoadmoreEnded = false;
     private boolean bLoadmoreFailed = false;
-    final private BSAdBannerViewController adBanner;
+    final private BSAdBanner adBanner;
 
-    public PhotoBrowseViewController(Context context, String category, ArrayList<CategoryItemData> itemDataList, String dataEventName, int position, boolean loadmoreEnded) {
+    public PhotoBrowseFrame(Context context, String category, ArrayList<CategoryItemData> itemDataList, String dataEventName, int position, boolean loadmoreEnded) {
         super(new LinearLayout(context));
         ((LinearLayout) getRootView()).setOrientation(LinearLayout.VERTICAL);
         this.categoryName = category;
@@ -40,13 +40,12 @@ public abstract class PhotoBrowseViewController extends BSViewController {
         bLoadmoreEnded = loadmoreEnded;
         getRootView().setBackgroundColor(Color.BLACK);
         pagerView = new BSPagerView(getContext());
-        adBanner = new BSAdBannerViewController(getActivity(), "PhotoPager");
+        adBanner = new BSAdBanner(getActivity(), "PhotoPager");
     }
 
     @Override
-    protected void viewDidLoad() {
-        super.viewDidLoad();
-
+    protected void onLoad() {
+        super.onLoad();
         final BSCellAdapter adapter = new BSCellAdapter() {
 
             @Override
@@ -66,8 +65,8 @@ public abstract class PhotoBrowseViewController extends BSViewController {
             }
 
             @Override
-            public BSViewCell createCell() {
-                return new PhotoBrowseViewCell(getContext());
+            public BSCell createCell() {
+                return new PhotoBrowseCell(getContext());
             }
         };
         pagerView.setAdapter(adapter);
@@ -98,7 +97,7 @@ public abstract class PhotoBrowseViewController extends BSViewController {
             @Override
             public void update(Observable observable, Object data) {
                 final int loadmorePosition = itemDataList.size();
-                final PhotoBrowseViewCell lastCell = (PhotoBrowseViewCell) pagerView.getCell(loadmorePosition);
+                final PhotoBrowseCell lastCell = (PhotoBrowseCell) pagerView.getCell(loadmorePosition);
                 ArrayList<CategoryItemData> dataList = (ArrayList<CategoryItemData>) data;
                 if (dataList == null) {
                     bLoadmoreFailed = true;
@@ -129,8 +128,7 @@ public abstract class PhotoBrowseViewController extends BSViewController {
             }
         });
 
-        addChildViewController(adBanner);
-
+        addChild(adBanner);
     }
 
     abstract protected void loadMore();

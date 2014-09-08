@@ -15,19 +15,19 @@ import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.bstoneinfo.lib.common.BSApplication;
-import com.bstoneinfo.lib.common.BSNotificationCenter.BSNotificationEvent;
+import com.bstoneinfo.lib.app.BSApplication;
+import com.bstoneinfo.lib.common.BSObserverCenter.BSObserverEvent;
 import com.bstoneinfo.lib.common.BSUtils;
-import com.bstoneinfo.lib.ui.BSViewController;
+import com.bstoneinfo.lib.frame.BSFrame;
 
-public class BSAdBannerViewController extends BSViewController {
+public class BSAdBanner extends BSFrame {
 
     private final ArrayList<BSAdObject> adObjectArray = new ArrayList<BSAdObject>();
     private final String bannerType;
     private int adIndex = -1;
     private boolean bVerticalShow;
 
-    public BSAdBannerViewController(Context context, final String bannerType) {
+    public BSAdBanner(Context context, final String bannerType) {
         super(new LinearLayout(context));
         ((LinearLayout) getRootView()).setOrientation(LinearLayout.VERTICAL);
         this.bannerType = bannerType;
@@ -69,14 +69,14 @@ public class BSAdBannerViewController extends BSViewController {
     }
 
     @Override
-    protected void viewDidLoad() {
-        super.viewDidLoad();
+    protected void onLoad() {
+        super.onLoad();
         MarginLayoutParams params = (MarginLayoutParams) getRootView().getLayoutParams();
         params.width = ViewGroup.LayoutParams.MATCH_PARENT;
         params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         getRootView().setLayoutParams(params);
         startAd();
-        BSApplication.defaultNotificationCenter.addObserver(this, BSNotificationEvent.REMOTE_CONFIG_DID_CHANGE, new Observer() {
+        BSApplication.defaultNotificationCenter.addObserver(this, BSObserverEvent.REMOTE_CONFIG_DID_CHANGE, new Observer() {
             @Override
             public void update(Observable observable, Object data) {
                 if (!adObjectArray.isEmpty()) {
@@ -103,11 +103,10 @@ public class BSAdBannerViewController extends BSViewController {
     }
 
     @Override
-    protected void destroy() {
+    protected void onDestroy() {
         for (BSAdObject adObject : adObjectArray) {
             adObject.destroy();
         }
-        super.destroy();
     }
 
     private void startAd() {

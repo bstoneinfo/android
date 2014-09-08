@@ -1,4 +1,4 @@
-package com.bstoneinfo.lib.ui;
+package com.bstoneinfo.lib.frame;
 
 import java.util.ArrayList;
 
@@ -7,35 +7,48 @@ import android.graphics.Typeface;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
+import com.bstoneinfo.lib.app.BSActivity;
 import com.bstoneinfo.lib.view.BSPagerSlidingTabView;
 
-import custom.R;
+public class BSPagerFrame extends BSFrame {
 
-public class BSPagerBarViewController extends BSViewController {
-
-    private final ArrayList<String> titles;
+    private final ArrayList<String> titles = new ArrayList<String>();
     private final BSPagerSlidingTabView pagerSlidingTabStrip;
-    private final ViewPager tabPagers;
+    private final ViewPager viewPager;
     private BSPagerAdapter pagerAdapter;
     private OnPageChangeListener onPageChangeListener;
     private int currentSelectedPosition = -1;
 
-    public BSPagerBarViewController(Context context, ArrayList<BSViewController> childViewControllers, ArrayList<String> titles) {
-        super(context, R.layout.bs_pager_view_controller);
-        getChildViewControllers().addAll(childViewControllers);
-        this.titles = titles;
-        tabPagers = (ViewPager) getRootView().findViewById(R.id.bs_tab_pagers);
-        tabPagers.setOffscreenPageLimit(2);
-        pagerSlidingTabStrip = (BSPagerSlidingTabView) getRootView().findViewById(R.id.bs_pagerSlidingTabStrip);
+    public BSPagerFrame(Context _context, BSFrame _childFrames[], String _titles[], int _defaultSelected) {
+        super(new LinearLayout(_context));
+        for (BSFrame frame : _childFrames) {
+            getChildFrames().add(frame);
+        }
+        for (String title : _titles) {
+            titles.add(title);
+        }
+        currentSelectedPosition = _defaultSelected;
+
+        LinearLayout rootView = (LinearLayout) getRootView();
+        rootView.setOrientation(LinearLayout.VERTICAL);
+        pagerSlidingTabStrip = new BSPagerSlidingTabView(_context);
+        rootView.addView(pagerSlidingTabStrip, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, BSActivity.dip2px(45)));
+        viewPager = new ViewPager(_context);
+        viewPager.setOffscreenPageLimit(1);
+        rootView.addView(viewPager, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1));
+
         pagerSlidingTabStrip.setOnPageChangeListener(new OnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                getChildViewControllers().get(position)
-                        .showViewController(currentSelectedPosition >= 0 ? getChildViewControllers().get(currentSelectedPosition) : null, null, null);
+                if (currentSelectedPosition >= 0) {
+                    getChildFrames().get(currentSelectedPosition).hide();
+                }
+                currentSelectedPosition = position;
+                getChildFrames().get(currentSelectedPosition).show();
                 if (onPageChangeListener != null) {
                     onPageChangeListener.onPageSelected(position);
                 }
@@ -55,6 +68,23 @@ public class BSPagerBarViewController extends BSViewController {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onLoad() {
+        super.onLoad();
+        pagerAdapter = new BSPagerAdapter();
+        viewPager.setAdapter(pagerAdapter);
+        pagerSlidingTabStrip.setViewPager(viewPager);
+    }
+
+    @Override
+    protected ArrayList<BSFrame> getActiveChildFrames() {
+        ArrayList<BSFrame> frames = new ArrayList<BSFrame>();
+        if (currentSelectedPosition >= 0 && currentSelectedPosition < getChildFrames().size()) {
+            frames.add(getChildFrames().get(currentSelectedPosition));
+        }
+        return frames;
     }
 
     public void setAllCaps(boolean textAllCaps) {
@@ -97,28 +127,20 @@ public class BSPagerBarViewController extends BSViewController {
         onPageChangeListener = listener;
     }
 
-    @Override
-    protected void viewDidLoad() {
-        pagerAdapter = new BSPagerAdapter();
-        tabPagers.setAdapter(pagerAdapter);
-        pagerSlidingTabStrip.setViewPager(tabPagers);
-    }
-
     private class BSPagerAdapter extends PagerAdapter {
 
         @Override
         public int getCount() {
-            return getChildViewControllers().size();
+            return getChildFrames().size();
         }
 
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
-            Log.d("BSPagerAdapter", "instantiateItem position=" + position);
-            BSViewController viewController = getChildViewControllers().get(position);
-            View rootView = viewController.getRootView();
+            BSFrame frame = getChildFrames().get(position);
+            View rootView = frame.getRootView();
             if (rootView.getParent() == null) {
                 container.addView(rootView);
-                viewController.viewDidLoad();
+                frame.load();
             }
             return rootView;
         }

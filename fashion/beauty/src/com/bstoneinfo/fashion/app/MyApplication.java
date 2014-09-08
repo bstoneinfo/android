@@ -1,6 +1,6 @@
 package com.bstoneinfo.fashion.app;
 
-import com.bstoneinfo.lib.common.BSApplication;
+import com.bstoneinfo.lib.app.BSApplication;
 
 import custom.Config;
 

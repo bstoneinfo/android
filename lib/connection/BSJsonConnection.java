@@ -1,4 +1,4 @@
-package com.bstoneinfo.lib.net;
+package com.bstoneinfo.lib.connection;
 
 import org.json.JSONException;
 import org.json.JSONObject;

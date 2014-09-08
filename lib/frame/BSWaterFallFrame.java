@@ -1,4 +1,4 @@
-package com.bstoneinfo.lib.ui;
+package com.bstoneinfo.lib.frame;
 
 import android.content.Context;
 import android.view.View;
@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 
 import com.bstoneinfo.lib.view.BSScrollView;
 
-public class BSWaterFallViewController extends BSViewController {
+public class BSWaterFallFrame extends BSFrame {
 
     public enum PullUpState {
         NORMAL,
@@ -27,7 +27,7 @@ public class BSWaterFallViewController extends BSViewController {
     private View footerView, footerNormalView, footerLoadingView, footerFailedView, footerFinishedView;
     private PullUpState pullUpState;
 
-    public BSWaterFallViewController(Context context, int columnCount, int columnInterval) {
+    public BSWaterFallFrame(Context context, int columnCount, int columnInterval) {
         super(context);
         scrollView = new BSScrollView(context);
         getRootView().addView(scrollView);
@@ -100,8 +100,8 @@ public class BSWaterFallViewController extends BSViewController {
     }
 
     @Override
-    protected void viewDidLoad() {
-        super.viewDidLoad();
+    protected void onLoad() {
+        super.onLoad();
         mainLayout.addView(bodyLayout, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         if (footerView != null) {
             mainLayout.addView(footerView);
