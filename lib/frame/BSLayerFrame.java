@@ -31,4 +31,13 @@ public class BSLayerFrame extends BSFrame {
         getBaseFrame().load();
     }
 
+    @Override
+    public boolean back() {
+        if (getChildFrames().size() > 1) {
+            getTopFrame().dismiss();
+            return true;
+        }
+        return false;
+    }
+
 }

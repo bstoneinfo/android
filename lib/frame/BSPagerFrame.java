@@ -68,14 +68,13 @@ public class BSPagerFrame extends BSFrame {
                 }
             }
         });
-    }
-
-    @Override
-    protected void onLoad() {
-        super.onLoad();
         pagerAdapter = new BSPagerAdapter();
         viewPager.setAdapter(pagerAdapter);
         pagerSlidingTabStrip.setViewPager(viewPager);
+        pagerSlidingTabStrip.setAllCaps(false);
+        pagerSlidingTabStrip.setShouldExpand(true);
+        pagerSlidingTabStrip.setIndicatorHeight(BSActivity.dip2px(4));
+        pagerSlidingTabStrip.setTypeface(null, Typeface.NORMAL);
     }
 
     @Override

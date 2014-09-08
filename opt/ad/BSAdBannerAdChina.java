@@ -6,13 +6,11 @@ import com.adchina.android.ads.AdManager;
 import com.adchina.android.ads.api.AdBannerListener;
 import com.adchina.android.ads.api.AdView;
 import com.bstoneinfo.lib.ad.BSAdObject;
-import com.bstoneinfo.lib.ad.BSAdUtils;
-import com.bstoneinfo.lib.ad.BSAnalyses;
 
 public class BSAdBannerAdChina extends BSAdObject {
 
-    public BSAdBannerAdChina(Activity activity) {
-        super(activity, BSAdUtils.getAdBannerAppKey("AdChina"));
+    public BSAdBannerAdChina(Activity activity, String adUnit) {
+        super(activity, adUnit, "adchina_banner");
     }
 
     @Override
@@ -31,22 +29,20 @@ public class BSAdBannerAdChina extends BSAdObject {
             @Override
             public void onReceiveAd(AdView arg0) {
                 adReceived();
-                BSAnalyses.getInstance().event("AdBanner_Received", "AdChina");
             }
 
             @Override
             public void onFailedToReceiveAd(AdView arg0) {
                 adFailed();
-                BSAnalyses.getInstance().event("AdBanner_Failed", "AdChina");
             }
 
             @Override
             public void onClickBanner(AdView arg0) {
-                BSAnalyses.getInstance().event("AdBanner_Click", "AdChina");
+                adClicked();
             }
         });
         ((AdView) adView).start();
-        BSAnalyses.getInstance().event("AdBanner_Request", "AdChina");
+        adRequested();
     }
 
 }

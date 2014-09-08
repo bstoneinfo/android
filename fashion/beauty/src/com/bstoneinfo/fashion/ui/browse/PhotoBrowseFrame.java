@@ -40,7 +40,7 @@ public abstract class PhotoBrowseFrame extends BSFrame {
         bLoadmoreEnded = loadmoreEnded;
         getRootView().setBackgroundColor(Color.BLACK);
         pagerView = new BSPagerView(getContext());
-        adBanner = new BSAdBanner(getActivity(), "PhotoPager");
+        adBanner = new BSAdBanner(getActivity(), "BrowseBanner");
     }
 
     @Override

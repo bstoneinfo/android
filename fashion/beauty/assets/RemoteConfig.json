@@ -8,59 +8,37 @@
   "Ad": {
     "Screen": {
       "AppKey": {
-        "Admob": "ca-app-pub-3897310542142538/4838109406",
-        "AdChina": "81323"
+        "admob_screen": "ca-app-pub-3897310542142538/4838109406",
+        "adchina_screen": "81323"
       },
       "AdType": [
-        "adchina",
-        "admob"
+        "adchina_screen",
+        "admob_screen"
       ],
-      "ScreenAdPresentSecond": 5,
-      "CycleInterval": 5
+      "ScreenAdPresentSecond": 8,
+      "CycleInterval": 8
     },
-    "Banner": {
+    "MainBanner":{
       "AppKey": {
-        "Mobisage": "244648fdc1f14616aa865780c50891f7",
-        "Baidu": "bc1ce592",
-        "Admob": "ca-app-pub-3897310542142538/8654485008",
-        "AdChina": "2197607"
+        "mobisage_banner": "244648fdc1f14616aa865780c50891f7",
+        "baidu_banner": "bc1ce592",
+        "admob_banner": "ca-app-pub-3897310542142538/8654485008",
+        "adchina_banner": "2197607"
       },
-             "ExploreMain": {
         "AdType": [
-          "admob"
+          "adchina_banner",        
+          "admob_banner"
         ]
+    },
+	  "BrowseBanner": {
+      "AppKey": {
+        "admob_banner": "ca-app-pub-3897310542142538/8654485008",
+        "adchina_banner": "2197607"
       },
-      "ExploreFooter": {
-        "AdType": [
-          "adchina"
-        ]
-      },
-      "HistroyMain": {
-        "AdType": [
-          "adchina"
-        ]
-      },
-      "HistroyFooter": {
-        "AdType": [
-          "admob"
-        ]
-      },
-      "FavoriteMain": {
-        "AdType": [
-          "adchina"
-        ]
-      },
-      "FavoriteFooter": {
-        "AdType": [
-          "admob"
-        ]
-      },
-      "PhotoPager": {
-        "AdType": [
-          "adchina",
-          "admob"
-        ]
-      }
-    }
+	    "AdType": [
+	      "adchina_banner",
+	      "admob_banner"
+	    ]
+	  }
   }
 }

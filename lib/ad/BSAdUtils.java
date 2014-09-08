@@ -6,15 +6,18 @@ import java.util.Locale;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.text.TextUtils;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.bstoneinfo.lib.app.BSApplication;
 import com.bstoneinfo.lib.common.BSLog;
+import com.bstoneinfo.lib.common.BSUtils;
 
 public class BSAdUtils {
 
-    static final HashMap<String, Class<? extends BSAdObject>> screenAdClassMap = new HashMap<String, Class<? extends BSAdObject>>();
-    static final HashMap<String, Class<? extends BSAdObject>> bannerAdClassMap = new HashMap<String, Class<? extends BSAdObject>>();
+    static final HashMap<String, Class<? extends BSAdObject>> adClassMap = new HashMap<String, Class<? extends BSAdObject>>();
 
     public static JSONObject optJsonObject(JSONObject jsonObject, String name) {
         JSONObject jo = jsonObject.optJSONObject(name);
@@ -37,47 +40,22 @@ public class BSAdUtils {
         return jsonAd;
     }
 
-    public static JSONObject getAdScreenConfig() {
+    public static JSONObject getAdUnitConfig(String adUnit) {
         JSONObject jsonAd = getAdConfig();
-        return optJsonObject(jsonAd, "Screen");
+        return optJsonObject(jsonAd, adUnit);
     }
 
-    public static String getAdScreenAppKey(String adType) {
-        JSONObject jsonKey = optJsonObject(getAdScreenConfig(), "AppKey");
+    public static String getAdAppKey(String adUnit, String adType) {
+        JSONObject jsonKey = optJsonObject(getAdUnitConfig(adUnit), "AppKey");
         return jsonKey.optString(adType);
     }
 
-    public static JSONArray getAdScreenType() {
-        return optJsonArray(getAdScreenConfig(), "AdType");
+    public static JSONArray getAdTypes(String adUnit) {
+        return optJsonArray(getAdUnitConfig(adUnit), "AdType");
     }
 
-    public static JSONObject getAdBannerConfig() {
-        JSONObject jsonAd = getAdConfig();
-        return optJsonObject(jsonAd, "Banner");
-    }
-
-    public static String getAdBannerAppKey(String adType) {
-        JSONObject jsonKey = optJsonObject(getAdBannerConfig(), "AppKey");
-        return jsonKey.optString(adType);
-    }
-
-    public static JSONArray getAdBannerType(String bannerName) {
-        JSONObject jsonBanner = optJsonObject(getAdBannerConfig(), bannerName);
-        return optJsonArray(jsonBanner, "AdType");
-    }
-
-    public static boolean checkAdScreenFilter(String adType) {
-        JSONObject jsonFilter = optJsonObject(getAdScreenConfig(), "Filter");
-        return checkAdFilter(jsonFilter, "adScreen", adType);
-    }
-
-    public static boolean checkAdBannerFilter(String bannerName, String adType) {
-        JSONObject jsonBanner = optJsonObject(getAdBannerConfig(), bannerName);
-        JSONObject jsonFilter = optJsonObject(jsonBanner, "Filter");
-        return checkAdFilter(jsonFilter, "adBanner", adType);
-    }
-
-    private static boolean checkAdFilter(JSONObject jsonFilter, String unitName, String adType) {
+    public static boolean checkAdFilter(String adUnit, String adType) {
+        JSONObject jsonFilter = optJsonObject(getAdUnitConfig(adUnit), "Filter");
         JSONObject jsonAd = optJsonObject(jsonFilter, adType);
         JSONArray languageArray = optJsonArray(jsonAd, "language");
         if (languageArray.length() > 0) {
@@ -89,22 +67,40 @@ public class BSAdUtils {
                 index++;
             }
             if (index == languageArray.length()) {
-                BSLog.e(unitName, adType + " not in language filter " + languageArray.toString());
+                BSLog.e(adType + "of '" + adUnit + "' not in language filter " + languageArray.toString());
                 return false;
             }
         }
         return true;
     }
 
-    public static int getScreenAdPresentSecond() {
-        return getAdScreenConfig().optInt("ScreenAdPresentSecond", 10);
+    public static BSAdObject createAdObject(Activity activity, String adUnit, String adName) {
+        Class<? extends BSAdObject> cls = BSAdUtils.adClassMap.get(adName);
+        if (cls == null) {
+            String msg = "AdBanner '" + adName + "'" + " not found.";
+            Log.e("adBanner", msg);
+            BSUtils.debugAssert(msg);
+            Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+            return null;
+        }
+        //检查filter
+        if (!BSAdUtils.checkAdFilter(adUnit, adName)) {
+            return null;
+        }
+        BSAdObject fsObj;
+        try {
+            fsObj = cls.getConstructor(Activity.class, String.class).newInstance(activity, adUnit);
+        } catch (Exception e) {
+            String msg = "AdBanner '" + adName + "' " + cls + " exception: " + e.getMessage() + " " + e.toString();
+            Log.e("adBanner", msg);
+            BSUtils.debugAssert(msg);
+            Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+            return null;
+        }
+        return fsObj;
     }
 
-    public static void registerAdScreen(String adType, Class<? extends BSAdObject> cls) {
-        screenAdClassMap.put(adType.toLowerCase(), cls);
-    }
-
-    public static void registerAdBanner(String adType, Class<? extends BSAdObject> cls) {
-        bannerAdClassMap.put(adType.toLowerCase(), cls);
+    public static void registerAdClass(String adType, Class<? extends BSAdObject> cls) {
+        adClassMap.put(adType, cls);
     }
 }

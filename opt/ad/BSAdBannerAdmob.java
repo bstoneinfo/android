@@ -3,8 +3,6 @@ package com.bstoneinfo.opt.ad;
 import android.app.Activity;
 
 import com.bstoneinfo.lib.ad.BSAdObject;
-import com.bstoneinfo.lib.ad.BSAdUtils;
-import com.bstoneinfo.lib.ad.BSAnalyses;
 import com.bstoneinfo.lib.common.BSLog;
 import com.bstoneinfo.lib.common.BSTimer;
 import com.google.ads.AdView;
@@ -13,8 +11,8 @@ public class BSAdBannerAdmob extends BSAdObject {
 
     private BSTimer nextLoadTimer;
 
-    public BSAdBannerAdmob(Activity activity) {
-        super(activity, BSAdUtils.getAdBannerAppKey("Admob"));
+    public BSAdBannerAdmob(Activity activity, String adUnit) {
+        super(activity, adUnit, "admob_banner");
     }
 
     @Override
@@ -28,7 +26,7 @@ public class BSAdBannerAdmob extends BSAdObject {
 
             @Override
             public void onReceiveAd(com.google.ads.Ad arg0) {
-                BSAnalyses.getInstance().event("AdBanner_Received", "Admob");
+                BSLog.d("Admob - onReceiveAd");
                 adReceived();
             }
 
@@ -44,8 +42,8 @@ public class BSAdBannerAdmob extends BSAdObject {
 
             @Override
             public void onFailedToReceiveAd(com.google.ads.Ad arg0, com.google.ads.AdRequest.ErrorCode arg1) {
+                BSLog.d("Admob - onFailedToReceiveAd");
                 adFailed();
-                BSAnalyses.getInstance().event("AdBanner_Failed", "Admob");
                 if (nextLoadTimer != null) {
                     nextLoadTimer.cancel();
                 }
@@ -62,7 +60,7 @@ public class BSAdBannerAdmob extends BSAdObject {
                 BSLog.d("Admob - onDismissScreen");
             }
         });
-        BSAnalyses.getInstance().event("AdBanner_Request", "Admob");
+        adRequested();
     }
 
     @Override

@@ -6,9 +6,9 @@ import java.util.Observer;
 
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
@@ -150,15 +150,28 @@ public abstract class BSActivity extends Activity {
     /*
      * 显示信息框
      */
+    @SuppressLint("NewApi")
+    private AlertDialog.Builder createAlertBuilder(String title, String text) {
+        AlertDialog.Builder builder;
+        if (android.os.Build.VERSION.SDK_INT >= 11) {
+            builder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT);
+        } else {
+            builder = new AlertDialog.Builder(this);
+        }
+        if (!TextUtils.isEmpty(title)) {
+            builder.setTitle(title);
+        }
+        builder.setMessage(text);
+        return builder;
+    }
+
     public AlertDialog alert(int titleResId, int alertTextResId, int buttonTextResId, final Runnable callback) {
         return alert(titleResId == 0 ? null : getString(titleResId), getString(alertTextResId), getString(buttonTextResId), callback);
     }
 
     public AlertDialog alert(String title, String text, String buttonText, final Runnable callback) {
 
-        AlertDialog.Builder builder = new Builder(this);
-        builder.setMessage(text);
-
+        AlertDialog.Builder builder = createAlertBuilder(title, text);
         builder.setPositiveButton(buttonText, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -171,12 +184,9 @@ public abstract class BSActivity extends Activity {
         });
 
         AlertDialog alert = builder.create();
-        if (!TextUtils.isEmpty(title)) {
-            alert.setTitle(title);
-        }
+        autoDestroyDialogs.add(alert);
         alert.setCancelable(false);
         alert.setCanceledOnTouchOutside(false);
-        autoDestroyDialogs.add(alert);
         alert.show();
         return alert;
     }
@@ -189,13 +199,8 @@ public abstract class BSActivity extends Activity {
     public AlertDialog confirm(String title, String text, int btnTxtResId1, int btnTxtResId2, final Runnable btnCallback1, final Runnable btnCallback2,
             final OnCancelListener onCancelListener) {
 
-        AlertDialog.Builder builder = new Builder(this);
-        if (!TextUtils.isEmpty(title)) {
-            builder.setTitle(title);
-        }
-        builder.setMessage(text);
-
-        builder.setPositiveButton(btnTxtResId1, new DialogInterface.OnClickListener() {
+        AlertDialog.Builder builder = createAlertBuilder(title, text);
+        builder.setNegativeButton(btnTxtResId1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 autoDestroyDialogs.remove(dialog);
@@ -206,7 +211,7 @@ public abstract class BSActivity extends Activity {
             }
         });
 
-        builder.setNegativeButton(btnTxtResId2, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(btnTxtResId2, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 autoDestroyDialogs.remove(dialog);
@@ -217,6 +222,7 @@ public abstract class BSActivity extends Activity {
             }
         });
         AlertDialog alert = builder.create();
+        autoDestroyDialogs.add(alert);
         alert.setCanceledOnTouchOutside(false);
         alert.setOnCancelListener(new OnCancelListener() {
             @Override
@@ -228,7 +234,6 @@ public abstract class BSActivity extends Activity {
                 }
             }
         });
-        autoDestroyDialogs.add(alert);
         alert.show();
         return alert;
     }

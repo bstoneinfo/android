@@ -6,32 +6,29 @@ import java.util.Observer;
 
 import org.json.JSONArray;
 
-import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.bstoneinfo.lib.app.BSApplication;
+import com.bstoneinfo.lib.common.BSLog;
 import com.bstoneinfo.lib.common.BSObserverCenter.BSObserverEvent;
-import com.bstoneinfo.lib.common.BSUtils;
 import com.bstoneinfo.lib.frame.BSFrame;
 
 public class BSAdBanner extends BSFrame {
 
     private final ArrayList<BSAdObject> adObjectArray = new ArrayList<BSAdObject>();
-    private final String bannerType;
+    private final String adUnit;
     private int adIndex = -1;
     private boolean bVerticalShow;
 
-    public BSAdBanner(Context context, final String bannerType) {
+    public BSAdBanner(Context context, final String adUnit) {
         super(new LinearLayout(context));
         ((LinearLayout) getRootView()).setOrientation(LinearLayout.VERTICAL);
-        this.bannerType = bannerType;
-        JSONArray adTypes = BSAdUtils.getAdBannerType(bannerType);
+        this.adUnit = adUnit;
+        JSONArray adTypes = BSAdUtils.getAdTypes(adUnit);
         for (int i = 0; i < adTypes.length(); i++) {
             String name = adTypes.optString(i);
             addAdObject(name);
@@ -39,29 +36,11 @@ public class BSAdBanner extends BSFrame {
     }
 
     private void addAdObject(String name) {
-        Class<? extends BSAdObject> cls = BSAdUtils.bannerAdClassMap.get(name);
-        if (cls == null) {
-            String msg = "AdBanner '" + name + "'" + " not found.";
-            Log.e("adBanner", msg);
-            BSUtils.debugAssert(msg);
-            Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-            return;
+        BSAdObject fsObj = BSAdUtils.createAdObject(getActivity(), adUnit, name);
+        if (fsObj != null) {
+            BSLog.d("addAdObject " + fsObj.toString());
+            adObjectArray.add(fsObj);
         }
-        //检查filter
-        if (!BSAdUtils.checkAdBannerFilter(bannerType, name)) {
-            return;
-        }
-        BSAdObject fsObj;
-        try {
-            fsObj = cls.getConstructor(Activity.class).newInstance(getActivity());
-        } catch (Exception e) {
-            String msg = "AdBanner '" + name + "'" + " exception: " + e.getMessage() + " " + e.toString();
-            Log.e("adBanner", msg);
-            BSUtils.debugAssert(msg);
-            Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-            return;
-        }
-        adObjectArray.add(fsObj);
     }
 
     public void setVerticalShow(boolean bVerticalShow) {
@@ -82,10 +61,10 @@ public class BSAdBanner extends BSFrame {
                 if (!adObjectArray.isEmpty()) {
                     return;
                 }
-                JSONArray adTypes = BSAdUtils.getAdBannerType(bannerType);
+                JSONArray adTypes = BSAdUtils.getAdTypes(adUnit);
                 for (int i = 0; i < adTypes.length(); i++) {
                     String type = adTypes.optString(i);
-                    Class<? extends BSAdObject> cls = BSAdUtils.bannerAdClassMap.get(type);
+                    Class<? extends BSAdObject> cls = BSAdUtils.adClassMap.get(type);
                     boolean bExist = false;
                     for (BSAdObject adObj : adObjectArray) {
                         if (adObj.getClass() == cls) {
