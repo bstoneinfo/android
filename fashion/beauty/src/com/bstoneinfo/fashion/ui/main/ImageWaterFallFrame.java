@@ -5,6 +5,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView.ScaleType;
@@ -36,8 +37,6 @@ public abstract class ImageWaterFallFrame extends BSWaterFallFrame {
     private final ArrayList<BSImageView> imageViewList = new ArrayList<BSImageView>();
     private final String dataEventName;
     private boolean memoryWaringReceived = false;
-
-    private final BSAdBanner adBanner;
     public final LinearLayout footerView;
 
     abstract protected void loadMore();
@@ -51,15 +50,16 @@ public abstract class ImageWaterFallFrame extends BSWaterFallFrame {
     public ImageWaterFallFrame(Context context, String dataEventName, String footerAdBannerName) {
         super(context, COLUMN_COUNT, BSActivity.dip2px(COLUMN_INTERVAL_DP));
         this.dataEventName = dataEventName;
-        adBanner = new BSAdBanner(getActivity(), footerAdBannerName);
-        adBanner.setVerticalShow(true);
-
         footerView = new LinearLayout(getContext());
         footerView.setOrientation(LinearLayout.VERTICAL);
         View loadmoreView = LayoutInflater.from(getContext()).inflate(R.layout.loadmore, null);
         setFooterView(footerView, loadmoreView.findViewById(R.id.loadmore_normal), loadmoreView.findViewById(R.id.loadmore_loading),
                 loadmoreView.findViewById(R.id.loadmore_failed), null);
-        addChild(adBanner, footerView);
+        if (!TextUtils.isEmpty(footerAdBannerName)) {
+            BSAdBanner adBanner = new BSAdBanner(getActivity(), footerAdBannerName);
+            adBanner.setVerticalShow(true);
+            addChild(adBanner, footerView);
+        }
         footerView.addView(loadmoreView);
         View.OnClickListener loadmoreClickListener = new View.OnClickListener() {
             @Override

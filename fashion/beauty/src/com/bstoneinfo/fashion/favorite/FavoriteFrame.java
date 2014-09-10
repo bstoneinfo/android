@@ -27,7 +27,7 @@ public class FavoriteFrame extends ImageWaterFallFrame {
     final View emptyTip;
 
     public FavoriteFrame(Context context) {
-        super(context, MyObserverEvent.FAVORITE_QUERYLIST_FINISHED, "FavoriteMain");
+        super(context, MyObserverEvent.FAVORITE_QUERYLIST_FINISHED, null);
         emptyTip = LayoutInflater.from(getContext()).inflate(R.layout.empty_tips, null);
         TextView textView = (TextView) emptyTip.findViewById(R.id.textView);
 

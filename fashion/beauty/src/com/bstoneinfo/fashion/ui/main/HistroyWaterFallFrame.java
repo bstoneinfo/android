@@ -18,7 +18,7 @@ import custom.R;
 public class HistroyWaterFallFrame extends CategoryWaterFallFrame {
 
     public HistroyWaterFallFrame(Context context, String categoryName) {
-        super(context, categoryName, MyObserverEvent.CATEGORY_HISTORY_FINISHED_ + categoryName, "HistroyMain");
+        super(context, categoryName, MyObserverEvent.CATEGORY_HISTORY_FINISHED_ + categoryName, "HistroyBanner");
 
         final View emptyTip = LayoutInflater.from(getContext()).inflate(R.layout.empty_tips, null);
         BSApplication.defaultNotificationCenter.addObserver(this, MyObserverEvent.CATEGORY_HISTORY_FINISHED_ + categoryName, new Observer() {
@@ -26,7 +26,7 @@ public class HistroyWaterFallFrame extends CategoryWaterFallFrame {
             @Override
             public void update(Observable observable, Object data) {
                 ArrayList<CategoryItemData> dataList = (ArrayList<CategoryItemData>) data;
-                if (dataList != null && dataList.isEmpty() && getDataList().isEmpty()) {
+                if (dataList != null && dataList.isEmpty() && imageWaterFallFrame.getDataList().isEmpty()) {
                     getRootView().addView(emptyTip);
                 } else {
                     getRootView().removeView(emptyTip);

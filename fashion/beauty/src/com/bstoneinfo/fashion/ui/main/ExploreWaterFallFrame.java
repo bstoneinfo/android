@@ -8,7 +8,7 @@ import com.bstoneinfo.lib.ad.BSAnalyses;
 public class ExploreWaterFallFrame extends CategoryWaterFallFrame {
 
     public ExploreWaterFallFrame(Context context, String categoryName) {
-        super(context, categoryName, MyObserverEvent.CATEGORY_EXPLORE_FINISHED_ + categoryName, "ExploreMain");
+        super(context, categoryName, MyObserverEvent.CATEGORY_EXPLORE_FINISHED_ + categoryName, "ExploreBanner");
     }
 
     @Override

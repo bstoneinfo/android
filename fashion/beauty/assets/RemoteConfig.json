@@ -18,10 +18,28 @@
       "ScreenAdPresentSecond": 8,
       "CycleInterval": 8
     },
-    "MainBanner":{
+    "ExploreBanner":{
       "AppKey": {
-        "mobisage_banner": "244648fdc1f14616aa865780c50891f7",
-        "baidu_banner": "bc1ce592",
+        "admob_banner": "ca-app-pub-3897310542142538/8654485008",
+        "adchina_banner": "2197607"
+      },
+        "AdType": [
+          "adchina_banner",        
+          "admob_banner"
+        ]
+    },
+    "HistroyBanner":{
+      "AppKey": {
+        "admob_banner": "ca-app-pub-3897310542142538/8654485008",
+        "adchina_banner": "2197607"
+      },
+        "AdType": [
+          "adchina_banner",        
+          "admob_banner"
+        ]
+    },
+    "FavoriteBanner":{
+      "AppKey": {
         "admob_banner": "ca-app-pub-3897310542142538/8654485008",
         "adchina_banner": "2197607"
       },
@@ -32,6 +50,7 @@
     },
 	  "BrowseBanner": {
       "AppKey": {
+        "mobisage_banner": "244648fdc1f14616aa865780c50891f7",
         "admob_banner": "ca-app-pub-3897310542142538/8654485008",
         "adchina_banner": "2197607"
       },

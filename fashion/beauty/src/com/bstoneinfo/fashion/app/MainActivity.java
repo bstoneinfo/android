@@ -46,7 +46,7 @@ public class MainActivity extends BSActivity {
         if (Config.isPro) {
         } else {
             String[] titles = new String[] { getString(R.string.tab_explore), getString(R.string.tab_history), getString(R.string.tab_favorite), getString(R.string.tab_settings) };
-            MyPagerFrame pagerFrame = new MyPagerFrame(this, new BSFrame[] { frame1, frame2, favoriteFrame, settingsFrame }, titles, 0, "MainBanner");
+            MyPagerFrame pagerFrame = new MyPagerFrame(this, new BSFrame[] { frame1, frame2, favoriteFrame, settingsFrame }, titles, 0);
             pagerFrame.setOnPageChangeListener(new OnPageChangeListener() {
                 @Override
                 public void onPageSelected(int arg0) {

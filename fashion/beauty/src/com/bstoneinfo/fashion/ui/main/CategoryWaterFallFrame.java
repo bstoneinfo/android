@@ -5,7 +5,7 @@ import android.content.Context;
 import com.bstoneinfo.fashion.data.CategoryDataSource;
 import com.bstoneinfo.fashion.data.CategoryManager;
 
-public abstract class CategoryWaterFallFrame extends ImageWaterFallFrame {
+public abstract class CategoryWaterFallFrame extends ImageAdWaterFallFrame {
 
     protected final String categoryName;
 

@@ -13,7 +13,7 @@ public class CategoryFrame extends MyPagerFrame {
 
     public CategoryFrame(Context _context, String _categoryName) {
         super(_context, new BSFrame[] { new ExploreWaterFallFrame(_context, _categoryName), new HistroyWaterFallFrame(_context, _categoryName) }, new String[] {
-                _context.getString(R.string.tab_explore), _context.getString(R.string.tab_history) }, 0, null);
+                _context.getString(R.string.tab_explore), _context.getString(R.string.tab_history) }, 0);
         categoryName = _categoryName;
     }
 

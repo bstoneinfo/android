@@ -171,8 +171,10 @@ public class BSFrame {
         if (parentView != null) {
             parentView.removeView(rootView);
         }
-        parentFrame.childFrames.remove(this);
-        parentFrame = null;
+        if (parentFrame != null) {
+            parentFrame.childFrames.remove(this);
+            parentFrame = null;
+        }
 
     }
 
