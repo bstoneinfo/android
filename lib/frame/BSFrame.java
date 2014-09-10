@@ -145,7 +145,7 @@ public class BSFrame {
         return false;
     }
 
-    public void destroy() {
+    void destroy() {
         frameStatus = FrameStatus.DISTROY;
         onDestroy();
         BSApplication.defaultNotificationCenter.removeObservers(this);
@@ -179,7 +179,9 @@ public class BSFrame {
     }
 
     public void dismiss() {
-        destroy();
+        if (parentFrame != null) {
+            parentFrame.removeChild(this);
+        }
     }
 
     public void addChild(BSFrame childFrame) {
@@ -207,7 +209,6 @@ public class BSFrame {
             return;
         }
         childFrame.hide();
-        childFrames.remove(childFrame);
         childFrame.destroy();
     }
 

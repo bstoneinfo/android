@@ -112,7 +112,7 @@ public abstract class BSActivity extends Activity {
     @Override
     protected void onDestroy() {
         if (mainFrame != null) {
-            mainFrame.destroy();
+            mainFrame.dismiss();
         }
         BSApplication.defaultNotificationCenter.removeObservers(this);
         super.onDestroy();

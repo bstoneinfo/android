@@ -38,7 +38,7 @@ public class BSPagerFrame extends BSFrame {
         pagerSlidingTabStrip = new BSPagerSlidingTabView(_context);
         rootView.addView(pagerSlidingTabStrip, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, BSActivity.dip2px(45)));
         viewPager = new ViewPager(_context);
-        viewPager.setOffscreenPageLimit(1);
+        viewPager.setOffscreenPageLimit(3);
         rootView.addView(viewPager, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1));
 
         pagerSlidingTabStrip.setOnPageChangeListener(new OnPageChangeListener() {

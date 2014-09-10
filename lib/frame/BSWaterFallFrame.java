@@ -17,13 +17,13 @@ public class BSWaterFallFrame extends BSFrame {
         FINISHED
     }
 
-    private final int columnCount;
+    protected final int columnCount;
     private final int columnInterval;
     private final BSScrollView scrollView;
     protected final LinearLayout mainLayout;//scrollView下的主布局，包括body和footer
     private final LinearLayout bodyLayout;
-    private final LinearLayout[] columnLayoutArray;
-    private final int[] columnHeightArray;
+    protected final LinearLayout[] columnLayoutArray;
+    protected final int[] columnHeightArray;
     private View footerView, footerNormalView, footerLoadingView, footerFailedView, footerFinishedView;
     private PullUpState pullUpState;
 
@@ -127,7 +127,7 @@ public class BSWaterFallFrame extends BSFrame {
         return count;
     }
 
-    public void addView(View childView, int width, int height) {
+    public void addView(View childView, int width, int height, boolean addToHead) {
         int minHeight = columnHeightArray[0];
         int minColumn = 0;
         for (int i = 1; i < columnCount; i++) {
@@ -139,7 +139,11 @@ public class BSWaterFallFrame extends BSFrame {
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, height);
         lp.setMargins(0, 0, 0, columnInterval);
         columnHeightArray[minColumn] += height;
-        columnLayoutArray[minColumn].addView(childView, lp);
+        if (addToHead) {
+            columnLayoutArray[minColumn].addView(childView, 0, lp);
+        } else {
+            columnLayoutArray[minColumn].addView(childView, lp);
+        }
     }
 
     public void removeAllViews() {

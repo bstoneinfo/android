@@ -2,6 +2,8 @@ package com.bstoneinfo.lib.frame;
 
 import java.util.ArrayList;
 
+import com.bstoneinfo.lib.common.BSUtils;
+
 public class BSLayerFrame extends BSFrame {
 
     public BSLayerFrame(BSFrame baseFrame) {
@@ -40,4 +42,23 @@ public class BSLayerFrame extends BSFrame {
         return false;
     }
 
+    @Override
+    public void removeChild(BSFrame childFrame) {
+        if (childFrame.getParentFrame() != this) {
+            BSUtils.debugAssert("The subframe [" + childFrame + "] has not added to parent frame [" + this + "]");
+            return;
+        }
+        if (childFrame == getBaseFrame()) {
+            BSUtils.debugAssert("Cannot remove base frame [" + this + "] in a BSLayerFrame");
+            return;
+        }
+        boolean bTop = childFrame == getTopFrame();
+        if (bTop) {
+            childFrame.hide();
+        }
+        childFrame.destroy();
+        if (bTop) {
+            getTopFrame().show();
+        }
+    }
 }

@@ -16,18 +16,18 @@ import android.widget.TextView;
 
 import com.bstoneinfo.fashion.app.MyObserverEvent;
 import com.bstoneinfo.fashion.data.CategoryItemData;
-import com.bstoneinfo.fashion.ui.main.ImageWaterFallFrame;
+import com.bstoneinfo.fashion.ui.main.ImageAdWaterFallFrame;
 import com.bstoneinfo.lib.ad.BSAnalyses;
 import com.bstoneinfo.lib.app.BSApplication;
 
 import custom.R;
 
-public class FavoriteFrame extends ImageWaterFallFrame {
+public class FavoriteFrame extends ImageAdWaterFallFrame {
 
     final View emptyTip;
 
     public FavoriteFrame(Context context) {
-        super(context, MyObserverEvent.FAVORITE_QUERYLIST_FINISHED, null);
+        super(context, MyObserverEvent.FAVORITE_QUERYLIST_FINISHED, "FavoriteBanner");
         emptyTip = LayoutInflater.from(getContext()).inflate(R.layout.empty_tips, null);
         TextView textView = (TextView) emptyTip.findViewById(R.id.textView);
 
@@ -43,7 +43,7 @@ public class FavoriteFrame extends ImageWaterFallFrame {
             @Override
             public void update(Observable observable, Object data) {
                 ArrayList<CategoryItemData> dataList = (ArrayList<CategoryItemData>) data;
-                if (dataList != null && dataList.isEmpty() && getDataList().isEmpty()) {
+                if (dataList != null && dataList.isEmpty() && imageWaterFallFrame.getDataList().isEmpty()) {
                     getRootView().addView(emptyTip);
                 } else {
                     getRootView().removeView(emptyTip);
@@ -70,22 +70,22 @@ public class FavoriteFrame extends ImageWaterFallFrame {
             public void update(Observable observable, Object data) {
                 CategoryItemData itemData = (CategoryItemData) data;
                 boolean isFavorite = FavoriteManager.getInstance().isFavorite(itemData);
-                Iterator<CategoryItemData> iterator = getDataList().iterator();
+                Iterator<CategoryItemData> iterator = imageWaterFallFrame.getDataList().iterator();
                 while (iterator.hasNext()) {
                     CategoryItemData i = iterator.next();
                     if (TextUtils.equals(itemData.getFavoriteKey(), i.getFavoriteKey())) {
                         if (!isFavorite) {
                             iterator.remove();
-                            //TODO: remove a view
+                            imageWaterFallFrame.removeView(itemData);
                         }
                         break;
                     }
                 }
                 if (isFavorite) {
-                    getDataList().add(0, itemData);
-                    //TODO : add a view
+                    imageWaterFallFrame.getDataList().add(0, itemData);
+                    imageWaterFallFrame.addView(itemData, true);
                 }
-                if (getDataList().isEmpty()) {
+                if (imageWaterFallFrame.getDataList().isEmpty()) {
                     getRootView().addView(emptyTip);
                 } else {
                     getRootView().removeView(emptyTip);

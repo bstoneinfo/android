@@ -100,7 +100,7 @@ public abstract class ImageWaterFallFrame extends BSWaterFallFrame {
                         setPullupState(PullUpState.NORMAL);
                         itemDataList.addAll(dataList);
                         for (CategoryItemData itemData : dataList) {
-                            addView(itemData);
+                            addView(itemData, false);
                         }
                     }
                 }
@@ -160,8 +160,7 @@ public abstract class ImageWaterFallFrame extends BSWaterFallFrame {
         imageView.setVisible(bVisible);
     }
 
-    public void addView(final CategoryItemData itemData) {
-        final int position = getChildViewCount();
+    public void addView(final CategoryItemData itemData, boolean addToHead) {
         final String remoteUrl = "http://" + MyUtils.getHost() + itemData.thumbURL;
         final BSImageView imageView = new BSImageView(getContext());
         imageView.setBackgroundColor(0xFFD0D0D0);
@@ -173,13 +172,23 @@ public abstract class ImageWaterFallFrame extends BSWaterFallFrame {
         if (memoryWaringReceived) {
             setImageViewVisible(imageView, getFrameStatus() == FrameStatus.SHOWING || getFrameStatus() == FrameStatus.SHOWN);
         }
-        super.addView(imageView, width, height);
+        super.addView(imageView, width, height, addToHead);
         imageView.setUrl(remoteUrl);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 BSImageLoadStatus status = imageView.getImageLoadStatus();
                 if (status == BSImageLoadStatus.LOADED) {
+                    int position = -1;
+                    for (int i = 0; i < itemDataList.size(); i++) {
+                        if (itemData == itemDataList.get(i)) {
+                            position = i;
+                            break;
+                        }
+                    }
+                    if (position < 0) {
+                        return;
+                    }
                     PhotoBrowseFrame photoBrowseViewController = new PhotoBrowseFrame(getContext(), itemData.category, itemDataList, dataEventName, position,
                             getPullUpState() == PullUpState.FINISHED) {
                         @Override
@@ -200,6 +209,21 @@ public abstract class ImageWaterFallFrame extends BSWaterFallFrame {
                 }
             }
         });
+    }
+
+    public void removeView(CategoryItemData itemData) {
+        final String remoteUrl = "http://" + MyUtils.getHost() + itemData.thumbURL;
+        for (int i = 0; i < columnCount; i++) {
+            for (int j = 0; j < columnLayoutArray[i].getChildCount(); j++) {
+                BSImageView imageView = (BSImageView) columnLayoutArray[i].getChildAt(j);
+                if (TextUtils.equals(imageView.getUrl(), remoteUrl)) {
+                    int height = imageView.getHeight();
+                    columnHeightArray[i] -= height;
+                    columnLayoutArray[i].removeViewAt(j);
+                    break;
+                }
+            }
+        }
     }
 
 }
