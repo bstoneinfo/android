@@ -11,10 +11,17 @@ import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
@@ -22,7 +29,6 @@ import android.os.Looper;
 import android.os.SystemClock;
 import android.text.TextUtils;
 
-import com.bstoneinfo.lib.ad.BSAnalyses;
 import com.bstoneinfo.lib.app.BSApplication;
 import com.bstoneinfo.lib.connection.BSFileConnection;
 import com.bstoneinfo.lib.connection.BSFileConnection.BSFileConnectionListener;
@@ -30,6 +36,18 @@ import com.bstoneinfo.lib.connection.BSFileConnection.BSFileConnectionListener;
 import custom.R;
 
 public class BSUtils {
+
+    public static String getManifestMetaData(String metaName) {
+        String tag = null;
+        try {
+            ApplicationInfo info = BSApplication.getApplication().getPackageManager()
+                    .getApplicationInfo(BSApplication.getApplication().getPackageName(), PackageManager.GET_META_DATA);
+            tag = info.metaData.getString(metaName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return tag;
+    }
 
     public static boolean isAppInForeground() {
         ActivityManager activityManager = (ActivityManager) BSApplication.getApplication().getSystemService(Context.ACTIVITY_SERVICE);
@@ -52,6 +70,22 @@ public class BSUtils {
         } else {
             new Handler(Looper.getMainLooper()).post(action);
         }
+    }
+
+    public static JSONObject optJsonObject(JSONObject jsonObject, String name) {
+        JSONObject jo = jsonObject != null ? jsonObject.optJSONObject(name) : null;
+        if (jo == null) {
+            jo = new JSONObject();
+        }
+        return jo;
+    }
+
+    public static JSONArray optJsonArray(JSONObject jsonObject, String name) {
+        JSONArray ja = jsonObject != null ? jsonObject.optJSONArray(name) : null;
+        if (ja == null) {
+            ja = new JSONArray();
+        }
+        return ja;
     }
 
     // 通过设定时间间隔来避免某些按钮的重复点击
@@ -211,12 +245,41 @@ public class BSUtils {
         return url;
     }
 
-    public static void downloadApk(String url, final boolean bInstall) {
+    public static boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) BSApplication.getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = cm.getActiveNetworkInfo();
+        return info != null && info.isConnected();
+    }
+
+    public static boolean isWifiConnected() {
+        ConnectivityManager cm = (ConnectivityManager) BSApplication.getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifi = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        return wifi != null && wifi.isConnected();
+    }
+
+    public static boolean isMobileConnected() {
+        ConnectivityManager cm = (ConnectivityManager) BSApplication.getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifi = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        return wifi != null && wifi.isConnected();
+    }
+
+    public interface DownloadApkListener {
+        public void onExist();
+
+        public void onDownloading();
+
+        public void onSuccess();
+
+        public void onFail();
+
+    }
+
+    public static void downloadApk(String url, final DownloadApkListener listener) {
         String localPath = BSUtils.getDiskPath(url) + ".apk";
         if (new File(localPath).exists()) {
-            BSAnalyses.getInstance().event("Upgrade_Download", "Exist");
-            if (bInstall) {
-                installApk(localPath);
+            installApk(localPath);
+            if (listener != null) {
+                listener.onExist();
             }
             return;
         }
@@ -224,20 +287,25 @@ public class BSUtils {
         fileConnection.setLocalPath(localPath);
         fileConnection.setConnectionQueue(BSApplication.getApplication().defaultConnnectionQueue);
         if (BSApplication.getApplication().defaultConnnectionQueue.containsConnection(url)) {
+            if (listener != null) {
+                listener.onDownloading();
+            }
             return;
         }
         fileConnection.start(new BSFileConnectionListener() {
             @Override
             public void finished(String localPath) {
-                if (bInstall) {
-                    installApk(localPath);
+                installApk(localPath);
+                if (listener != null) {
+                    listener.onSuccess();
                 }
-                BSAnalyses.getInstance().event("Upgrade_Download", "Success");
             }
 
             @Override
             public void failed(Exception exception) {
-                BSAnalyses.getInstance().event("Upgrade_Download", "Fail");
+                if (listener != null) {
+                    listener.onFail();
+                }
             }
         });
     }

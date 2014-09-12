@@ -19,45 +19,29 @@ public class BSAdUtils {
 
     static final HashMap<String, Class<? extends BSAdObject>> adClassMap = new HashMap<String, Class<? extends BSAdObject>>();
 
-    public static JSONObject optJsonObject(JSONObject jsonObject, String name) {
-        JSONObject jo = jsonObject.optJSONObject(name);
-        if (jo == null) {
-            jo = new JSONObject();
-        }
-        return jo;
-    }
-
-    public static JSONArray optJsonArray(JSONObject jsonObject, String name) {
-        JSONArray ja = jsonObject.optJSONArray(name);
-        if (ja == null) {
-            ja = new JSONArray();
-        }
-        return ja;
-    }
-
     public static JSONObject getAdConfig() {
-        JSONObject jsonAd = optJsonObject(BSApplication.getApplication().getRemoteConfig(), "Ad");
+        JSONObject jsonAd = BSUtils.optJsonObject(BSApplication.getApplication().getRemoteConfig(), "Ad");
         return jsonAd;
     }
 
     public static JSONObject getAdUnitConfig(String adUnit) {
         JSONObject jsonAd = getAdConfig();
-        return optJsonObject(jsonAd, adUnit);
+        return BSUtils.optJsonObject(jsonAd, adUnit);
     }
 
     public static String getAdAppKey(String adUnit, String adType) {
-        JSONObject jsonKey = optJsonObject(getAdUnitConfig(adUnit), "AppKey");
+        JSONObject jsonKey = BSUtils.optJsonObject(getAdUnitConfig(adUnit), "AppKey");
         return jsonKey.optString(adType);
     }
 
     public static JSONArray getAdTypes(String adUnit) {
-        return optJsonArray(getAdUnitConfig(adUnit), "AdType");
+        return BSUtils.optJsonArray(getAdUnitConfig(adUnit), "AdType");
     }
 
     public static boolean checkAdFilter(String adUnit, String adType) {
-        JSONObject jsonFilter = optJsonObject(getAdUnitConfig(adUnit), "Filter");
-        JSONObject jsonAd = optJsonObject(jsonFilter, adType);
-        JSONArray languageArray = optJsonArray(jsonAd, "language");
+        JSONObject jsonFilter = BSUtils.optJsonObject(getAdUnitConfig(adUnit), "Filter");
+        JSONObject jsonAd = BSUtils.optJsonObject(jsonFilter, adType);
+        JSONArray languageArray = BSUtils.optJsonArray(jsonAd, "language");
         if (languageArray.length() > 0) {
             int index = 0;
             while (index < languageArray.length()) {

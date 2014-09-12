@@ -5,6 +5,24 @@
   "CategorySize": {
     "51": 82
   },
+  "Commend":{
+  	"Disable": [
+      "mi"
+    ],
+    "Tag":"fashion",
+  	"PackageName":"com.bstoneinfo.fashion",
+  	"Url":"http://www.bstoneinfo.com/fashion/download/fashion.apk",
+  	"Name":"乐时尚",
+  	"Tips":"“乐时尚”：一款休闲时尚类综合软件，包括男女明星排行、美女图库、时尚服饰、时尚发型、搞笑幽默、爱情故事、漫画欣赏、电影推荐等诸多频道，海量文字和图片资源，内容每日更新，闲暇睡前必看应用，赶快下载看看吧！"
+  },
+  "Feedback":{
+    "RemoveAD": true,
+    "title":"去除广告",
+  	"tips":"提交有效的反馈意见，您可以获得免除横幅广告的打扰。"
+  },
+  "ContactUs":{
+    "email":"bstone8@163.com"
+  },
   "Ad": {
     "Screen": {
       "AppKey": {

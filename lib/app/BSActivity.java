@@ -22,6 +22,7 @@ import android.util.DisplayMetrics;
 import com.bstoneinfo.lib.ad.BSAnalyses;
 import com.bstoneinfo.lib.common.BSObserverCenter.BSObserverEvent;
 import com.bstoneinfo.lib.common.BSUtils;
+import com.bstoneinfo.lib.common.BSUtils.DownloadApkListener;
 import com.bstoneinfo.lib.frame.BSFrame;
 
 import custom.R;
@@ -192,12 +193,12 @@ public abstract class BSActivity extends Activity {
     }
 
     public AlertDialog confirm(int titleResId, int alertTextResId, int btnTxtResId1, int btnTxtResId2, final Runnable btnCallback1, final Runnable btnCallback2,
-            final OnCancelListener onCancelListener) {
-        return confirm(getString(titleResId), getString(alertTextResId), btnTxtResId1, btnTxtResId2, btnCallback1, btnCallback2, onCancelListener);
+            final Runnable cancelCallback) {
+        return confirm(getString(titleResId), getString(alertTextResId), btnTxtResId1, btnTxtResId2, btnCallback1, btnCallback2, cancelCallback);
     }
 
     public AlertDialog confirm(String title, String text, int btnTxtResId1, int btnTxtResId2, final Runnable btnCallback1, final Runnable btnCallback2,
-            final OnCancelListener onCancelListener) {
+            final Runnable cancelCallback) {
 
         AlertDialog.Builder builder = createAlertBuilder(title, text);
         builder.setNegativeButton(btnTxtResId1, new DialogInterface.OnClickListener() {
@@ -229,8 +230,8 @@ public abstract class BSActivity extends Activity {
             public void onCancel(DialogInterface dialog) {
                 autoDestroyDialogs.remove(dialog);
                 dialog.dismiss();
-                if (onCancelListener != null) {
-                    onCancelListener.onCancel(dialog);
+                if (cancelCallback != null) {
+                    cancelCallback.run();
                 }
             }
         });
@@ -259,9 +260,32 @@ public abstract class BSActivity extends Activity {
             return;
         }
 
+        final DownloadApkListener downloadListener = new DownloadApkListener() {
+            @Override
+            public void onDownloading() {
+                BSAnalyses.getInstance().event("Upgrade_Download", "Downloading");
+            }
+
+            @Override
+            public void onSuccess() {
+                BSAnalyses.getInstance().event("Upgrade_Download", "Exist");
+            }
+
+            @Override
+            public void onFail() {
+                BSAnalyses.getInstance().event("Upgrade_Download", "Success");
+            }
+
+            @Override
+            public void onExist() {
+                BSAnalyses.getInstance().event("Upgrade_Download", "Fail");
+            }
+
+        };
+
         final SharedPreferences preferences = getSharedPreferences(getPackageName(), 0);
         if (preferences.getBoolean("UpgradeDidConfirm", false)) {
-            BSUtils.downloadApk(url, true);
+            BSUtils.downloadApk(url, downloadListener);
             return;
         }
         long lastUpgradeCheckTime = preferences.getLong("LastUpgradeCheckTime", 0);
@@ -274,7 +298,7 @@ public abstract class BSActivity extends Activity {
             alert(getString(R.string.app_name), alert, getString(R.string.ok), new Runnable() {
                 @Override
                 public void run() {
-                    BSUtils.downloadApk(url, true);
+                    BSUtils.downloadApk(url, downloadListener);
                 }
             });
             return;
@@ -299,7 +323,7 @@ public abstract class BSActivity extends Activity {
             public void run() {
                 BSAnalyses.getInstance().event("Upgrade_Confirm", "OK");
                 preferences.edit().putBoolean("UpgradeDidConfirm", true).commit();
-                BSUtils.downloadApk(url, true);
+                BSUtils.downloadApk(url, downloadListener);
             }
         }, null);
     }

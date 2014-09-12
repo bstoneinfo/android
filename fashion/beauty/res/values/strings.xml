@@ -12,5 +12,22 @@
     <string name="loadmore">加载更多</string>
     <string name="histroy_empty_tip">您还没有历史足迹哟！\n\n再次启动时，您本次浏览的图片将会显示在这里哦！</string>
     <string name="favorite_empty_tip">您还没有收藏图片哟！\n\n浏览大图时，点击{heart}就把您喜欢的图片收藏在这里哦！</string>
-    
+    <string name="submit">提交</string>
+    <string name="network_connecting">正在连接网络，请稍候…</string>
+    <string name="network_connection_error">无法访问网络</string>
+    <string name="network_connection_retry">内容加载失败，请检查网络设置…</string>
+    <string name="feedback_title">意见反馈</string>
+    <string name="feedback_market_segment">您是从哪个市场下载本软件的？</string>
+    <string name="feedback_suggest_segment">感谢您给我们提些改进建议吧？</string>
+    <string name="feedback_marketinfo_empty">请您填写市场信息，非常非常感谢！</string>
+    <string name="contactus_title">联系我们</string>
+    <string name="contactus_email_subject">反馈</string>
+    <string name="commend_title">应用推荐</string>
+    <string name="commend_installed">您已安装过推荐软件“#1”了，非常感谢您的使用！</string>
+    <string name="commend_continue">推荐软件“#1”还在下载中，等一会儿哦！</string>
+    <string name="commend_iscontinue">推荐软件“#1”尚未下载完成，继续吧？</string>
+    <string name="commend_ok">嗯</string>
+    <string name="commend_cancel">不了</string>
+    <string name="commend_wait">等等</string>
+
 </resources>
