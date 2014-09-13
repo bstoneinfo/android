@@ -181,6 +181,8 @@ public class BSFrame {
     public void dismiss() {
         if (parentFrame != null) {
             parentFrame.removeChild(this);
+        } else if (this == getActivity().getMainFrame()) {
+            getActivity().finish();
         }
     }
 

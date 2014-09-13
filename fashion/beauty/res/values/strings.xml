@@ -19,9 +19,12 @@
     <string name="feedback_title">意见反馈</string>
     <string name="feedback_market_segment">您是从哪个市场下载本软件的？</string>
     <string name="feedback_suggest_segment">感谢您给我们提些改进建议吧？</string>
-    <string name="feedback_marketinfo_empty">请您填写市场信息，非常非常感谢！</string>
+    <string name="feedback_marketinfo_empty">请填写市场信息或反馈意见，非常感谢您的参与！</string>
+    <string name="feedback_email_subject">反馈</string>
+    <string name="feedback_failed">提交失败！可能是网络有异常！</string>
     <string name="contactus_title">联系我们</string>
-    <string name="contactus_email_subject">反馈</string>
+    <string name="contactus_email_subject">联系</string>
+    <string name="cooperation_title">合作推广</string>
     <string name="commend_title">应用推荐</string>
     <string name="commend_installed">您已安装过推荐软件“#1”了，非常感谢您的使用！</string>
     <string name="commend_continue">推荐软件“#1”还在下载中，等一会儿哦！</string>

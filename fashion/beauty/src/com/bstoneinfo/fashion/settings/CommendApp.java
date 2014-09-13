@@ -5,6 +5,8 @@ import java.io.File;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.content.ComponentName;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
@@ -50,7 +52,10 @@ public class CommendApp {
         String state;
         if (isCommendAppExist()) {
             state = "已安装";
-            Toast.makeText(activity, activity.getString(R.string.commend_installed).replace("#1", appName), Toast.LENGTH_LONG).show();
+            ComponentName componetName = new ComponentName(jsonConfig.optString("PackageName"), jsonConfig.optString("LaunchActivity"));
+            Intent intent = new Intent();
+            intent.setComponent(componetName);
+            activity.startActivity(intent);
         } else if (installCommendApp()) {
             state = "安装已存在的程序包";
         } else if (getCommendPreferences().getBoolean("commend_accept", false)) {

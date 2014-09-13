@@ -32,4 +32,5 @@ public class MyUtils {
         BSAnalyses.getInstance().event("server", host);
         return host;
     }
+
 }

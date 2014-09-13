@@ -7,36 +7,35 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="8dp" >
+        android:orientation="vertical" >
 
         <TextView
             android:id="@+id/commend"
+            style="@style/settings_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="@string/commend_title"
-            android:textColor="#FF000000"
-            android:textSize="20dp" />
+            android:text="@string/commend_title" />
+
+        <TextView
+            android:id="@+id/cooperation"
+            style="@style/settings_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/cooperation_title" />
         
         <TextView
             android:id="@+id/feedback"
+            style="@style/settings_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="@string/feedback_title"
-            android:textColor="#FF000000"
-            android:textSize="20dp" />
+            android:text="@string/feedback_title" />
 
         <TextView
             android:id="@+id/contactus"
+            style="@style/settings_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="@string/contactus_title"
-            android:textColor="#FF000000"
-            android:textSize="20dp" />
-        
+            android:text="@string/contactus_title" />
     </LinearLayout>
 
 </ScrollView>

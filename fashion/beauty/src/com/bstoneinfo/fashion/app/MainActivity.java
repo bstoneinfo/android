@@ -15,14 +15,14 @@ import com.bstoneinfo.fashion.ui.main.ExploreWaterFallFrame;
 import com.bstoneinfo.fashion.ui.main.HistroyWaterFallFrame;
 import com.bstoneinfo.lib.ad.BSAdScreen;
 import com.bstoneinfo.lib.ad.BSAnalyses;
-import com.bstoneinfo.lib.app.BSActivity;
+import com.bstoneinfo.lib.app.BSMainActivity;
 import com.bstoneinfo.lib.frame.BSFrame;
 import com.bstoneinfo.lib.frame.BSLayerFrame;
 
 import custom.Config;
 import custom.R;
 
-public class MainActivity extends BSActivity {
+public class MainActivity extends BSMainActivity {
 
     private BSAdScreen adFullscreen;
 
