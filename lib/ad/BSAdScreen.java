@@ -104,6 +104,9 @@ public class BSAdScreen {
 
     public void destroy() {
         BSApplication.defaultNotificationCenter.removeObservers(this);
+        for (BSAdObject adObject : adObjectArray) {
+            adObject.destroy();
+        }
         if (asyncRun != null) {
             asyncRun.cancel();
             asyncRun = null;

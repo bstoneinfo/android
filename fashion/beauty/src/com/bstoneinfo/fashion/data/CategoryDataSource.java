@@ -47,7 +47,7 @@ public class CategoryDataSource {
         } catch (Exception e) {
             histroyJsonArray = new JSONArray();
         }
-        if (histroyJsonArray.length() > 1) {
+        if (histroyJsonArray.length() > 0) {
             histroyGroupArray = new int[histroyJsonArray.length()];
             for (int i = 0; i < histroyJsonArray.length(); i++) {
                 histroyGroupArray[i] = histroyJsonArray.optInt(histroyJsonArray.length() - i - 1);
