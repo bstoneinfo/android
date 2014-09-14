@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.bstoneinfo.lib.app.BSActivity;
 import com.bstoneinfo.lib.view.BSPagerSlidingTabView;
 
 public class BSPagerFrame extends BSFrame {

@@ -12,9 +12,9 @@ import android.widget.Toast;
 
 import com.bstoneinfo.fashion.data.MailManager;
 import com.bstoneinfo.lib.ad.BSAnalyses;
-import com.bstoneinfo.lib.app.BSActivity;
 import com.bstoneinfo.lib.app.BSApplication;
 import com.bstoneinfo.lib.common.BSObserverCenter.BSObserverEvent;
+import com.bstoneinfo.lib.frame.BSActivity;
 
 import custom.R;
 

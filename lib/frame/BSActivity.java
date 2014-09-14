@@ -1,4 +1,4 @@
-package com.bstoneinfo.lib.app;
+package com.bstoneinfo.lib.frame;
 
 import java.util.ArrayList;
 
@@ -12,8 +12,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
+import com.bstoneinfo.lib.app.BSApplication;
 import com.bstoneinfo.lib.common.BSObserverCenter.BSObserverEvent;
-import com.bstoneinfo.lib.frame.BSFrame;
 
 public abstract class BSActivity extends Activity {
 
@@ -93,7 +93,7 @@ public abstract class BSActivity extends Activity {
     @Override
     protected void onDestroy() {
         if (mainFrame != null) {
-            mainFrame.dismiss();
+            mainFrame.destroy();
         }
         BSApplication.defaultNotificationCenter.removeObservers(this);
         super.onDestroy();

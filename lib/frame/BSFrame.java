@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.bstoneinfo.lib.app.BSActivity;
 import com.bstoneinfo.lib.app.BSApplication;
 import com.bstoneinfo.lib.common.BSAnimation;
 import com.bstoneinfo.lib.common.BSObserverCenter;

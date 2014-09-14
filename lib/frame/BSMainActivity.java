@@ -1,4 +1,4 @@
-package com.bstoneinfo.lib.app;
+package com.bstoneinfo.lib.frame;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.bstoneinfo.lib.ad.BSAnalyses;
+import com.bstoneinfo.lib.app.BSApplication;
 import com.bstoneinfo.lib.common.BSObserverCenter.BSObserverEvent;
 import com.bstoneinfo.lib.common.BSUtils;
 import com.bstoneinfo.lib.common.BSUtils.DownloadApkListener;

@@ -15,9 +15,9 @@ import com.bstoneinfo.fashion.ui.main.ExploreWaterFallFrame;
 import com.bstoneinfo.fashion.ui.main.HistroyWaterFallFrame;
 import com.bstoneinfo.lib.ad.BSAdScreen;
 import com.bstoneinfo.lib.ad.BSAnalyses;
-import com.bstoneinfo.lib.app.BSMainActivity;
 import com.bstoneinfo.lib.frame.BSFrame;
 import com.bstoneinfo.lib.frame.BSLayerFrame;
+import com.bstoneinfo.lib.frame.BSMainActivity;
 
 import custom.Config;
 import custom.R;

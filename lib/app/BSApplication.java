@@ -7,8 +7,8 @@ import android.content.SharedPreferences;
 
 import com.bstoneinfo.lib.common.BSLooperThread;
 import com.bstoneinfo.lib.common.BSObserverCenter;
-import com.bstoneinfo.lib.common.BSUtils;
 import com.bstoneinfo.lib.common.BSObserverCenter.BSObserverEvent;
+import com.bstoneinfo.lib.common.BSUtils;
 import com.bstoneinfo.lib.connection.BSConnectionQueue;
 
 public class BSApplication extends Application {
@@ -54,7 +54,7 @@ public class BSApplication extends Application {
         return bRunningForeground;
     }
 
-    void checkAppStateEvent() {
+    public void checkAppStateEvent() {
         boolean lastState = bRunningForeground;
         bRunningForeground = BSUtils.isAppInForeground();
         if (lastState != bRunningForeground) {
