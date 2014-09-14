@@ -6,8 +6,8 @@
     "51": 82
   },
   "Commend":{
-  	"Disable": [
-      "mi"
+  	"Enable": [
+  	"default"
     ],
     "Tag":"fashion",
   	"PackageName":"com.bstoneinfo.fashion",
@@ -17,6 +17,10 @@
   	"Tips":"“乐时尚”：一款休闲时尚类综合软件，包括男女明星排行、美女图库、时尚服饰、时尚发型、搞笑幽默、爱情故事、漫画欣赏、电影推荐等诸多频道，海量文字和图片资源，内容每日更新，闲暇睡前必看应用，赶快下载看看吧！"
   },
   "ContactUs":{
+  	"EnableCooperation": [
+  	"default"
+    ],
+    "cooperate_tips":"感谢您使用本软件，同时欢迎您协助我们提交各个应用市场，并将您的联系方式反馈给我们，以便共享推广成果和收益。",
   	"MailFailBodyEvent":"SendMailFailedBody",
     "email":"mmmpic@126.com"
   },

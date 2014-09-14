@@ -1,10 +1,12 @@
 package com.bstoneinfo.fashion.settings;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.bstoneinfo.lib.ad.BSAnalyses;
@@ -34,9 +36,7 @@ public class SettingsFrame extends BSFrame {
         super.onLoad();
 
         final CommendApp commendApp = new CommendApp(getActivity());
-        if (!commendApp.isCommendAppOn()) {
-            commendButton.setVisibility(View.GONE);
-        } else {
+        if (isFunctionOn("Commend", "Enable")) {
             commendButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -44,6 +44,8 @@ public class SettingsFrame extends BSFrame {
                     commendApp.download();
                 }
             });
+        } else {
+            commendButton.setVisibility(View.GONE);
         }
 
         feedbackButton.setOnClickListener(new View.OnClickListener() {
@@ -55,11 +57,18 @@ public class SettingsFrame extends BSFrame {
             }
         });
 
-        cooperationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
+        if (isFunctionOn("ContactUs", "EnableCooperation")) {
+            cooperationButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    BSAnalyses.getInstance().event("Settings", "Cooperation");
+                    Intent intent = new Intent(getContext(), CooperationActivity.class);
+                    getActivity().startActivity(intent);
+                }
+            });
+        } else {
+            cooperationButton.setVisibility(View.GONE);
+        }
 
         contactusButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +83,19 @@ public class SettingsFrame extends BSFrame {
                 getActivity().startActivity(intent);
             }
         });
+    }
+
+    public boolean isFunctionOn(String group, String name) {
+        JSONObject jsonConfig = BSUtils.optJsonObject(BSApplication.getApplication().getRemoteConfig(), group);
+        String channel = BSUtils.getManifestMetaData("UMENG_CHANNEL");
+        JSONArray jsonArray = BSUtils.optJsonArray(jsonConfig, name);
+        for (int i = 0; i < jsonArray.length(); i++) {
+            String tag = jsonArray.optString(i);
+            if (TextUtils.equals(channel, tag)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

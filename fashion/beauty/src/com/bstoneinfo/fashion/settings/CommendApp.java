@@ -1,6 +1,5 @@
 package com.bstoneinfo.fashion.settings;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.ComponentName;
@@ -25,18 +24,6 @@ public class CommendApp {
     public CommendApp(BSActivity _activity) {
         activity = _activity;
         jsonConfig = BSUtils.optJsonObject(BSApplication.getApplication().getRemoteConfig(), "Commend");
-    }
-
-    public boolean isCommendAppOn() {
-        String channel = BSUtils.getManifestMetaData("UMENG_CHANNEL");
-        JSONArray jsonArray = BSUtils.optJsonArray(jsonConfig, "Disable");
-        for (int i = 0; i < jsonArray.length(); i++) {
-            String tag = jsonArray.optString(i);
-            if (TextUtils.equals(channel, tag)) {
-                return false;
-            }
-        }
-        return true;
     }
 
     public void download() {
