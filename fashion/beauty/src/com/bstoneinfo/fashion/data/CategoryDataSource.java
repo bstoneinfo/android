@@ -10,8 +10,8 @@ import org.json.JSONObject;
 import android.content.SharedPreferences;
 import android.os.Handler;
 
-import com.bstoneinfo.fashion.app.MyUtils;
 import com.bstoneinfo.fashion.app.MyObserverEvent;
+import com.bstoneinfo.fashion.app.MyUtils;
 import com.bstoneinfo.lib.ad.BSAnalyses;
 import com.bstoneinfo.lib.app.BSApplication;
 import com.bstoneinfo.lib.common.BSLog;
@@ -36,9 +36,9 @@ public class CategoryDataSource {
         this.categoryName = name;
         JSONObject sizeJson = BSApplication.getApplication().getRemoteConfig().optJSONObject("CategorySize");
         if (sizeJson != null) {
-            groupSize = sizeJson.optInt(categoryName, 30);
+            groupSize = sizeJson.optInt(categoryName, 82);
         } else {
-            groupSize = 30;
+            groupSize = 82;
         }
 
         //从历史记录中读取信息
@@ -48,9 +48,9 @@ public class CategoryDataSource {
             histroyJsonArray = new JSONArray();
         }
         if (histroyJsonArray.length() > 1) {
-            histroyGroupArray = new int[histroyJsonArray.length() - 1];
-            for (int i = 0; i < histroyJsonArray.length() - 1; i++) {
-                histroyGroupArray[i] = histroyJsonArray.optInt(histroyJsonArray.length() - i - 2);
+            histroyGroupArray = new int[histroyJsonArray.length()];
+            for (int i = 0; i < histroyJsonArray.length(); i++) {
+                histroyGroupArray[i] = histroyJsonArray.optInt(histroyJsonArray.length() - i - 1);
             }
         } else {
             histroyGroupArray = null;
@@ -59,10 +59,10 @@ public class CategoryDataSource {
         try {
             nextExploreGroup = histroyJsonArray.getInt(histroyJsonArray.length() - 1);
             if (nextExploreGroup <= 0) {
-                nextExploreGroup = groupSize;
+                nextExploreGroup = groupSize + 1;
             }
         } catch (Exception e) {
-            nextExploreGroup = groupSize;
+            nextExploreGroup = groupSize + 1;
         }
     }
 
@@ -86,6 +86,7 @@ public class CategoryDataSource {
             return;
         }
         isLoadingExplore = true;
+        findNextExploreGroup();
         BSLog.d("nextExploreGroup=" + nextExploreGroup);
         final String relativePath = "/fashion/" + categoryName + "/info/" + nextExploreGroup + ".json";
         final ArrayList<CategoryItemData> dataList;
@@ -141,8 +142,10 @@ public class CategoryDataSource {
         histroyJsonArray = newHistroyJsonArray;
         histroyJsonArray.put(nextExploreGroup);
         getPreferences().edit().putString("histroy", histroyJsonArray.toString()).commit();
+    }
 
-        //计算下一个nextExploreGroup
+    //计算下一个nextExploreGroup
+    private void findNextExploreGroup() {
         nextExploreGroup--;
         if (nextExploreGroup == 0) {
             nextExploreGroup = groupSize;
