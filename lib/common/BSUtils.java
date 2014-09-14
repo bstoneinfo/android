@@ -310,10 +310,14 @@ public class BSUtils {
         });
     }
 
-    public static void installApk(String localPath) {
+    public static boolean installApk(String localPath) {
+        if (!new File(localPath).exists()) {
+            return false;
+        }
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setDataAndType(Uri.fromFile(new File(localPath)), "application/vnd.android.package-archive");
         BSApplication.getApplication().startActivity(intent);
+        return true;
     }
 }

@@ -27,7 +27,6 @@
     <string name="cooperation_title">合作推广</string>
     <string name="commend_title">应用推荐</string>
     <string name="commend_installed">您已安装过推荐软件“#1”了，非常感谢您的使用！</string>
-    <string name="commend_continue">推荐软件“#1”还在下载中，等一会儿哦！</string>
     <string name="commend_iscontinue">推荐软件“#1”尚未下载完成，继续吧？</string>
     <string name="commend_ok">嗯</string>
     <string name="commend_cancel">不了</string>

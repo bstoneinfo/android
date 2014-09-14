@@ -1,7 +1,5 @@
 package com.bstoneinfo.fashion.settings;
 
-import java.io.File;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -9,29 +7,24 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.bstoneinfo.beauty.R;
 import com.bstoneinfo.lib.ad.BSAnalyses;
-import com.bstoneinfo.lib.app.BSActivity;
 import com.bstoneinfo.lib.app.BSApplication;
 import com.bstoneinfo.lib.common.BSUtils;
 import com.bstoneinfo.lib.common.BSUtils.DownloadApkListener;
+import com.bstoneinfo.lib.frame.BSActivity;
 
 public class CommendApp {
 
     private final BSActivity activity;
     private final JSONObject jsonConfig;
-    private final File commendLocalFile;
 
     public CommendApp(BSActivity _activity) {
         activity = _activity;
         jsonConfig = BSUtils.optJsonObject(BSApplication.getApplication().getRemoteConfig(), "Commend");
-        commendLocalFile = new File(BSUtils.getCacheFolder(), jsonConfig.optString("tag"));
     }
 
     public boolean isCommendAppOn() {
@@ -56,13 +49,10 @@ public class CommendApp {
             Intent intent = new Intent();
             intent.setComponent(componetName);
             activity.startActivity(intent);
-        } else if (installCommendApp()) {
-            state = "安装已存在的程序包";
         } else if (getCommendPreferences().getBoolean("commend_accept", false)) {
             if (BSUtils.isWifiConnected() || getCommendPreferences().getBoolean("commend_mobile", false)) {
                 state = "开始下载";
                 downloadCommendApp();
-                Toast.makeText(activity, R.string.commend_continue, Toast.LENGTH_LONG).show();
             } else {
                 state = "询问继续下载";
                 activity.confirm(title, activity.getString(R.string.commend_iscontinue).replace("#1", appName), R.string.commend_cancel, R.string.commend_ok, new Runnable() {
@@ -119,24 +109,6 @@ public class CommendApp {
         } catch (NameNotFoundException e) {
             return false;
         }
-    }
-
-    private boolean installCommendApp() {
-        if (!commendLocalFile.exists()) {
-            return false;
-        }
-        PackageInfo info = null;
-        try {
-            info = activity.getPackageManager().getPackageArchiveInfo(commendLocalFile.getAbsolutePath(), PackageManager.GET_ACTIVITIES);
-        } catch (Exception e) {
-        }
-        if (info == null) {
-            commendLocalFile.delete();
-            downloadCommendApp();// 重新下载
-            return false;
-        }
-        BSUtils.installApk(commendLocalFile.getAbsolutePath());
-        return true;
     }
 
     private void downloadCommendApp() {
