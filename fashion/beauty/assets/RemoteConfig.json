@@ -31,7 +31,6 @@
         "adchina_screen": "81323"
       },
       "AdType": [
-        "adchina_screen",
         "admob_screen"
       ],
       "ScreenAdPresentSecond": 8,
@@ -43,7 +42,6 @@
         "adchina_banner": "2197607"
       },
         "AdType": [
-          "adchina_banner",        
           "admob_banner"
         ]
     },
@@ -53,7 +51,6 @@
         "adchina_banner": "2197607"
       },
         "AdType": [
-          "adchina_banner",        
           "admob_banner"
         ]
     },
@@ -63,7 +60,6 @@
         "adchina_banner": "2197607"
       },
         "AdType": [
-          "adchina_banner",        
           "admob_banner"
         ]
     },
@@ -74,7 +70,6 @@
         "adchina_banner": "2197607"
       },
 	    "AdType": [
-	      "adchina_banner",
 	      "admob_banner"
 	    ]
 	  }
