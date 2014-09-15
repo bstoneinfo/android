@@ -4,18 +4,20 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.bstoneinfo.lib.common.BSApplication;
+import com.bstoneinfo.lib.app.BSApplication;
 import com.bstoneinfo.lib.common.BSLog;
-import com.bstoneinfo.lib.common.BSNotificationCenter.BSNotificationEvent;
+import com.bstoneinfo.lib.common.BSObserverCenter.BSObserverEvent;
 import com.bstoneinfo.lib.common.BSUtils;
 import com.umeng.analytics.MobclickAgent;
 
 public class BSAnalyses {
 
     private static BSAnalyses instance = new BSAnalyses();
+
     private Context context;
 
     public static BSAnalyses getInstance() {
@@ -23,24 +25,24 @@ public class BSAnalyses {
     }
 
     private BSAnalyses() {
-        BSApplication.defaultNotificationCenter.addObserver(this, BSNotificationEvent.ACTIVITY_RESUME, new Observer() {
+        BSApplication.defaultNotificationCenter.addObserver(this, BSObserverEvent.ACTIVITY_RESUME, new Observer() {
             @Override
             public void update(Observable observable, Object data) {
+                context = (Activity) data;
                 MobclickAgent.onResume(context);
                 //        StatService.onResume(context);
             }
         });
-        BSApplication.defaultNotificationCenter.addObserver(this, BSNotificationEvent.ACTIVITY_PAUSE, new Observer() {
+        BSApplication.defaultNotificationCenter.addObserver(this, BSObserverEvent.ACTIVITY_PAUSE, new Observer() {
             @Override
             public void update(Observable observable, Object data) {
-                MobclickAgent.onPause(context);
+                MobclickAgent.onPause((Activity) data);
                 //        StatService.onPause(context);
             }
         });
     }
 
     public void init(Context context) {
-        this.context = context;
         MobclickAgent.updateOnlineConfig(context);
         if (BSUtils.isDebug()) {
             MobclickAgent.setDebugMode(true);

@@ -5,7 +5,8 @@ import org.json.JSONObject;
 
 import android.text.TextUtils;
 
-import com.bstoneinfo.lib.common.BSApplication;
+import com.bstoneinfo.lib.ad.BSAnalyses;
+import com.bstoneinfo.lib.app.BSApplication;
 
 public class MyUtils {
 
@@ -15,18 +16,21 @@ public class MyUtils {
         if (host != null) {
             return host;
         }
+        int hostIndex = BSApplication.getApplication().getDefaultSharedPreferences().getInt("hostIndex", -1);
+        if (hostIndex < 0) {
+            hostIndex = (int) (Math.random() * 100);
+            BSApplication.getApplication().getDefaultSharedPreferences().edit().putInt("hostIndex", hostIndex).commit();
+        }
         JSONObject jsonConfig = BSApplication.getApplication().getRemoteConfig();
         JSONArray jsonArray = jsonConfig.optJSONArray("server");
         if (jsonArray != null && jsonArray.length() > 0) {
-            int index = 0;
-            if (jsonArray.length() > 1) {
-                index = (int) (Math.random() * jsonArray.length());
-            }
-            host = jsonArray.optString(index);
+            host = jsonArray.optString(hostIndex % jsonArray.length());
         }
         if (TextUtils.isEmpty(host)) {
             host = "www.bstoneinfo.com";
         }
+        BSAnalyses.getInstance().event("server", host);
         return host;
     }
+
 }

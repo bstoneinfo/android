@@ -5,20 +5,20 @@ import android.app.Activity;
 import com.adchina.android.ads.api.AdFsListener;
 import com.adchina.android.ads.api.AdFullScreen;
 import com.bstoneinfo.lib.ad.BSAdObject;
-import com.bstoneinfo.lib.ad.BSAdUtils;
-import com.bstoneinfo.lib.ad.BSAnalyses;
 import com.bstoneinfo.lib.common.BSLog;
 
 public class BSAdScreenAdChina extends BSAdObject {
 
-    public BSAdScreenAdChina(Activity activity) {
-        super(activity, BSAdUtils.getAdScreenAppKey("AdChina"));
+    private AdFullScreen adFullScreen;
+
+    public BSAdScreenAdChina(Activity activity, String adUnit) {
+        super(activity, adUnit, "adchina_screen");
     }
 
     @Override
     public void start() {
         BSLog.d("Adchina - fullscreen start");
-        final AdFullScreen adFullScreen = new AdFullScreen(activity, appKey);
+        adFullScreen = new AdFullScreen(activity, appKey);
         adFullScreen.setAdFsListener(new AdFsListener() {
 
             @Override
@@ -31,7 +31,6 @@ public class BSAdScreenAdChina extends BSAdObject {
                 BSLog.d("Adchina - onReceiveFullScreenAd");
                 adFullScreen.showFs();
                 adReceived();
-                BSAnalyses.getInstance().event("AdScreen_Received", "AdChina");
             }
 
             @Override
@@ -43,7 +42,6 @@ public class BSAdScreenAdChina extends BSAdObject {
             public void onFailedToReceiveFullScreenAd() {
                 BSLog.d("Adchina - onFailedToReceiveFullScreenAd");
                 adFailed();
-                BSAnalyses.getInstance().event("AdScreen_Failed", "AdChina");
             }
 
             @Override
@@ -59,11 +57,19 @@ public class BSAdScreenAdChina extends BSAdObject {
             @Override
             public void onClickFullScreenAd() {
                 BSLog.d("Adchina - onClickFullScreenAd");
-                BSAnalyses.getInstance().event("AdScreen_Click", "AdChina");
+                adClicked();
             }
         });
         adFullScreen.start();
-        BSAnalyses.getInstance().event("AdScreen_Request", "AdChina");
+        adRequested();
+    }
+
+    @Override
+    public void destroy() {
+        if (adFullScreen != null) {
+            adFullScreen.stop();
+        }
+        super.destroy();
     }
 
 }

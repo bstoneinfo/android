@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">美蜜儿美女图库</string>
+    <string name="app_name">美蜜儿图库</string>
     <string name="ok">好的</string>
     <string name="cancel">取消</string>
-    <string name="confirm_exit">确认退出“美蜜儿美女图库”吗?</string>
+    <string name="confirm_exit">确认退出“美蜜儿图库”吗?</string>
     <string name="tab_explore">发现</string>
     <string name="tab_history">足迹</string>
     <string name="tab_favorite">收藏</string>
@@ -12,5 +12,25 @@
     <string name="loadmore">加载更多</string>
     <string name="histroy_empty_tip">您还没有历史足迹哟！\n\n再次启动时，您本次浏览的图片将会显示在这里哦！</string>
     <string name="favorite_empty_tip">您还没有收藏图片哟！\n\n浏览大图时，点击{heart}就把您喜欢的图片收藏在这里哦！</string>
-    
+    <string name="submit">提交</string>
+    <string name="network_connecting">正在连接网络，请稍候…</string>
+    <string name="network_connection_error">无法访问网络</string>
+    <string name="network_connection_retry">内容加载失败，请检查网络设置…</string>
+    <string name="feedback_title">意见反馈</string>
+    <string name="feedback_market_segment">您是从哪个市场下载本软件的？</string>
+    <string name="feedback_suggest_segment">感谢您给我们提些改进建议吧？</string>
+    <string name="feedback_marketinfo_empty">请填写市场信息或反馈意见，非常感谢您的参与！</string>
+    <string name="feedback_email_subject">反馈</string>
+    <string name="contactus_title">联系我们</string>
+    <string name="contactus_email_subject">联系</string>
+    <string name="cooperation_email_subject">合作</string>
+    <string name="cooperation_title">合作推广</string>
+    <string name="cooperation_tips">感谢您使用本软件，同时欢迎您协助我们提交各个应用市场，并将您的联系方式反馈给我们，以便共享推广成果和收益。</string>
+    <string name="commend_title">应用推荐</string>
+    <string name="commend_installed">您已安装过推荐软件“#1”了，非常感谢您的使用！</string>
+    <string name="commend_iscontinue">推荐软件“#1”尚未下载完成，继续吧？</string>
+    <string name="commend_ok">嗯</string>
+    <string name="commend_cancel">不了</string>
+    <string name="commend_wait">等等</string>
+
 </resources>

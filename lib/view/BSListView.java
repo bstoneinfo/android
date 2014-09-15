@@ -10,14 +10,14 @@ import android.widget.AbsListView;
 import android.widget.ListView;
 
 import com.bstoneinfo.lib.widget.BSBaseAdapter;
-import com.bstoneinfo.lib.widget.BSViewCell;
+import com.bstoneinfo.lib.widget.BSCell;
 
 import custom.R;
 
 public class BSListView extends ListView {
 
     public interface CreateCellDelegate {
-        BSViewCell createCell();
+        BSCell createCell();
     }
 
     public interface PullUpWillLoadListener {
@@ -65,7 +65,7 @@ public class BSListView extends ListView {
         }
         adapter = new BSBaseAdapter(getContext(), dataList) {
             @Override
-            public BSViewCell createCell() {
+            public BSCell createCell() {
                 return createCellDelegate.createCell();
             }
         };

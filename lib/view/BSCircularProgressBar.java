@@ -10,7 +10,7 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.bstoneinfo.lib.ui.BSActivity;
+import com.bstoneinfo.lib.frame.BSActivity;
 
 /**
  * 圆环进度条

@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import com.bstoneinfo.lib.common.BSImageLoader;
 import com.bstoneinfo.lib.common.BSImageLoader.BSImageLoaderListener;
 
-public abstract class BSImageCell extends BSViewCell {
+public abstract class BSImageCell extends BSCell {
 
     protected final ImageView imageView;
     protected final int defaultImageResId;

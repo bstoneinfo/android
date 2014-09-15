@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.bstoneinfo.beauty"
-    android:versionCode="9"
-    android:versionName="2.0.3" >
+    android:versionCode="10"
+    android:versionName="2.1.0" >
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="18" />
+        android:targetSdkVersion="19" />
 
     <supports-screens
         android:anyDensity="true"
@@ -52,6 +52,20 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.bstoneinfo.fashion.settings.FeedbackActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Activity"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="com.bstoneinfo.fashion.settings.CooperationActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Activity"
+            android:windowSoftInputMode="adjustPan" >
         </activity>
 
         <!-- google -->

@@ -7,10 +7,10 @@ import org.json.JSONObject;
 import android.database.Cursor;
 import android.os.Handler;
 
-import com.bstoneinfo.fashion.app.NotificationEvent;
+import com.bstoneinfo.fashion.app.MyObserverEvent;
 import com.bstoneinfo.fashion.data.CategoryItemData;
 import com.bstoneinfo.fashion.data.MainDBHelper;
-import com.bstoneinfo.lib.common.BSApplication;
+import com.bstoneinfo.lib.app.BSApplication;
 import com.bstoneinfo.lib.common.BSDBHelper.DBExecuteListener;
 import com.bstoneinfo.lib.common.BSDBHelper.DBQueryListener;
 
@@ -44,7 +44,7 @@ public class FavoriteManager {
                 if (result > 0) {
                     item.favoriteID = (int) result;
                 }
-                BSApplication.defaultNotificationCenter.notifyOnUIThread(NotificationEvent.CATEGORY_ITEM_DATA_FINISHED, item);
+                BSApplication.defaultNotificationCenter.notifyOnMainThread(MyObserverEvent.CATEGORY_ITEM_DATA_FINISHED, item);
             }
         });
     }
@@ -56,7 +56,7 @@ public class FavoriteManager {
                 if (result > 0) {
                     item.favoriteID = 0;
                 }
-                BSApplication.defaultNotificationCenter.notifyOnUIThread(NotificationEvent.CATEGORY_ITEM_DATA_FINISHED, item);
+                BSApplication.defaultNotificationCenter.notifyOnMainThread(MyObserverEvent.CATEGORY_ITEM_DATA_FINISHED, item);
             }
         });
     }
@@ -66,7 +66,7 @@ public class FavoriteManager {
             new Handler().post(new Runnable() {
                 @Override
                 public void run() {
-                    BSApplication.defaultNotificationCenter.notifyOnUIThread(NotificationEvent.FAVORITE_QUERYLIST_FINISHED, new ArrayList<CategoryItemData>());
+                    BSApplication.defaultNotificationCenter.notifyOnMainThread(MyObserverEvent.FAVORITE_QUERYLIST_FINISHED, new ArrayList<CategoryItemData>());
                 }
             });
             return;
@@ -76,7 +76,7 @@ public class FavoriteManager {
             public void finished(Cursor cursor) {
                 ArrayList<CategoryItemData> itemList = new ArrayList<CategoryItemData>();
                 if (cursor == null) {
-                    BSApplication.defaultNotificationCenter.notifyOnUIThread(NotificationEvent.FAVORITE_QUERYLIST_FINISHED, null);
+                    BSApplication.defaultNotificationCenter.notifyOnMainThread(MyObserverEvent.FAVORITE_QUERYLIST_FINISHED, null);
                     return;
                 }
                 for (cursor.moveToFirst(); !cursor.isAfterLast() && itemList.size() < LOAD_MORE_COUNT; cursor.moveToNext()) {
@@ -95,9 +95,9 @@ public class FavoriteManager {
                 } else {
                     nextID = itemList.get(itemList.size() - 1).favoriteID;
                 }
-                BSApplication.defaultNotificationCenter.notifyOnUIThread(NotificationEvent.FAVORITE_QUERYLIST_FINISHED, itemList);
+                BSApplication.defaultNotificationCenter.notifyOnMainThread(MyObserverEvent.FAVORITE_QUERYLIST_FINISHED, itemList);
                 if (!itemList.isEmpty() && nextID < 0) {
-                    BSApplication.defaultNotificationCenter.notifyOnUIThread(NotificationEvent.FAVORITE_QUERYLIST_FINISHED, new ArrayList<CategoryItemData>());
+                    BSApplication.defaultNotificationCenter.notifyOnMainThread(MyObserverEvent.FAVORITE_QUERYLIST_FINISHED, new ArrayList<CategoryItemData>());
                 }
             }
         });
