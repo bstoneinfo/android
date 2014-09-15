@@ -1,7 +1,6 @@
 package custom;
 
 import com.bstoneinfo.lib.ad.BSAdUtils;
-import com.bstoneinfo.lib.common.BSUtils;
 import com.bstoneinfo.opt.ad.BSAdBannerAdChina;
 import com.bstoneinfo.opt.ad.BSAdBannerAdmob;
 import com.bstoneinfo.opt.ad.BSAdScreenAdChina;
@@ -11,7 +10,7 @@ public class Config {
 
     public static final boolean isPro = false;
 
-    public static final String remoteConfigURL = "http://www.bstoneinfo.com/config/beauty/beauty-2.1.0-" + BSUtils.getManifestMetaData("UMENG_CHANNEL") + ".json";
+    public static final String remoteConfigURL = "http://www.bstoneinfo.com/config/beauty/beauty-2.1.0.json";
 
     public static void init() {
         BSAdUtils.registerAdClass("adchina_banner", BSAdBannerAdChina.class);
