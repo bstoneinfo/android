@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">千法网-法律法规查询</string>
+    <string name="ok">好的</string>
+    <string name="cancel">取消</string>
+    <string name="submit">提交</string>
+    <string name="confirm_exit">确认退出“千法网-法律法规查询”吗?</string>
+    <string name="tab_newest">最新</string>
+    <string name="tab_search">搜索</string>
+    <string name="tab_favorite">收藏</string>
+    <string name="tab_settings">设置</string>
+    <string name="loadmore">加载更多</string>
+    <string name="histroy_empty_tip">您还没有历史足迹哟！\n\n您浏览过法律正文后，您曾经浏览过的法律法规将会显示在这里哦！</string>
+    <string name="favorite_empty_tip">您还没有收藏哟！\n\n浏览法律正文时，点击{heart}就把您关注的法律法规收藏在这里哦！</string>
+    <string name="feedback_title">意见反馈</string>
+    <string name="feedback_suggest_segment">感谢您给我们提些改进建议吧？</string>
+    <string name="feedback_email_subject">反馈</string>
+    <string name="contactus_title">联系我们</string>
+    <string name="contactus_email_subject">联系</string>
+
+</resources>

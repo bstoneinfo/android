@@ -10,6 +10,7 @@ import com.bstoneinfo.lib.common.BSObserverCenter;
 import com.bstoneinfo.lib.common.BSObserverCenter.BSObserverEvent;
 import com.bstoneinfo.lib.common.BSUtils;
 import com.bstoneinfo.lib.connection.BSConnectionQueue;
+import com.bstoneinfo.lib.mail.MailManager;
 
 public class BSApplication extends Application {
 
@@ -71,6 +72,7 @@ public class BSApplication extends Application {
         super.onCreate();
         mVersionManager = new BSVersionManager();
         mRemoteConfig = new BSRemoteConfig();
+        MailManager.getInstance();
     }
 
     @Override

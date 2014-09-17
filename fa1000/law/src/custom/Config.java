@@ -9,9 +9,7 @@ import com.bstoneinfo.opt.ad.BSAdScreenAdmob;
 
 public class Config {
 
-    public static final boolean isPro = false;
-
-    public static final String remoteConfigURL = "http://www.bstoneinfo.com/config/beauty/beauty-2.1.0.json";
+    public static final String remoteConfigURL = "http://www.fa1000.com/config/law/law-1.0.0.json";
 
     public static void init() {
         BSAdUtils.registerAdClass("adchina_banner", BSAdBannerAdChina.class);

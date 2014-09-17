@@ -5,7 +5,7 @@ import java.util.Properties;
 public class MailSenderInfo {
     // 发送邮件的服务器的IP和端口    
     private String mailServerHost;
-    private String mailServerPort = "25";
+    private int mailServerPort = 25;
 
     // 邮件发送者的地址    
     private String fromAddress;
@@ -29,7 +29,7 @@ public class MailSenderInfo {
     public Properties getProperties() {
         Properties p = new Properties();
         p.put("mail.smtp.host", this.mailServerHost);
-        p.put("mail.smtp.port", this.mailServerPort);
+        p.put("mail.smtp.port", String.valueOf(this.mailServerPort));
         p.put("mail.smtp.auth", validate ? "true" : "false");
         return p;
     }
@@ -42,11 +42,11 @@ public class MailSenderInfo {
         this.mailServerHost = mailServerHost;
     }
 
-    public String getMailServerPort() {
+    public int getMailServerPort() {
         return mailServerPort;
     }
 
-    public void setMailServerPort(String mailServerPort) {
+    public void setMailServerPort(int mailServerPort) {
         this.mailServerPort = mailServerPort;
     }
 

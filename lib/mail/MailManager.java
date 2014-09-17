@@ -1,4 +1,4 @@
-package com.bstoneinfo.fashion.data;
+package com.bstoneinfo.lib.mail;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -15,11 +15,17 @@ import com.bstoneinfo.lib.ad.BSAnalyses;
 import com.bstoneinfo.lib.app.BSApplication;
 import com.bstoneinfo.lib.common.BSObserverCenter.BSObserverEvent;
 import com.bstoneinfo.lib.common.BSUtils;
-import com.bstoneinfo.lib.mail.MailSenderInfo;
-import com.bstoneinfo.lib.mail.SimpleMailSender;
 import com.bstoneinfo.lib.mail.SimpleMailSender.MailSenderListener;
 
 public class MailManager {
+
+    public static int mailServerPort = 25;
+    public static boolean mailValidate = false;
+    public static String mailServerHost;
+    public static String mailUserName;
+    public static String mailPassword;
+    public static String mailFromAddress;
+    public static String mailToAddress;
 
     private static MailManager instance = new MailManager();
     private JSONArray mailList = new JSONArray();
@@ -84,13 +90,13 @@ public class MailManager {
             return;
         }
         MailSenderInfo mailInfo = new MailSenderInfo();
-        mailInfo.setMailServerHost("smtp.qq.com");
-        mailInfo.setMailServerPort("25");
-        mailInfo.setValidate(true);
-        mailInfo.setUserName("1461095806@qq.com"); //你的邮箱地址  
-        mailInfo.setPassword("mhl810510mhl@qq");//您的邮箱密码    
-        mailInfo.setFromAddress("1461095806@qq.com");
-        mailInfo.setToAddress("mmmpic@126.com");
+        mailInfo.setMailServerHost(mailServerHost);
+        mailInfo.setMailServerPort(mailServerPort);
+        mailInfo.setValidate(mailValidate);
+        mailInfo.setUserName(mailUserName);
+        mailInfo.setPassword(mailPassword);
+        mailInfo.setFromAddress(mailFromAddress);
+        mailInfo.setToAddress(mailToAddress);
         mailInfo.setSubject(subject);
         mailInfo.setContent(body);
         SimpleMailSender sms = new SimpleMailSender();

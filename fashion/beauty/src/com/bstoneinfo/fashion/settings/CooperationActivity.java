@@ -13,12 +13,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bstoneinfo.fashion.data.MailManager;
 import com.bstoneinfo.lib.ad.BSAnalyses;
 import com.bstoneinfo.lib.app.BSApplication;
 import com.bstoneinfo.lib.common.BSObserverCenter.BSObserverEvent;
 import com.bstoneinfo.lib.common.BSUtils;
 import com.bstoneinfo.lib.frame.BSActivity;
+import com.bstoneinfo.lib.mail.MailManager;
 
 import custom.R;
 
@@ -61,7 +61,7 @@ public class CooperationActivity extends BSActivity {
                 }
                 savePreference();
                 BSAnalyses.getInstance().event("Cooperate", "Submited");
-                MailManager.getInstance().sendMail(getString(R.string.cooperation_email_subject) + " - Android ", cooperationEdit.getEditableText().toString());
+                MailManager.getInstance().sendMail(getString(R.string.cooperation_email_subject) + " - Beauty - Android ", cooperationEdit.getEditableText().toString());
                 cooperationEdit.setText("");
                 savePreference();
                 finish();

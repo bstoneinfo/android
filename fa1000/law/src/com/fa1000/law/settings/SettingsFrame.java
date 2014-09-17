@@ -1,4 +1,4 @@
-package com.bstoneinfo.fashion.settings;
+package com.fa1000.law.settings;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -18,35 +18,18 @@ import custom.R;
 
 public class SettingsFrame extends BSFrame {
 
-    private final View commendButton;
     private final View feedbackButton;
-    private final View cooperationButton;
     private final View contactusButton;
 
     public SettingsFrame(Context context) {
         super(context, R.layout.settings);
         feedbackButton = getRootView().findViewById(R.id.feedback);
-        commendButton = getRootView().findViewById(R.id.commend);
-        cooperationButton = getRootView().findViewById(R.id.cooperation);
         contactusButton = getRootView().findViewById(R.id.contactus);
     }
 
     @Override
     protected void onLoad() {
         super.onLoad();
-
-        final CommendApp commendApp = new CommendApp(getActivity());
-        if (isFunctionOn("Commend", "Enable")) {
-            commendButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    BSAnalyses.getInstance().event("Settings", "Commend");
-                    commendApp.download();
-                }
-            });
-        } else {
-            commendButton.setVisibility(View.GONE);
-        }
 
         feedbackButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,19 +40,6 @@ public class SettingsFrame extends BSFrame {
             }
         });
 
-        if (isFunctionOn("ContactUs", "EnableCooperation")) {
-            cooperationButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    BSAnalyses.getInstance().event("Settings", "Cooperation");
-                    Intent intent = new Intent(getContext(), CooperationActivity.class);
-                    getActivity().startActivity(intent);
-                }
-            });
-        } else {
-            cooperationButton.setVisibility(View.GONE);
-        }
-
         contactusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,7 +48,7 @@ public class SettingsFrame extends BSFrame {
                 String email = jsonContactUsConfig.optString("email");
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
                 intent.setData(Uri.parse("mailto:" + email));
-                intent.putExtra(Intent.EXTRA_SUBJECT, getContext().getString(R.string.contactus_email_subject) + " - Beauty - Android");
+                intent.putExtra(Intent.EXTRA_SUBJECT, getContext().getString(R.string.contactus_email_subject) + " - LAW - Android");
                 intent.putExtra(Intent.EXTRA_TEXT, "");
                 getActivity().startActivity(intent);
             }
