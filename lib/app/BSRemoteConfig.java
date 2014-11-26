@@ -1,19 +1,17 @@
 package com.bstoneinfo.lib.app;
 
 import java.io.File;
-import java.io.InputStream;
 import java.util.Observable;
 import java.util.Observer;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.res.AssetManager;
 import android.text.TextUtils;
 
 import com.bstoneinfo.lib.common.BSLog;
-import com.bstoneinfo.lib.common.BSUtils;
 import com.bstoneinfo.lib.common.BSObserverCenter.BSObserverEvent;
+import com.bstoneinfo.lib.common.BSUtils;
 import com.bstoneinfo.lib.connection.BSJsonConnection;
 import com.bstoneinfo.lib.connection.BSJsonConnection.BSJsonConnectionListener;
 
@@ -33,18 +31,8 @@ class BSRemoteConfig extends JSONObject {
             configString = BSUtils.readStringFromFile(localPath);
             BSLog.d("load RemoteConfig.json from file: " + configString);
         } else {
-            try {
-                AssetManager assetManager = BSApplication.getApplication().getAssets();
-                InputStream input = assetManager.open("RemoteConfig.json");
-                if (input != null) {
-                    configString = BSUtils.readStringFromInput(input);
-                    BSLog.d("load RemoteConfig.json from assets: " + configString);
-                    input.close();
-                }
-            } catch (Exception e) {
-                BSLog.d("load RemoteConfig.json from assets failed: " + e.toString());
-                e.printStackTrace();
-            }
+            configString = BSUtils.readStringFromAsset("RemoteConfig.json");
+            BSLog.d("load RemoteConfig.json from assets: " + configString);
         }
         if (!TextUtils.isEmpty(configString)) {
             try {

@@ -1,13 +1,13 @@
 package com.fa1000.law.app;
 
 import android.os.Bundle;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 
 import com.bstoneinfo.lib.ad.BSAdScreen;
-import com.bstoneinfo.lib.ad.BSAnalyses;
+import com.bstoneinfo.lib.frame.BSActivity;
 import com.bstoneinfo.lib.frame.BSFrame;
 import com.bstoneinfo.lib.frame.BSLayerFrame;
 import com.bstoneinfo.lib.frame.BSMainActivity;
+import com.bstoneinfo.lib.frame.BSTabbedFrame;
 import com.fa1000.law.favorite.FavoriteFrame;
 import com.fa1000.law.settings.SettingsFrame;
 
@@ -29,31 +29,9 @@ public class MainActivity extends BSMainActivity {
         SettingsFrame settingsFrame = new SettingsFrame(this);
 
         String[] titles = new String[] { getString(R.string.tab_newest), getString(R.string.tab_search), getString(R.string.tab_favorite), getString(R.string.tab_settings) };
-        MyPagerFrame pagerFrame = new MyPagerFrame(this, new BSFrame[] { newestFrame, searchFame, favoriteFrame, settingsFrame }, titles, 0);
-        pagerFrame.setOnPageChangeListener(new OnPageChangeListener() {
-            @Override
-            public void onPageSelected(int arg0) {
-                if (arg0 == 0) {
-                    BSAnalyses.getInstance().event("MainTabClick", "Explore");
-                } else if (arg0 == 1) {
-                    BSAnalyses.getInstance().event("MainTabClick", "Histroy");
-                } else if (arg0 == 2) {
-                    BSAnalyses.getInstance().event("MainTabClick", "Favorite");
-                } else if (arg0 == 3) {
-                    BSAnalyses.getInstance().event("MainTabClick", "Settings");
-                }
-            }
-
-            @Override
-            public void onPageScrolled(int arg0, float arg1, int arg2) {
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int arg0) {
-            }
-        });
-
-        BSLayerFrame mainFrame = new BSLayerFrame(pagerFrame) {
+        int[] drawableIDs = new int[] { R.drawable.tab_explore_selector, R.drawable.tab_search_selector, R.drawable.tab_favorite_selector, R.drawable.tab_settings_selector };
+        BSTabbedFrame tabbedFrame = new BSTabbedFrame(this, new BSFrame[] { newestFrame, searchFame, favoriteFrame, settingsFrame }, titles, drawableIDs, BSActivity.dip2px(50), 0);
+        BSLayerFrame mainFrame = new BSLayerFrame(tabbedFrame) {
             @Override
             public boolean back() {
                 if (super.back()) {

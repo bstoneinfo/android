@@ -1,0 +1,21 @@
+{
+  "class": "tabview",
+  "items": [
+    {
+      "title": "最新",
+      "icon": ""
+    },
+    {
+      "title": "搜索",
+      "icon": ""
+    },
+    {
+      "title": "收藏",
+      "icon": ""
+    },
+    {
+      "title": "设置",
+      "icon": ""
+    }
+  ]
+}

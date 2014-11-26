@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.FrameLayout;
 
 import com.bstoneinfo.lib.app.BSApplication;
@@ -27,13 +28,16 @@ public class BSFrame {
         DISTROY
     }
 
-    private FrameStatus frameStatus = FrameStatus.INIT;
-    private BSFrame parentFrame;
-    private final ArrayList<BSFrame> childFrames = new ArrayList<BSFrame>();
+    FrameStatus frameStatus = FrameStatus.INIT;
+    final ArrayList<BSFrame> childFrames = new ArrayList<BSFrame>();
+    BSFrame parentFrame;
     private final ViewGroup rootView;
     public BSObserverCenter observerCenter = BSApplication.defaultNotificationCenter;
     private final ArrayList<BSTimer> postRunnableList = new ArrayList<BSTimer>();
     private final ArrayList<BSAnimation> animationList = new ArrayList<BSAnimation>();
+    boolean hideBottomBar = false;
+    boolean overTopBar = false;
+    boolean enabled = true;
 
     public BSFrame(Context context) {
         this(new FrameLayout(context));
@@ -81,6 +85,14 @@ public class BSFrame {
 
     public FrameStatus getFrameStatus() {
         return frameStatus;
+    }
+
+    public void setOverTopBar(boolean bOver) {
+        overTopBar = bOver;
+    }
+
+    public void setHideBottomBar(boolean bHide) {
+        hideBottomBar = bHide;
     }
 
     protected void onLoad() {
@@ -211,6 +223,21 @@ public class BSFrame {
         }
         childFrame.hide();
         childFrame.destroy();
+    }
+
+    void setMargin() {
+        // 根据tabbar的显示或隐藏 设置panelLayout的bottomMargin以控制panelLayout的高度
+        ViewGroup tabbarView = null;
+        if (parentFrame instanceof BSTabbedFrame) {
+            tabbarView = ((BSTabbedFrame) parentFrame).tabbarView;
+        }
+        MarginLayoutParams lp = (MarginLayoutParams) getRootView().getLayoutParams();
+        if (tabbarView == null || hideBottomBar) {
+            lp.bottomMargin = 0;
+        } else {
+            lp.bottomMargin = tabbarView.getLayoutParams().height;
+        }
+        getRootView().setLayoutParams(lp);
     }
 
     public void addObserver(String event, Observer observer) {

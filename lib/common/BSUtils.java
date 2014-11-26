@@ -135,6 +135,14 @@ public class BSUtils {
         return sb.toString();
     }
 
+    public static String readStringFromAsset(String assetPath) {
+        try {
+            return readStringFromInput(BSApplication.getApplication().getAssets().open(assetPath));
+        } catch (IOException e) {
+            return "";
+        }
+    }
+
     public static String readStringFromFile(String filePath) {
         try {
             return readStringFromInput(new FileInputStream(filePath));
