@@ -1,16 +1,13 @@
 package com.bstoneinfo.lib.frame;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class BSTabbedFrame extends BSFrame {
 
@@ -19,25 +16,28 @@ public class BSTabbedFrame extends BSFrame {
     }
 
     private final String[] titles;
-    private final int[] drawableIDs;
+    private final int[] normalIconDrawableIDs, selectedIconDrawableIDs;
     private int currentSelected = -1;
-    final RadioGroup tabbarView;
-    private final ArrayList<RadioButton> radioButtons = new ArrayList<RadioButton>();
+    final LinearLayout tabbarLayout;
     private OnSelectListener onSelectListener;
+    public int backgroundColor = 0xFFF9F9F9;
+    public int selectedTextColor = 0xFF18B4ED;
+    public int normalTextColor = 0xFF959595;
 
-    public BSTabbedFrame(Context context, BSFrame childFrames[], String titles[], int drawableIDs[], int height, int defaultSelected) {
+    public BSTabbedFrame(Context context, BSFrame childFrames[], String titles[], int normalIconDrawableIDs[], int selectedIconDrawableIDs[], int tabbarHeight, int defaultSelected) {
         super(new RelativeLayout(context));
         for (BSFrame frame : childFrames) {
             this.childFrames.add(frame);
         }
         this.titles = titles;
-        this.drawableIDs = drawableIDs;
+        this.normalIconDrawableIDs = normalIconDrawableIDs;
+        this.selectedIconDrawableIDs = selectedIconDrawableIDs;
         this.currentSelected = defaultSelected;
-        this.tabbarView = new RadioGroup(context);
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
+        tabbarLayout = new LinearLayout(context);
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, tabbarHeight);
         lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        getRootView().addView(tabbarView, lp);
-        tabbarView.setBackgroundColor(0xFFF8F8F8);
+        getRootView().addView(tabbarLayout, lp);
+        tabbarLayout.setBackgroundColor(0xFFF8F8F8);
     }
 
     public void setOnSelectListener(OnSelectListener onSelectListener) {
@@ -49,40 +49,46 @@ public class BSTabbedFrame extends BSFrame {
         super.onLoad();
         int index = 0;
         for (BSFrame frame : childFrames) {
-            RadioButton radioButton = new RadioButton(getContext());
-            radioButton.setText(titles[index]);
-            radioButton.setCompoundDrawables(null, getContext().getResources().getDrawable(drawableIDs[index]), null, null);
-            radioButton.setBackgroundColor(0xFFFF0000);
-            radioButtons.add(radioButton);
-            tabbarView.addView(radioButton, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1));
-            radioButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            RelativeLayout tabItemView = new RelativeLayout(getContext());
+            tabbarLayout.addView(tabItemView, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+            ImageView imageView = new ImageView(getContext());
+            TextView textView = new TextView(getContext());
+            textView.setTextColor(normalTextColor);
+            textView.setText(titles[index]);
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            tabItemView.addView(imageView, lp);
+            lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            lp.addRule(RelativeLayout.BELOW, imageView.getId());
+            tabItemView.addView(textView);
+            tabItemView.setBackgroundColor(0xFFFF0000);
+            tabItemView.setOnClickListener(new OnClickListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        for (int index = radioButtons.size() - 1; index >= 0; index--) {
-                            if (radioButtons.get(index) == buttonView) {
-                                int lastSelectIndex = currentSelected;
-                                int newSelectIndex = index;
-                                final BSFrame oldFrame = currentSelected < 0 ? null : childFrames.get(currentSelected);
-                                final BSFrame newFrame = index < 0 ? null : childFrames.get(index);
-                                currentSelected = index;
-                                newFrame.show();
-                                if (oldFrame != null) {
-                                    oldFrame.getRootView().setVisibility(View.GONE);
-                                }
-                                if (newFrame != null) {
-                                    oldFrame.getRootView().setVisibility(View.VISIBLE);
-                                }
-                                if (newFrame.hideBottomBar) {
-                                    tabbarView.setVisibility(View.GONE);
-                                } else {
-                                    tabbarView.setVisibility(View.VISIBLE);
-                                }
-                                if (onSelectListener != null) {
-                                    onSelectListener.onSelect(newSelectIndex, lastSelectIndex);
-                                }
-                                return;
+                public void onClick(View v) {
+                    for (int index = 0; index < tabbarLayout.getChildCount(); index++) {
+                        if (tabbarLayout.getChildAt(index) == v) {
+                            int lastSelectIndex = currentSelected;
+                            int newSelectIndex = index;
+                            final BSFrame oldFrame = currentSelected < 0 ? null : childFrames.get(currentSelected);
+                            final BSFrame newFrame = index < 0 ? null : childFrames.get(index);
+                            currentSelected = index;
+                            newFrame.show();
+                            if (oldFrame != null) {
+                                oldFrame.getRootView().setVisibility(View.GONE);
                             }
+                            if (newFrame != null) {
+                                oldFrame.getRootView().setVisibility(View.VISIBLE);
+                            }
+                            if (newFrame.hideBottomBar) {
+                                tabbarLayout.setVisibility(View.GONE);
+                            } else {
+                                tabbarLayout.setVisibility(View.VISIBLE);
+                            }
+                            if (onSelectListener != null) {
+                                onSelectListener.onSelect(newSelectIndex, lastSelectIndex);
+                            }
+                            return;
                         }
                     }
                 }
@@ -95,7 +101,7 @@ public class BSTabbedFrame extends BSFrame {
             frame.onLoad();
             index++;
         }
-        //        select(currentSelected);
+        select(currentSelected);
     }
 
     private boolean select(int index) {
@@ -109,10 +115,13 @@ public class BSTabbedFrame extends BSFrame {
             return false;
         }
         if (currentSelected >= 0 && currentSelected < childFrames.size()) {
-            radioButtons.get(currentSelected).setChecked(false);
+            ((ImageView) ((ViewGroup) tabbarLayout.getChildAt(currentSelected)).getChildAt(0)).setBackgroundResource(normalIconDrawableIDs[currentSelected]);
+            ((TextView) ((ViewGroup) tabbarLayout.getChildAt(currentSelected)).getChildAt(1)).setTextColor(normalTextColor);
         }
+        currentSelected = index;
         if (index >= 0 && index < childFrames.size()) {
-            radioButtons.get(index).setChecked(true);
+            ((ImageView) ((ViewGroup) tabbarLayout.getChildAt(currentSelected)).getChildAt(0)).setBackgroundResource(selectedIconDrawableIDs[currentSelected]);
+            ((TextView) ((ViewGroup) tabbarLayout.getChildAt(currentSelected)).getChildAt(1)).setTextColor(selectedTextColor);
         }
         return true;
     }

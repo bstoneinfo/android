@@ -29,8 +29,11 @@ public class MainActivity extends BSMainActivity {
         SettingsFrame settingsFrame = new SettingsFrame(this);
 
         String[] titles = new String[] { getString(R.string.tab_newest), getString(R.string.tab_search), getString(R.string.tab_favorite), getString(R.string.tab_settings) };
-        int[] drawableIDs = new int[] { R.drawable.tab_explore_selector, R.drawable.tab_search_selector, R.drawable.tab_favorite_selector, R.drawable.tab_settings_selector };
-        BSTabbedFrame tabbedFrame = new BSTabbedFrame(this, new BSFrame[] { newestFrame, searchFame, favoriteFrame, settingsFrame }, titles, drawableIDs, BSActivity.dip2px(50), 0);
+        int[] normalTabItemDrawableIDs = new int[] { R.drawable.tab_explore_normal, R.drawable.tab_search_normal, R.drawable.tab_favorite_normal, R.drawable.tab_settings_normal };
+        int[] selectedTabItemDrawableIDs = new int[] { R.drawable.tab_explore_selected, R.drawable.tab_search_selected, R.drawable.tab_favorite_selected,
+                R.drawable.tab_settings_selected };
+        BSTabbedFrame tabbedFrame = new BSTabbedFrame(this, new BSFrame[] { newestFrame, searchFame, favoriteFrame, settingsFrame }, titles, normalTabItemDrawableIDs,
+                selectedTabItemDrawableIDs, BSActivity.dip2px(50), 0);
         BSLayerFrame mainFrame = new BSLayerFrame(tabbedFrame) {
             @Override
             public boolean back() {

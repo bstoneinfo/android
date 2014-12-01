@@ -229,7 +229,7 @@ public class BSFrame {
         // 根据tabbar的显示或隐藏 设置panelLayout的bottomMargin以控制panelLayout的高度
         ViewGroup tabbarView = null;
         if (parentFrame instanceof BSTabbedFrame) {
-            tabbarView = ((BSTabbedFrame) parentFrame).tabbarView;
+            tabbarView = ((BSTabbedFrame) parentFrame).tabbarLayout;
         }
         MarginLayoutParams lp = (MarginLayoutParams) getRootView().getLayoutParams();
         if (tabbarView == null || hideBottomBar) {

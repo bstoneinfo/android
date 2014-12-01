@@ -1,49 +1,45 @@
 package com.bstoneinfo.lib.adl;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.bstoneinfo.lib.adl.ui.BSADLUIFrame;
+import com.bstoneinfo.lib.adl.ui.BSADLUITabbedFrame;
 import com.bstoneinfo.lib.app.BSApplication;
-import com.bstoneinfo.lib.common.BSUtils;
-import com.bstoneinfo.lib.frame.BSActivity;
-import com.bstoneinfo.lib.frame.BSFrame;
-import com.bstoneinfo.lib.frame.BSTabbedFrame;
+import com.bstoneinfo.lib.common.BSLog;
 
 public class BSADL {
+
+    public static final String TAG = "BSADL";
 
     public static void loadUI(Context context, String adlName) {
 
     }
 
-    private static void parseAdlUIFile(Context context, String adlName) {
-        final String adlString = BSApplication.getApplication().getFilesDir() + "/adl/ui/" + adlName + ".json";
+    private static void parseAdlUIFile(Context context, String adlFileName) {
+        final String adlPathName = "ui/" + adlFileName;
+        final String adlFilePath = BSApplication.getApplication().getFilesDir() + "/adl/" + adlPathName + ".json";
         JSONObject jsonADL = new JSONObject();
         try {
-            jsonADL = new JSONObject(adlString);
+            jsonADL = new JSONObject(adlFilePath);
         } catch (JSONException e) {
         }
         String sClass = jsonADL.optString("class");
-        if (TextUtils.equals(sClass, "tabview")) {
-            parseTabViewUI(context, jsonADL);
+        BSADLUIFrame adlUIFrame;
+        if (TextUtils.isEmpty(sClass)) {
+            BSLog.d(BSADL.TAG, adlPathName + ": Not found JSONString 'class'");
+            return;
         }
+        if (TextUtils.equals(sClass, "tabview")) {
+            adlUIFrame = new BSADLUITabbedFrame(context, jsonADL, adlPathName);
+        } else {
+            BSLog.d(BSADL.TAG, adlPathName + ": Not implement UIFrame class '" + sClass + "'");
+            return;
+        }
+        adlUIFrame.parse();
     }
 
-    private static BSTabbedFrame parseTabViewUI(Context context, JSONObject jsonADL) {
-        JSONArray jsonItems = BSUtils.optJsonArray(jsonADL, "items");
-        BSFrame childFrames[] = new BSFrame[jsonItems.length()];
-        String titles[] = new String[jsonItems.length()];
-        int drawableIDs[] = new int[jsonItems.length()];
-        for (int i = 0; i < jsonItems.length(); i++) {
-            JSONObject jsonItem = jsonItems.optJSONObject(i);
-            if (jsonItem == null) {
-                continue;
-            }
-            titles[i] = jsonItem.optString("title");
-        }
-        return new BSTabbedFrame(context, childFrames, titles, drawableIDs, jsonADL.optInt("tabbarHeight", BSActivity.dip2px(60)), jsonADL.optInt("defaultIndex", 0));
-    }
 }
