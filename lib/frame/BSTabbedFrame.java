@@ -1,6 +1,7 @@
 package com.bstoneinfo.lib.frame;
 
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -18,11 +19,13 @@ public class BSTabbedFrame extends BSFrame {
     private final String[] titles;
     private final int[] normalIconDrawableIDs, selectedIconDrawableIDs;
     private int currentSelected = -1;
+    private int defaultSelected;
     final LinearLayout tabbarLayout;
     private OnSelectListener onSelectListener;
     public int backgroundColor = 0xFFF9F9F9;
-    public int selectedTextColor = 0xFF18B4ED;
+    public int selectedTextColor = 0xFF0479FB;
     public int normalTextColor = 0xFF959595;
+    public int textFontSizeDip = 12;
 
     public BSTabbedFrame(Context context, BSFrame childFrames[], String titles[], int normalIconDrawableIDs[], int selectedIconDrawableIDs[], int tabbarHeight, int defaultSelected) {
         super(new RelativeLayout(context));
@@ -32,12 +35,11 @@ public class BSTabbedFrame extends BSFrame {
         this.titles = titles;
         this.normalIconDrawableIDs = normalIconDrawableIDs;
         this.selectedIconDrawableIDs = selectedIconDrawableIDs;
-        this.currentSelected = defaultSelected;
+        this.defaultSelected = defaultSelected;
         tabbarLayout = new LinearLayout(context);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, tabbarHeight);
         lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         getRootView().addView(tabbarLayout, lp);
-        tabbarLayout.setBackgroundColor(0xFFF8F8F8);
     }
 
     public void setOnSelectListener(OnSelectListener onSelectListener) {
@@ -47,12 +49,15 @@ public class BSTabbedFrame extends BSFrame {
     @Override
     protected void onLoad() {
         super.onLoad();
+        tabbarLayout.setBackgroundColor(backgroundColor);
         int index = 0;
         for (BSFrame frame : childFrames) {
             RelativeLayout tabItemView = new RelativeLayout(getContext());
             tabbarLayout.addView(tabItemView, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1));
             ImageView imageView = new ImageView(getContext());
+            imageView.setBackgroundResource(normalIconDrawableIDs[index]);
             TextView textView = new TextView(getContext());
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textFontSizeDip);
             textView.setTextColor(normalTextColor);
             textView.setText(titles[index]);
             RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -60,34 +65,15 @@ public class BSTabbedFrame extends BSFrame {
             tabItemView.addView(imageView, lp);
             lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
-            lp.addRule(RelativeLayout.BELOW, imageView.getId());
-            tabItemView.addView(textView);
-            tabItemView.setBackgroundColor(0xFFFF0000);
+            lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            lp.bottomMargin = BSActivity.dip2px(2);
+            tabItemView.addView(textView, lp);
             tabItemView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     for (int index = 0; index < tabbarLayout.getChildCount(); index++) {
                         if (tabbarLayout.getChildAt(index) == v) {
-                            int lastSelectIndex = currentSelected;
-                            int newSelectIndex = index;
-                            final BSFrame oldFrame = currentSelected < 0 ? null : childFrames.get(currentSelected);
-                            final BSFrame newFrame = index < 0 ? null : childFrames.get(index);
-                            currentSelected = index;
-                            newFrame.show();
-                            if (oldFrame != null) {
-                                oldFrame.getRootView().setVisibility(View.GONE);
-                            }
-                            if (newFrame != null) {
-                                oldFrame.getRootView().setVisibility(View.VISIBLE);
-                            }
-                            if (newFrame.hideBottomBar) {
-                                tabbarLayout.setVisibility(View.GONE);
-                            } else {
-                                tabbarLayout.setVisibility(View.VISIBLE);
-                            }
-                            if (onSelectListener != null) {
-                                onSelectListener.onSelect(newSelectIndex, lastSelectIndex);
-                            }
+                            select(index);
                             return;
                         }
                     }
@@ -101,7 +87,7 @@ public class BSTabbedFrame extends BSFrame {
             frame.onLoad();
             index++;
         }
-        select(currentSelected);
+        select(defaultSelected);
     }
 
     private boolean select(int index) {
@@ -114,9 +100,26 @@ public class BSTabbedFrame extends BSFrame {
         if (currentSelected == index) {
             return false;
         }
+        final BSFrame oldFrame = currentSelected < 0 ? null : childFrames.get(currentSelected);
+        final BSFrame newFrame = index < 0 ? null : childFrames.get(index);
         if (currentSelected >= 0 && currentSelected < childFrames.size()) {
             ((ImageView) ((ViewGroup) tabbarLayout.getChildAt(currentSelected)).getChildAt(0)).setBackgroundResource(normalIconDrawableIDs[currentSelected]);
             ((TextView) ((ViewGroup) tabbarLayout.getChildAt(currentSelected)).getChildAt(1)).setTextColor(normalTextColor);
+        }
+        newFrame.show();
+        if (oldFrame != null) {
+            oldFrame.getRootView().setVisibility(View.GONE);
+        }
+        if (newFrame != null) {
+            newFrame.getRootView().setVisibility(View.VISIBLE);
+        }
+        if (newFrame.hideBottomBar) {
+            tabbarLayout.setVisibility(View.GONE);
+        } else {
+            tabbarLayout.setVisibility(View.VISIBLE);
+        }
+        if (onSelectListener != null) {
+            onSelectListener.onSelect(index, currentSelected);
         }
         currentSelected = index;
         if (index >= 0 && index < childFrames.size()) {

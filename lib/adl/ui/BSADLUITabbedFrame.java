@@ -5,8 +5,6 @@ import org.json.JSONObject;
 
 import android.content.Context;
 
-import com.bstoneinfo.lib.adl.BSADL;
-import com.bstoneinfo.lib.common.BSLog;
 import com.bstoneinfo.lib.common.BSUtils;
 import com.bstoneinfo.lib.frame.BSActivity;
 import com.bstoneinfo.lib.frame.BSFrame;
@@ -28,11 +26,14 @@ public class BSADLUITabbedFrame extends BSADLUIFrame {
         for (int i = 0; i < jsonItems.length(); i++) {
             JSONObject jsonItem = jsonItems.optJSONObject(i);
             if (jsonItem == null) {
-                BSLog.d(BSADL.TAG, "");
+                BSUtils.debugAssert(adlPathName + ": Cannot parse 'items[" + i + "]'");
                 continue;
             }
             titles[i] = jsonItem.optString("title");
-            //            normalDrawableIDs
+            JSONArray jsonIconArray = BSUtils.optJsonArray(jsonItem, "icon");
+            normalDrawableIDs[i] = getDrawableID(jsonIconArray.optString(0));
+            selectedDrawableIDs[i] = getDrawableID(jsonIconArray.optString(1));
+            childFrames[i] = new BSFrame(context);
         }
         return new BSTabbedFrame(context, childFrames, titles, normalDrawableIDs, selectedDrawableIDs, jsonADL.optInt("tabbarHeight", BSActivity.dip2px(60)), jsonADL.optInt(
                 "defaultIndex", 0));

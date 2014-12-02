@@ -19,4 +19,8 @@ public abstract class BSADLUIFrame {
     }
 
     public abstract BSFrame parse();
+
+    protected int getDrawableID(String name) {
+        return context.getResources().getIdentifier(context.getPackageName() + ":drawable/" + name, null, null);
+    }
 }

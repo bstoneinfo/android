@@ -28,6 +28,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.bstoneinfo.lib.app.BSApplication;
 import com.bstoneinfo.lib.connection.BSFileConnection;
@@ -108,6 +109,8 @@ public class BSUtils {
     public static void debugAssert(String assertDesc) {
         if (isDebug()) {
             throw new AssertionError(assertDesc);
+        } else {
+            Log.d("Assert", assertDesc);
         }
     }
 
