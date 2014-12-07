@@ -3,16 +3,17 @@ package com.bstoneinfo.lib.adl.ui;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bstoneinfo.lib.frame.BSFrame;
+
 public class BSADLUIButton extends BSADLUITextView {
 
-    public BSADLUIButton(Context context, String adlName, JSONObject jsonADL) {
-        super(context, adlName, jsonADL);
+    public BSADLUIButton(BSFrame parentFrame, String adlName, JSONObject jsonADL) {
+        super(parentFrame, adlName, jsonADL);
     }
 
     @Override

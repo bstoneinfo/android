@@ -1,0 +1,88 @@
+{
+  "class": "rowframe",
+  "bgcolor": "#3b5898",
+  "padding":
+  {
+  	"bottom":12
+  },
+  "items": [
+    {
+      "height": 48,
+      "class": "textview",
+      "text":"管理员注册",
+      "fontcolor":"white",
+      "fontsize":"24",
+      "halign":"center",
+      "valign":"center"
+    },
+    {
+    	"height":122,
+	  	"class":"rowframe",
+		"bgcolor": "white",
+	  	"margin":
+	  	{
+	  		"left":10,
+	  		"right":10
+	  	},
+	  	"items":[
+	  	 {
+	  	 	"weight":1,
+	  	 	"class":"editview",
+	  	 	"bgcolor": "null",
+	  	 	"hint":"邮箱或手机号"
+	  	 },
+	  	 {
+	  	 	"height":1,
+	  	 	"class":"view",
+		  	"bgcolor":"#e5e5e5"
+	  	 },
+	  	 {
+	  	 	"weight":1,
+	  	 	"class":"editview",
+	  	 	"bgcolor": "null",
+	  	 	"hint":"密码"
+	  	 },
+	  	 {
+	  	 	"height":1,
+	  	 	"class":"view",
+		  	"bgcolor":"#e5e5e5"
+	  	 },
+	  	 {
+	  	 	"weight":1,
+	  	 	"class":"editview",
+	  	 	"bgcolor": "null",
+	  	 	"hint":"确认密码"
+	  	 }
+	  	]
+    },
+    {
+      "height": 50,
+      "class": "button",
+	  	"margin":
+	  	{
+	  		"top":5,
+	  		"left":10,
+	  		"right":10
+	  	},
+      "text":"注册",
+      "colorNormal":"#5869a0",
+      "colorPress":"#7a889c",
+      "fontcolor":"white",
+      "fontsize":"18"
+    },
+   	 {
+  	 	"weight":1,
+  	 	"class":"view"
+  	 },    
+   {
+      "height": 40,
+      "id":"login_forgetpwd",
+      "class": "textview",
+      "text":"返回登录页",
+      "fontcolor":"white",
+      "fontsize":"14",
+      "halign":"center",
+      "valign":"center"
+    }
+  ]
+}

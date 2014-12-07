@@ -2,16 +2,17 @@ package com.bstoneinfo.lib.adl.ui;
 
 import org.json.JSONObject;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bstoneinfo.lib.frame.BSFrame;
+
 public class BSADLUITextView extends BSADLUIView {
 
-    public BSADLUITextView(Context context, String adlName, JSONObject jsonADL) {
-        super(context, adlName, jsonADL);
+    public BSADLUITextView(BSFrame parentFrame, String adlName, JSONObject jsonADL) {
+        super(parentFrame, adlName, jsonADL);
     }
 
     @Override

@@ -2,14 +2,15 @@ package com.bstoneinfo.lib.adl.ui;
 
 import org.json.JSONObject;
 
-import android.content.Context;
 import android.view.View;
 import android.widget.EditText;
 
+import com.bstoneinfo.lib.frame.BSFrame;
+
 public class BSADLUIEditView extends BSADLUIView {
 
-    public BSADLUIEditView(Context context, String adlName, JSONObject jsonADL) {
-        super(context, adlName, jsonADL);
+    public BSADLUIEditView(BSFrame parentFrame, String adlName, JSONObject jsonADL) {
+        super(parentFrame, adlName, jsonADL);
     }
 
     @Override

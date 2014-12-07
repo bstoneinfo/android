@@ -77,7 +77,7 @@ public class BSADL {
         return adlFrame.parse();
     }
 
-    public static View loadView(Context context, String adlName, String node, JSONObject jsonADL, boolean allowNull) {
+    public static View loadView(BSFrame parentFrame, String adlName, String node, JSONObject jsonADL, boolean allowNull) {
         String classNode;
         if (node == null) {
             classNode = "class";
@@ -87,24 +87,24 @@ public class BSADL {
         BSADLUIView adlView = null;
         String className = jsonADL.optString("class");
         if (TextUtils.isEmpty(className)) {
-            error(context, adlName, classNode, "String", "Not found", null);
+            error(parentFrame.getContext(), adlName, classNode, "String", "Not found", null);
         } else {
             Class<? extends BSADLUIView> viewClass = viewClassMap.get(className);
             if (viewClass == null) {
                 if (allowNull) {
                     return null;
                 }
-                error(context, adlName, classNode, "String", "'" + className + "' is not implemented", null);
+                error(parentFrame.getContext(), adlName, classNode, "String", "'" + className + "' is not implemented", null);
             } else {
                 try {
-                    adlView = viewClass.getConstructor(Context.class, String.class, JSONObject.class).newInstance(context, adlName, jsonADL);
+                    adlView = viewClass.getConstructor(BSFrame.class, String.class, JSONObject.class).newInstance(parentFrame, adlName, jsonADL);
                 } catch (Exception e) {
-                    error(context, adlName, classNode, "String", "Not create instance of '" + className + "'", e);
+                    error(parentFrame.getContext(), adlName, classNode, "String", "Not create instance of '" + className + "'", e);
                 }
             }
         }
         if (adlView == null) {
-            adlView = new BSADLUIView(context, adlName, jsonADL);
+            adlView = new BSADLUIView(parentFrame, adlName, jsonADL);
         }
         return adlView.parse();
     }

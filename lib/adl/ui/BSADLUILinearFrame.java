@@ -25,15 +25,15 @@ public class BSADLUILinearFrame extends BSADLUIFrame {
         LinearLayout linearLayout = new LinearLayout(context);
         linearLayout.setOrientation(bVert ? LinearLayout.VERTICAL : LinearLayout.HORIZONTAL);
         parseCommonAttribute(linearLayout);
+        BSFrame frame = new BSFrame(linearLayout);
         JSONArray jsonItems = getArray(jsonADL, "items", false);
         for (int i = 0; i < jsonItems.length(); i++) {
             JSONObject jsonItem = getArrayObject("items", jsonItems, i);
             String itemNodeName = "items[" + i + "]";
-            View view = BSADL.loadView(context, adlName, itemNodeName, jsonItem, true);
+            View view = BSADL.loadView(frame, adlName, itemNodeName, jsonItem, true);
             if (view == null) {
-                BSFrame frame = BSADL.loadFrame(context, adlName, itemNodeName, jsonItem, false);
-                view = frame.getRootView();
-                view.setTag(frame);
+                BSFrame subframe = BSADL.loadFrame(context, adlName, itemNodeName, jsonItem, false);
+                view = subframe.getRootView();
             }
             LinearLayout.LayoutParams lp;
             int width = LinearLayout.LayoutParams.MATCH_PARENT;
@@ -57,7 +57,7 @@ public class BSADLUILinearFrame extends BSADLUIFrame {
             parseMargin(lp, jsonItem);
             linearLayout.addView(view, lp);
         }
-        return new BSFrame(linearLayout);
+        return frame;
     }
 
 }
