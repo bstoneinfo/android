@@ -1,0 +1,33 @@
+{
+  "class": "tablayout",
+  "items": [
+    {
+      "title": "最新",
+      "icon": [
+        "tab_explore_normal",
+        "tab_explore_selected"
+      ]
+    },
+    {
+      "title": "搜索",
+      "icon": [
+        "tab_search_normal",
+        "tab_search_selected"
+      ]
+    },
+    {
+      "title": "收藏",
+      "icon": [
+        "tab_favorite_normal",
+        "tab_favorite_selected"
+      ]
+    },
+    {
+      "title": "设置",
+      "icon": [
+        "tab_settings_normal",
+        "tab_settings_selected"
+      ]
+    }
+  ]
+}

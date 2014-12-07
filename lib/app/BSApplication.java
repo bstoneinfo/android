@@ -3,6 +3,7 @@ package com.bstoneinfo.lib.app;
 import org.json.JSONObject;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.bstoneinfo.lib.common.BSLooperThread;
@@ -32,8 +33,12 @@ public class BSApplication extends Application {
         return instance;
     }
 
-    public SharedPreferences getDefaultSharedPreferences() {
+    public SharedPreferences getDefaultPreferences() {
         return getSharedPreferences(getPackageName(), 0);
+    }
+
+    public SharedPreferences getDevicePreferences() {
+        return getSharedPreferences("device", Context.MODE_PRIVATE);
     }
 
     public BSVersionManager getVersionManager() {

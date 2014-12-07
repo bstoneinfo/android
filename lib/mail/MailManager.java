@@ -35,7 +35,7 @@ public class MailManager {
     }
 
     private MailManager() {
-        String s = BSApplication.getApplication().getDefaultSharedPreferences().getString("MailQueue", "");
+        String s = BSApplication.getApplication().getDefaultPreferences().getString("MailQueue", "");
         if (!TextUtils.isEmpty(s)) {
             try {
                 mailList = new JSONArray(s);
@@ -51,7 +51,7 @@ public class MailManager {
     }
 
     private void save() {
-        BSApplication.getApplication().getDefaultSharedPreferences().edit().putString("MailQueue", mailList.toString()).commit();
+        BSApplication.getApplication().getDefaultPreferences().edit().putString("MailQueue", mailList.toString()).commit();
     }
 
     public void sendMail(String subject, String body) {

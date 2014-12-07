@@ -1,0 +1,68 @@
+{
+  "class": "rowlayout",
+  "background": "#ff3b5898",
+  "items": [
+    {
+      "weight": 48,
+      "class": "text",
+      "text":"劲虎威威－运动场所管理"
+      "halign":"center",
+      "valign":"bottom",
+      "padding":
+      {
+      	"bottom":12
+      }
+    },
+    {
+    	"height":180,
+	  	"class":"vgroup",
+	  	"background":"#ffffffff",
+	  	"margin":
+	  	{
+	  		"left":16,
+	  		"right":16
+	  	},
+	  	"items":[
+	  	 {
+	  	 	"weight":1,
+	  	 	"class":"edit",
+	  	 	"hint":"邮箱或手机号"
+	  	 },
+	  	 {
+	  	 	"height":1,
+	  	 	"class":"image",
+		  	"background":"#ffe5e5e5"
+	  	 },
+	  	 {
+	  	 	"weight":1,
+	  	 	"class":"edit",
+	  	 	"hint":"密码"
+	  	 },
+	  	]
+    },
+    {
+      "weight": 40,
+      "class": "text",
+      "id":"login_register",
+      "text":"注册管理员账户",
+      "halign":"center",
+      "valign":"bottom",
+      "padding":
+      {
+      	"bottom":8
+      }
+    },
+    {
+      "weight": 16,
+      "id":"login_forgetpwd",
+      "class": "text",
+      "text":"忘记密码？"
+      "halign":"center",
+      "valign":"top",
+      "padding":
+      {
+      	"top":8
+      }
+    }
+  ]
+}

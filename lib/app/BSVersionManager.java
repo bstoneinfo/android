@@ -12,8 +12,8 @@ public class BSVersionManager {
     public final String thisVersionName;
 
     BSVersionManager() {
-        lastVersionCode = BSApplication.getApplication().getDefaultSharedPreferences().getInt("AppVersionCode", 0);
-        lastVersionName = BSApplication.getApplication().getDefaultSharedPreferences().getString("AppVersionName", "");
+        lastVersionCode = BSApplication.getApplication().getDefaultPreferences().getInt("AppVersionCode", 0);
+        lastVersionName = BSApplication.getApplication().getDefaultPreferences().getString("AppVersionName", "");
         int piCode = lastVersionCode;
         String piName = lastVersionName;
         try {
@@ -25,7 +25,7 @@ public class BSVersionManager {
         thisVersionCode = piCode;
         thisVersionName = piName;
         if (isUpgrade()) {
-            Editor editor = BSApplication.getApplication().getDefaultSharedPreferences().edit();
+            Editor editor = BSApplication.getApplication().getDefaultPreferences().edit();
             editor.putInt("AppVersionCode", thisVersionCode);
             editor.putString("AppVersionName", thisVersionName);
             editor.commit();
