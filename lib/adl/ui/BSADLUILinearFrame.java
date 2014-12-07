@@ -27,7 +27,8 @@ public class BSADLUILinearFrame extends BSADLUIFrame {
         JSONArray jsonItems = getArray(jsonADL, "items", false);
         for (int i = 0; i < jsonItems.length(); i++) {
             JSONObject jsonItem = getArrayObject("items", jsonItems, i);
-            View view = BSADL.loadView(context, adlName, "items[" + i + "]", jsonItem);
+            String itemNodeName = "items[" + i + "]";
+            View view = BSADL.loadView(context, adlName, itemNodeName, jsonItem);
             LinearLayout.LayoutParams lp;
             int width = LinearLayout.LayoutParams.MATCH_PARENT;
             int height = LinearLayout.LayoutParams.MATCH_PARENT;
@@ -38,6 +39,11 @@ public class BSADLUILinearFrame extends BSADLUIFrame {
                 width = jsonItem.optInt("width", 0);
             }
             if (weight > 0) {
+                if (bVert) {
+                    height = 0;
+                } else {
+                    width = 0;
+                }
                 lp = new LinearLayout.LayoutParams(width, height, weight);
             } else {
                 lp = new LinearLayout.LayoutParams(width, height);
@@ -46,4 +52,5 @@ public class BSADLUILinearFrame extends BSADLUIFrame {
         }
         return new BSFrame(linearLayout);
     }
+
 }

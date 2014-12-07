@@ -5,6 +5,8 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 
 import com.bstoneinfo.lib.adl.BSADL;
@@ -26,25 +28,22 @@ public abstract class BSADLUIObject {
         if (drawableID > 0) {
             view.setBackgroundResource(drawableID);
         }
-        int bgColor = getColor(jsonADL, "bgcolor", false);
-        if (bgColor >= 0) {
+        int bgColor = getColor(jsonADL, "bgcolor", Integer.MIN_VALUE);
+        if (bgColor != Integer.MIN_VALUE) {
             view.setBackgroundColor(bgColor);
         }
     }
 
-    protected int getColor(JSONObject jsonADL, String node, boolean bFatal) {
+    protected int getColor(JSONObject jsonADL, String node, int defColor) {
         String value = jsonADL.optString(node, null);
         if (value == null) {
-            if (bFatal) {
-                errorNodeNotFound(node, "String");
-            }
-            return -1;
+            return defColor;
         }
         try {
             return Color.parseColor(value);
         } catch (Exception e) {
             error("bgcolor", "String", "Color %1 Parse Error");
-            return 0;
+            return defColor;
         }
     }
 
@@ -64,6 +63,41 @@ public abstract class BSADLUIObject {
             errorResourceNotFound(node, "String", value);
         }
         return 0;
+    }
+
+    protected int getAlign(JSONObject jsonItem, String itemNodeName) {
+        String preNode = itemNodeName;
+        if (preNode == null) {
+            preNode = "";
+        } else if (!TextUtils.isEmpty(preNode) && !preNode.endsWith(".")) {
+            preNode += ".";
+        }
+        int gravity = 0;
+        String halign = jsonItem.optString("halign", null);
+        String valign = jsonItem.optString("valign", null);
+        if (halign != null) {
+            if (TextUtils.equals(halign, "left")) {
+                gravity = Gravity.LEFT;
+            } else if (TextUtils.equals(halign, "center")) {
+                gravity = Gravity.CENTER_HORIZONTAL;
+            } else if (TextUtils.equals(halign, "right")) {
+                gravity = Gravity.RIGHT;
+            } else {
+                error(preNode + "halign", "String", "%1 is not a valid value of 'halign', must be one of 'left', 'center' or 'right'", halign);
+            }
+        }
+        if (valign != null) {
+            if (TextUtils.equals(valign, "top")) {
+                gravity |= Gravity.TOP;
+            } else if (TextUtils.equals(valign, "center")) {
+                gravity |= Gravity.CENTER_VERTICAL;
+            } else if (TextUtils.equals(valign, "bottom")) {
+                gravity |= Gravity.BOTTOM;
+            } else {
+                error(preNode + "valign", "String", "%1 is not a valid value of 'valign', must be one of 'top', 'center' or 'bottom'", valign);
+            }
+        }
+        return gravity;
     }
 
     protected int getInteger(JSONObject jsonItem, String node, int defValue) {

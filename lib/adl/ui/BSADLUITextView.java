@@ -3,6 +3,8 @@ package com.bstoneinfo.lib.adl.ui;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
@@ -20,7 +22,14 @@ public class BSADLUITextView extends BSADLUIView {
         if (textString != null) {
             textView.setText(textString);
         }
+        int fontsize = jsonADL.optInt("fontsize", 12);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, fontsize);
+        int fontcolor = getColor(jsonADL, "fontcolor", Color.BLACK);
+        textView.setTextColor(fontcolor);
+        int gravity = getAlign(jsonADL, "");
+        if (gravity > 0) {
+            textView.setGravity(gravity);
+        }
         return textView;
     }
-
 }

@@ -6,12 +6,16 @@ import android.content.Context;
 
 import com.bstoneinfo.lib.frame.BSFrame;
 
-public abstract class BSADLUIFrame extends BSADLUIObject {
+public class BSADLUIFrame extends BSADLUIObject {
 
     public BSADLUIFrame(Context context, String adlName, JSONObject jsonADL) {
         super(context, adlName, jsonADL);
     }
 
-    public abstract BSFrame parse();
+    public BSFrame parse() {
+        BSFrame frame = new BSFrame(context);
+        parseCommonAttribute(frame.getRootView());
+        return frame;
+    }
 
 }

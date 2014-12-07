@@ -4,8 +4,10 @@
   "items": [
     {
       "weight": 48,
-      "class": "text",
+      "class": "textview",
       "text":"劲虎威威－运动场所管理",
+      "fontcolor":"white",
+      "fontsize":"32",
       "halign":"center",
       "valign":"bottom",
       "padding":
@@ -15,8 +17,7 @@
     },
     {
     	"height":180,
-	  	"class":"vgroup",
-	  	"bgcolor":"#ffffff",
+	  	"class":"rowframe",
 	  	"margin":
 	  	{
 	  		"left":16,
@@ -25,26 +26,28 @@
 	  	"items":[
 	  	 {
 	  	 	"weight":1,
-	  	 	"class":"edit",
+	  	 	"class":"editview",
 	  	 	"hint":"邮箱或手机号"
 	  	 },
 	  	 {
 	  	 	"height":1,
-	  	 	"class":"image",
+	  	 	"class":"imageview",
 		  	"bgcolor":"#e5e5e5"
 	  	 },
 	  	 {
 	  	 	"weight":1,
-	  	 	"class":"edit",
+	  	 	"class":"editview",
 	  	 	"hint":"密码"
 	  	 }
 	  	]
     },
     {
       "weight": 40,
-      "class": "text",
+      "class": "textview",
       "id":"login_register",
       "text":"注册管理员账户",
+      "fontcolor":"white",
+      "fontsize":"14",
       "halign":"center",
       "valign":"bottom",
       "padding":
@@ -55,8 +58,10 @@
     {
       "weight": 16,
       "id":"login_forgetpwd",
-      "class": "text",
+      "class": "textview",
       "text":"忘记密码？",
+      "fontcolor":"white",
+      "fontsize":"14",
       "halign":"center",
       "valign":"top",
       "padding":

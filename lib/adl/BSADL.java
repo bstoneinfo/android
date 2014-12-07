@@ -13,6 +13,7 @@ import android.view.View;
 import com.bstoneinfo.lib.adl.ui.BSADLUIFrame;
 import com.bstoneinfo.lib.adl.ui.BSADLUIRowFrame;
 import com.bstoneinfo.lib.adl.ui.BSADLUITabFrame;
+import com.bstoneinfo.lib.adl.ui.BSADLUITextView;
 import com.bstoneinfo.lib.adl.ui.BSADLUIView;
 import com.bstoneinfo.lib.app.BSApplication;
 import com.bstoneinfo.lib.common.BSLog;
@@ -28,6 +29,7 @@ public class BSADL {
     static {
         registerADLUIFrameClass("tabframe", BSADLUITabFrame.class);
         registerADLUIFrameClass("rowframe", BSADLUIRowFrame.class);
+        registerADLUIViewClass("textview", BSADLUITextView.class);
     }
 
     public static BSFrame loadFrame(Context context, String adlName) {
@@ -36,22 +38,25 @@ public class BSADL {
     }
 
     public static BSFrame loadFrame(Context context, String adlName, JSONObject jsonADL) {
+        BSADLUIFrame adlFrame = null;
         String className = jsonADL.optString("class");
         if (TextUtils.isEmpty(className)) {
             error(context, adlName, "class", "String", "Not found", null);
-            return new BSFrame(context);
         }
         Class<? extends BSADLUIFrame> frameClass = frameClassMap.get(className);
         if (frameClass == null) {
-            return new BSFrame(context);
+            error(context, adlName, "class", "String", "'" + className + "' is not implemented", null);
+        } else {
+            try {
+                adlFrame = frameClass.getConstructor(Context.class, String.class, JSONObject.class).newInstance(context, adlName, jsonADL);
+            } catch (Exception e) {
+                error(context, adlName, "class", "String", "Create instance of '" + className + "' failed", e);
+            }
         }
-        try {
-            BSADLUIFrame adlFrame = frameClass.getConstructor(Context.class, String.class, JSONObject.class).newInstance(context, adlName, jsonADL);
-            return adlFrame.parse();
-        } catch (Exception e) {
-            error(context, adlName, "class", "String", "Not create instance of '" + className + "'", e);
-            return new BSFrame(context);
+        if (adlFrame == null) {
+            adlFrame = new BSADLUIFrame(context, adlName, jsonADL);
         }
+        return adlFrame.parse();
     }
 
     public static View loadView(Context context, String adlName, String node, JSONObject jsonADL) {
@@ -61,22 +66,26 @@ public class BSADL {
         } else {
             classNode = node + ".class";
         }
+        BSADLUIView adlView = null;
         String className = jsonADL.optString("class");
         if (TextUtils.isEmpty(className)) {
             error(context, adlName, classNode, "String", "Not found", null);
-            return new View(context);
+        } else {
+            Class<? extends BSADLUIView> viewClass = viewClassMap.get(className);
+            if (viewClass == null) {
+                error(context, adlName, classNode, "String", "'" + className + "' is not implemented", null);
+            } else {
+                try {
+                    adlView = viewClass.getConstructor(Context.class, String.class, JSONObject.class).newInstance(context, adlName, jsonADL);
+                } catch (Exception e) {
+                    error(context, adlName, classNode, "String", "Not create instance of '" + className + "'", e);
+                }
+            }
         }
-        Class<? extends BSADLUIView> viewClass = viewClassMap.get(className);
-        if (viewClass == null) {
-            return new View(context);
+        if (adlView == null) {
+            adlView = new BSADLUIView(context, adlName, jsonADL);
         }
-        try {
-            BSADLUIView adlView = viewClass.getConstructor(Context.class, String.class, JSONObject.class).newInstance(context, adlName, jsonADL);
-            return adlView.parse();
-        } catch (Exception e) {
-            error(context, adlName, classNode, "String", "Not create instance of '" + className + "'", e);
-            return new View(context);
-        }
+        return adlView.parse();
     }
 
     private static JSONObject loadAdlFile(Context context, String adlName) {
