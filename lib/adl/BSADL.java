@@ -10,6 +10,9 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.bstoneinfo.lib.adl.ui.BSADLUIButton;
+import com.bstoneinfo.lib.adl.ui.BSADLUIColFrame;
+import com.bstoneinfo.lib.adl.ui.BSADLUIEditView;
 import com.bstoneinfo.lib.adl.ui.BSADLUIFrame;
 import com.bstoneinfo.lib.adl.ui.BSADLUIRowFrame;
 import com.bstoneinfo.lib.adl.ui.BSADLUITabFrame;
@@ -27,30 +30,45 @@ public class BSADL {
     static final HashMap<String, Class<? extends BSADLUIView>> viewClassMap = new HashMap<String, Class<? extends BSADLUIView>>();
 
     static {
+        registerADLUIFrameClass("frame", BSADLUIFrame.class);
         registerADLUIFrameClass("tabframe", BSADLUITabFrame.class);
         registerADLUIFrameClass("rowframe", BSADLUIRowFrame.class);
+        registerADLUIFrameClass("colframe", BSADLUIColFrame.class);
+
+        registerADLUIViewClass("view", BSADLUIView.class);
+        registerADLUIViewClass("button", BSADLUIButton.class);
         registerADLUIViewClass("textview", BSADLUITextView.class);
+        registerADLUIViewClass("editview", BSADLUIEditView.class);
     }
 
     public static BSFrame loadFrame(Context context, String adlName) {
         JSONObject jsonADL = loadAdlFile(context, adlName);
-        return loadFrame(context, adlName, jsonADL);
+        return loadFrame(context, adlName, "", jsonADL, false);
     }
 
-    public static BSFrame loadFrame(Context context, String adlName, JSONObject jsonADL) {
+    public static BSFrame loadFrame(Context context, String adlName, String node, JSONObject jsonADL, boolean allowNull) {
+        String classNode;
+        if (node == null) {
+            classNode = "class";
+        } else {
+            classNode = node + ".class";
+        }
         BSADLUIFrame adlFrame = null;
         String className = jsonADL.optString("class");
         if (TextUtils.isEmpty(className)) {
-            error(context, adlName, "class", "String", "Not found", null);
+            error(context, adlName, classNode, "String", "Not found", null);
         }
         Class<? extends BSADLUIFrame> frameClass = frameClassMap.get(className);
         if (frameClass == null) {
-            error(context, adlName, "class", "String", "'" + className + "' is not implemented", null);
+            if (allowNull) {
+                return null;
+            }
+            error(context, adlName, classNode, "String", "'" + className + "' is not implemented", null);
         } else {
             try {
                 adlFrame = frameClass.getConstructor(Context.class, String.class, JSONObject.class).newInstance(context, adlName, jsonADL);
             } catch (Exception e) {
-                error(context, adlName, "class", "String", "Create instance of '" + className + "' failed", e);
+                error(context, adlName, classNode, "String", "Create instance of '" + className + "' failed", e);
             }
         }
         if (adlFrame == null) {
@@ -59,7 +77,7 @@ public class BSADL {
         return adlFrame.parse();
     }
 
-    public static View loadView(Context context, String adlName, String node, JSONObject jsonADL) {
+    public static View loadView(Context context, String adlName, String node, JSONObject jsonADL, boolean allowNull) {
         String classNode;
         if (node == null) {
             classNode = "class";
@@ -73,6 +91,9 @@ public class BSADL {
         } else {
             Class<? extends BSADLUIView> viewClass = viewClassMap.get(className);
             if (viewClass == null) {
+                if (allowNull) {
+                    return null;
+                }
                 error(context, adlName, classNode, "String", "'" + className + "' is not implemented", null);
             } else {
                 try {

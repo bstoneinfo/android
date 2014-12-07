@@ -8,8 +8,10 @@ import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.LinearLayout.LayoutParams;
 
 import com.bstoneinfo.lib.adl.BSADL;
+import com.bstoneinfo.lib.frame.BSActivity;
 
 public abstract class BSADLUIObject {
 
@@ -32,6 +34,14 @@ public abstract class BSADLUIObject {
         if (bgColor != Integer.MIN_VALUE) {
             view.setBackgroundColor(bgColor);
         }
+        JSONObject jsonPadding = jsonADL.optJSONObject("padding");
+        if (jsonPadding != null) {
+            int left = BSActivity.dip2px(jsonPadding.optInt("left", 0));
+            int top = BSActivity.dip2px(jsonPadding.optInt("top", 0));
+            int right = BSActivity.dip2px(jsonPadding.optInt("right", 0));
+            int bottom = BSActivity.dip2px(jsonPadding.optInt("bottom"));
+            view.setPadding(left, top, right, bottom);
+        }
     }
 
     protected int getColor(JSONObject jsonADL, String node, int defColor) {
@@ -39,10 +49,13 @@ public abstract class BSADLUIObject {
         if (value == null) {
             return defColor;
         }
+        if (TextUtils.equals(value, "null")) {
+            return 0;
+        }
         try {
             return Color.parseColor(value);
         } catch (Exception e) {
-            error("bgcolor", "String", "Color %1 Parse Error");
+            error("bgcolor", "String", "Color %1 Parse Error", value);
             return defColor;
         }
     }
@@ -100,8 +113,14 @@ public abstract class BSADLUIObject {
         return gravity;
     }
 
-    protected int getInteger(JSONObject jsonItem, String node, int defValue) {
-        return jsonItem.optInt(node, defValue);
+    protected void parseMargin(LayoutParams lp, JSONObject jsonItem) {
+        JSONObject jsonMargin = jsonItem.optJSONObject("margin");
+        if (jsonMargin != null) {
+            lp.leftMargin = BSActivity.dip2px(jsonMargin.optInt("left", 0));
+            lp.topMargin = BSActivity.dip2px(jsonMargin.optInt("top", 0));
+            lp.rightMargin = BSActivity.dip2px(jsonMargin.optInt("right", 0));
+            lp.bottomMargin = BSActivity.dip2px(jsonMargin.optInt("bottom", 0));
+        }
     }
 
     protected JSONArray getArray(JSONObject jsonADL, String node, boolean bFatal) {

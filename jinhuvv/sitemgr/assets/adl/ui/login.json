@@ -1,73 +1,128 @@
 {
   "class": "rowframe",
   "bgcolor": "#3b5898",
+  "padding":
+  {
+  	"bottom":12
+  },
   "items": [
+  	 {
+  	 	"weight":2,
+  	 	"class":"view"
+  	 },    
     {
-      "weight": 48,
+      "height": 48,
       "class": "textview",
       "text":"劲虎威威－运动场所管理",
       "fontcolor":"white",
-      "fontsize":"32",
+      "fontsize":"24",
       "halign":"center",
-      "valign":"bottom",
-      "padding":
-      {
-      	"bottom":12
-      }
+      "valign":"center"
     },
     {
-    	"height":180,
+    	"height":90,
 	  	"class":"rowframe",
+		"bgcolor": "white",
 	  	"margin":
 	  	{
-	  		"left":16,
-	  		"right":16
+	  		"left":10,
+	  		"right":10
 	  	},
 	  	"items":[
 	  	 {
 	  	 	"weight":1,
 	  	 	"class":"editview",
+	  	 	"bgcolor": "null",
 	  	 	"hint":"邮箱或手机号"
 	  	 },
 	  	 {
 	  	 	"height":1,
-	  	 	"class":"imageview",
+	  	 	"class":"view",
 		  	"bgcolor":"#e5e5e5"
 	  	 },
 	  	 {
 	  	 	"weight":1,
 	  	 	"class":"editview",
+	  	 	"bgcolor": "null",
 	  	 	"hint":"密码"
 	  	 }
 	  	]
     },
     {
-      "weight": 40,
+      "height": 50,
+      "class": "button",
+	  	"margin":
+	  	{
+	  		"top":5,
+	  		"left":10,
+	  		"right":10
+	  	},
+      "text":"登录",
+      "action":"open login_register",
+      "colorNormal":"#5869a0",
+      "colorPress":"#7a889c",
+      "fontcolor":"white",
+      "fontsize":"18"
+    },
+    {
+    	"height":30,
+	  	"class":"colframe",
+	  	"margin":
+	  	{
+	  		"top":15,
+	  		"left":10,
+	  		"right":10
+	  	},
+	  	"items":[
+	  	 {
+	  	 	"weight":1,
+			"class":"textview",
+			"text":"QQ登录",
+			  "fontcolor":"white",
+			  "fontsize":"14",
+			  "halign":"center"
+	  	 },
+	  	 {
+			"weight":1,
+			"class":"textview",
+			"text":"微信登录",
+			  "fontcolor":"white",
+			  "fontsize":"14",
+			  "halign":"center"
+	  	 },
+	  	 {
+	  	 	"weight":1,
+			"class":"textview",
+			"text":"微博登录",
+			  "fontcolor":"white",
+			  "fontsize":"14",
+			  "halign":"center"
+	  	 }
+	  	]
+    },
+  	 {
+  	 	"weight":3,
+  	 	"class":"view"
+  	 },    
+    {
+      "height": 40,
       "class": "textview",
       "id":"login_register",
       "text":"注册管理员账户",
       "fontcolor":"white",
       "fontsize":"14",
       "halign":"center",
-      "valign":"bottom",
-      "padding":
-      {
-      	"bottom":8
-      }
+      "valign":"center"
     },
     {
-      "weight": 16,
+      "height": 40,
       "id":"login_forgetpwd",
       "class": "textview",
       "text":"忘记密码？",
       "fontcolor":"white",
       "fontsize":"14",
       "halign":"center",
-      "valign":"top",
-      "padding":
-      {
-      	"top":8
-      }
+      "valign":"center"
     }
   ]
 }

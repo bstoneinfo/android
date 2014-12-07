@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.bstoneinfo.lib.adl.BSADL;
+import com.bstoneinfo.lib.frame.BSActivity;
 import com.bstoneinfo.lib.frame.BSFrame;
 
 public class BSADLUILinearFrame extends BSADLUIFrame {
@@ -28,15 +29,20 @@ public class BSADLUILinearFrame extends BSADLUIFrame {
         for (int i = 0; i < jsonItems.length(); i++) {
             JSONObject jsonItem = getArrayObject("items", jsonItems, i);
             String itemNodeName = "items[" + i + "]";
-            View view = BSADL.loadView(context, adlName, itemNodeName, jsonItem);
+            View view = BSADL.loadView(context, adlName, itemNodeName, jsonItem, true);
+            if (view == null) {
+                BSFrame frame = BSADL.loadFrame(context, adlName, itemNodeName, jsonItem, false);
+                view = frame.getRootView();
+                view.setTag(frame);
+            }
             LinearLayout.LayoutParams lp;
             int width = LinearLayout.LayoutParams.MATCH_PARENT;
             int height = LinearLayout.LayoutParams.MATCH_PARENT;
             int weight = jsonItem.optInt("weight", 0);
             if (bVert) {
-                height = jsonItem.optInt("height", 0);
+                height = BSActivity.dip2px(jsonItem.optInt("height", 0));
             } else {
-                width = jsonItem.optInt("width", 0);
+                width = BSActivity.dip2px(jsonItem.optInt("width", 0));
             }
             if (weight > 0) {
                 if (bVert) {
@@ -48,6 +54,7 @@ public class BSADLUILinearFrame extends BSADLUIFrame {
             } else {
                 lp = new LinearLayout.LayoutParams(width, height);
             }
+            parseMargin(lp, jsonItem);
             linearLayout.addView(view, lp);
         }
         return new BSFrame(linearLayout);

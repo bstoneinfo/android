@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Observer;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
@@ -41,7 +40,6 @@ public class BSFrame {
 
     public BSFrame(Context context) {
         this(new FrameLayout(context));
-        rootView.setBackgroundColor(Color.WHITE);
     }
 
     public BSFrame(Context context, int layout) {
