@@ -7,8 +7,8 @@ import android.view.View;
 
 public abstract class BSADLUIView extends BSADLUIObject {
 
-    public BSADLUIView(Context context, JSONObject jsonADL, String adlPathName) {
-        super(context, jsonADL, adlPathName);
+    public BSADLUIView(Context context, String adlName, JSONObject jsonADL) {
+        super(context, adlName, jsonADL);
     }
 
     public abstract View parse();

@@ -1,33 +1,26 @@
 {
   "class": "tablayout",
+  "bgcolor":"#F9F9F9",
   "items": [
     {
       "title": "最新",
-      "icon": [
-        "tab_explore_normal",
-        "tab_explore_selected"
-      ]
+      "iconNormal":"tab_explore_normal",
+      "iconSelect":"tab_explore_selected"
     },
     {
       "title": "搜索",
-      "icon": [
-        "tab_search_normal",
-        "tab_search_selected"
-      ]
+      "iconNormal":"tab_search_normal",
+      "iconSelect":"tab_search_selected"
     },
     {
       "title": "收藏",
-      "icon": [
-        "tab_favorite_normal",
-        "tab_favorite_selected"
-      ]
+      "iconNormal":"tab_favorite_normal",
+      "iconSelect":"tab_favorite_selected"
     },
     {
       "title": "设置",
-      "icon": [
-        "tab_settings_normal",
-        "tab_settings_selected"
-      ]
+      "iconNormal":"tab_settings_normal",
+      "iconSelect":"tab_settings_selected"
     }
   ]
 }

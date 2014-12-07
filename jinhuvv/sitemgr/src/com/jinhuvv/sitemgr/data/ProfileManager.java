@@ -6,18 +6,18 @@ import android.text.TextUtils;
 
 import com.bstoneinfo.lib.app.BSApplication;
 
-public class Config {
+public class ProfileManager {
 
     public static SharedPreferences getUserPreferences() {
-        return BSApplication.getApplication().getSharedPreferences("user", Context.MODE_PRIVATE);
+        return BSApplication.getApplication().getSharedPreferences("profile", Context.MODE_PRIVATE);
     }
 
     public static boolean islogin() {
-        return !TextUtils.isEmpty(getLoginUserID());
+        return !TextUtils.isEmpty(getUserID());
     }
 
-    public static String getLoginUserID() {
-        return getUserPreferences().getString("loginUid", "");
+    public static String getUserID() {
+        return getUserPreferences().getString("uid", "");
     }
 
 }

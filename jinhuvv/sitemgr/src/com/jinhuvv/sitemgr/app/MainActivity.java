@@ -3,9 +3,10 @@ package com.jinhuvv.sitemgr.app;
 import android.os.Bundle;
 
 import com.bstoneinfo.lib.ad.BSAdScreen;
+import com.bstoneinfo.lib.adl.BSADL;
 import com.bstoneinfo.lib.frame.BSFrame;
-import com.bstoneinfo.lib.frame.BSLayerFrame;
 import com.bstoneinfo.lib.frame.BSMainActivity;
+import com.jinhuvv.sitemgr.data.ProfileManager;
 
 import custom.R;
 
@@ -17,16 +18,22 @@ public class MainActivity extends BSMainActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        BSLayerFrame mainFrame = new BSLayerFrame(new BSFrame(this)) {
+        BSFrame mainFrame = new BSFrame(this) {
             @Override
             public boolean back() {
                 if (super.back()) {
                     return true;
                 }
                 return MainActivity.this.back();
-            };
+            }
         };
         setMainFrame(mainFrame);
+
+        if (!ProfileManager.islogin()) {
+            mainFrame.addChild(BSADL.loadFrame(this, "ui/login"));
+        } else {
+            mainFrame.addChild(BSADL.loadFrame(this, "ui/main"));
+        }
 
         //        MainDBHelper.createSingleton(this);
 
